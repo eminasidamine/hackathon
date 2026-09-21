@@ -236,33 +236,24 @@ class _BrandHeaderBar extends StatelessWidget {
       bottom: false,
       child: SizedBox(
         height: 50,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: IconButton(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              Image.asset('assets/images/boutigui_logo.png', height: 34),
+              const Spacer(),
+              IconButton(
                 icon: const Icon(Icons.search, color: AppTheme.ink, size: 22),
                 onPressed: onSearchTap,
               ),
-            ),
-            Image.asset('assets/images/boutigui_logo.png', height: 34),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _NotificationBell(
-                      onTap: onNotificationsTap, color: AppTheme.ink),
-                  IconButton(
-                    icon: const Icon(CupertinoIcons.heart,
-                        color: AppTheme.ink, size: 21),
-                    onPressed: onFavoritesTap,
-                  ),
-                ],
+              _NotificationBell(onTap: onNotificationsTap, color: AppTheme.ink),
+              IconButton(
+                icon: const Icon(CupertinoIcons.heart,
+                    color: AppTheme.ink, size: 21),
+                onPressed: onFavoritesTap,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -325,7 +316,7 @@ class _PromoBannerState extends State<_PromoBanner> {
 
     final hasMultiple = urls.length >= 2;
 
-    final height = MediaQuery.sizeOf(context).height * 0.5;
+    final height = MediaQuery.sizeOf(context).height * 0.56;
 
     return GestureDetector(
       onTap: widget.onTap,
