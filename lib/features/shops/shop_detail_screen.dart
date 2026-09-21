@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../core/errors.dart';
 import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../models/models.dart';
@@ -65,7 +66,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
         _followerCount = (_followerCount ?? 0) + (next ? -1 : 1);
       });
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     } finally {
       if (mounted) setState(() => _followLoading = false);
     }

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../core/errors.dart';
 import '../../core/money.dart';
 import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
@@ -160,7 +161,7 @@ class _CreateShopViewState extends State<_CreateShopView> {
       setState(() => _saving = false);
       if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -412,7 +413,7 @@ class _EditShopDialogState extends State<_EditShopDialog> {
       setState(() => _saving = false);
       if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -631,7 +632,7 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -1201,7 +1202,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
       if (!mounted) return;
       setState(() => _loadingImages = false);
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -1270,7 +1271,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
       if (!mounted) return;
       setState(() => _loadingImages = false);
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -1304,7 +1305,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
       if (!mounted) return;
       setState(() => _loadingImages = false);
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -1321,7 +1322,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
       if (!mounted) return;
       setState(() => _loadingImages = false);
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -1437,7 +1438,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
       setState(() => _saving = false);
       if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -2068,7 +2069,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
         _amountReceived = previousAmount;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
@@ -2083,7 +2084,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
     } catch (e) {
       if (mounted)
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(e.toString())));
+            .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     } finally {
       if (mounted) setState(() => _loadingProof = false);
     }
@@ -2099,7 +2100,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
       setState(() => _saving = false);
       if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -2461,7 +2462,7 @@ class _PickupLocationFieldState extends State<_PickupLocationField> {
       if (!mounted) return;
       setState(() {
         _locating = false;
-        _error = e.toString().replaceFirst('Exception: ', '');
+        _error = friendlyError(e);
       });
     }
   }

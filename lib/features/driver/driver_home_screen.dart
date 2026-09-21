@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../core/errors.dart';
 import '../../core/money.dart';
 import '../../core/theme.dart';
 import '../../models/models.dart';
@@ -78,7 +79,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
       if (!mounted) return;
       setState(() => _available = !value);
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
     }
   }
 
@@ -116,7 +117,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
@@ -128,7 +129,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
@@ -157,7 +158,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
@@ -168,8 +169,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
       contact = await _delivery.fetchContact(req.id);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.toString().replaceFirst('Exception: ', ''))));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
       return;
     }
     if (!mounted || contact == null) return;

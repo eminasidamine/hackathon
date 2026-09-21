@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import '../core/errors.dart';
 import '../core/money.dart';
 import '../core/theme.dart';
 import '../services/image_compressor.dart';
@@ -1291,7 +1292,7 @@ class _PlaceSearchFieldState extends State<PlaceSearchField> {
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = e.toString().replaceFirst('Exception: ', '');
+        _error = friendlyError(e);
       });
     }
   }

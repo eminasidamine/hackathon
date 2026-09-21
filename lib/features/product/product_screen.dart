@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../core/errors.dart';
 import '../../core/money.dart';
 import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
@@ -411,7 +412,8 @@ class _ProductScreenState extends State<ProductScreen> {
               body: EmptyState(
                 icon: Icons.error_outline,
                 title: snapshot.hasError ? t('error_generic') : t('no_results'),
-                subtitle: snapshot.hasError ? snapshot.error.toString() : null,
+                subtitle:
+                    snapshot.hasError ? friendlyError(snapshot.error!) : null,
               ),
             );
           }
@@ -1176,7 +1178,7 @@ class _WriteReviewSheetState extends State<_WriteReviewSheet> {
       if (!mounted) return;
       setState(() {
         _saving = false;
-        _error = e.toString().replaceFirst('Exception: ', '');
+        _error = friendlyError(e);
       });
     }
   }

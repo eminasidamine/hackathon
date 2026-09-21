@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors.dart';
 import '../../core/money.dart';
 import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
@@ -62,7 +63,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       if (!mounted) return;
       setState(() => _busyOrderId = null);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString().replaceFirst('Exception: ', ''))),
+        SnackBar(content: Text(friendlyError(e))),
       );
     }
   }
@@ -89,7 +90,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 EmptyState(
                   icon: Icons.error_outline,
                   title: t('error_generic'),
-                  subtitle: snapshot.error.toString(),
+                  subtitle: friendlyError(snapshot.error!),
                 ),
               ]);
             }

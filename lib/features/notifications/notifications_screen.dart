@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/models.dart';
+import '../../core/errors.dart';
 import '../../core/theme.dart';
 import '../../services/notification_service.dart';
 import '../widgets.dart';
@@ -59,7 +60,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 EmptyState(
                   icon: Icons.error_outline,
                   title: 'Une erreur est survenue.',
-                  subtitle: snapshot.error.toString(),
+                  subtitle: friendlyError(snapshot.error!),
                 ),
               ]);
             }

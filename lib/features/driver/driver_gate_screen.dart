@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors.dart';
 import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../services/auth_service.dart';
@@ -67,7 +68,7 @@ class _DriverGateScreenState extends State<DriverGateScreen> {
       if (!mounted) return;
       setState(() {
         _creating = false;
-        _error = e.toString().replaceFirst('Exception: ', '');
+        _error = friendlyError(e);
       });
     }
   }

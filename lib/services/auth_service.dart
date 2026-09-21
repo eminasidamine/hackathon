@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import '../core/errors.dart';
 import '../models/models.dart';
 
 class AuthService extends ChangeNotifier {
@@ -116,7 +117,7 @@ class AuthService extends ChangeNotifier {
       await _syncProfile();
       return null;
     } catch (e) {
-      return e.toString();
+      return friendlyError(e);
     }
   }
 
@@ -129,7 +130,7 @@ class AuthService extends ChangeNotifier {
       notifyListeners();
       return null;
     } catch (e) {
-      return e.toString();
+      return friendlyError(e);
     }
   }
 }

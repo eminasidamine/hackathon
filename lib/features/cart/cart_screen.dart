@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors.dart';
 import '../../core/money.dart';
 import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
@@ -532,7 +533,7 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
       if (!mounted) return;
       setState(() {
         _locating = false;
-        _error = e.toString().replaceFirst('Exception: ', '');
+        _error = friendlyError(e);
       });
     }
   }
@@ -594,7 +595,7 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
         _error = raw.contains('orders_payment_reference_unique') ||
                 raw.contains('duplicate key')
             ? 'This payment reference has already been used for another order.'
-            : raw.replaceFirst('Exception: ', '');
+            : friendlyError(e);
       });
     }
   }

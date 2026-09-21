@@ -164,7 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView(
                   cacheExtent: 800,
                   children: [
-                    const SizedBox(height: 8),
+                    _BrandHeaderBar(
+                      onSearchTap: _openSearchSheet,
+                      onNotificationsTap: _openNotifications,
+                      onFavoritesTap: _openFavorites,
+                    ),
+                    const SizedBox(height: 6),
                     _PromoBanner(
                       imageUrls: data.banners.map((b) => b.imageUrl).toList(),
                       onTap: _openAllProducts,
@@ -211,6 +216,69 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _BrandHeaderBar extends StatelessWidget {
+  final VoidCallback onSearchTap;
+  final VoidCallback onNotificationsTap;
+  final VoidCallback onFavoritesTap;
+
+  const _BrandHeaderBar({
+    required this.onSearchTap,
+    required this.onNotificationsTap,
+    required this.onFavoritesTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      bottom: false,
+      child: SizedBox(
+        height: 50,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                icon: const Icon(Icons.search, color: AppTheme.ink, size: 22),
+                onPressed: onSearchTap,
+              ),
+            ),
+            const Text(
+              'BOUTIGUI',
+              style: TextStyle(
+                fontFamily: 'Georgia',
+                fontFamilyFallback: ['Times New Roman', 'serif'],
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 4,
+                color: AppTheme.ink,
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.notifications_none,
+                        color: AppTheme.ink, size: 22),
+                    onPressed: onNotificationsTap,
+                  ),
+                  IconButton(
+                    icon: const Icon(CupertinoIcons.heart,
+                        color: AppTheme.ink, size: 21),
+                    onPressed: onFavoritesTap,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -279,7 +347,7 @@ class _PromoBannerState extends State<_PromoBanner> {
 
     final hasMultiple = urls.length >= 2;
 
-    final height = MediaQuery.sizeOf(context).height * 0.72;
+    final height = MediaQuery.sizeOf(context).height * 0.62;
 
     return GestureDetector(
       onTap: widget.onTap,

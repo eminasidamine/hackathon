@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../core/errors.dart';
 import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../models/models.dart';
@@ -103,7 +104,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     return EmptyState(
                       icon: Icons.error_outline,
                       title: t('error_generic'),
-                      subtitle: snapshot.error.toString(),
+                      subtitle: friendlyError(snapshot.error!),
                     );
                   }
                   final categories = snapshot.data ?? [];
