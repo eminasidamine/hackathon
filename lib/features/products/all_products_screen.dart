@@ -349,13 +349,13 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                     }
                     return GridView.builder(
                       cacheExtent: 800,
-                      padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
+                      padding: const EdgeInsets.fromLTRB(12, 16, 12, 24),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        mainAxisSpacing: 2,
-                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 14,
+                        crossAxisSpacing: 12,
                         childAspectRatio: productGridAspectRatio(
-                            (MediaQuery.of(context).size.width - 2) / 2),
+                            (MediaQuery.of(context).size.width - 36) / 2),
                       ),
                       itemCount: products.length,
                       itemBuilder: (context, i) {

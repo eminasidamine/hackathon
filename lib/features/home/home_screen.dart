@@ -173,7 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     _PromoBanner(
                       imageUrls: data.banners.map((b) => b.imageUrl).toList(),
                       onTap: _openAllProducts,
-                      onBreadcrumbTap: _openAllProducts,
                     ),
                     if (data.products.isNotEmpty)
                       RepaintBoundary(
@@ -240,6 +239,7 @@ class _BrandHeaderBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
+              const SizedBox(width: 16),
               Image.asset('assets/images/boutigui_logo.png', height: 34),
               const Spacer(),
               IconButton(
@@ -263,12 +263,10 @@ class _BrandHeaderBar extends StatelessWidget {
 class _PromoBanner extends StatefulWidget {
   final List<String> imageUrls;
   final VoidCallback onTap;
-  final VoidCallback onBreadcrumbTap;
 
   const _PromoBanner({
     required this.imageUrls,
     required this.onTap,
-    required this.onBreadcrumbTap,
   });
 
   @override
@@ -353,24 +351,6 @@ class _PromoBannerState extends State<_PromoBanner> {
                       ],
                     ),
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 14,
-              left: 14,
-              child: InkWell(
-                onTap: widget.onBreadcrumbTap,
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('New in',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white)),
-                    Icon(Icons.chevron_right, size: 19, color: Colors.white),
-                  ],
                 ),
               ),
             ),
