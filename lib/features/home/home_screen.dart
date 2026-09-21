@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: AppSearchField(
           controller: controller,
           hint: t('search_hint'),
+          autofocus: true,
           onSubmitted: (q) {
             Navigator.of(sheetContext).pop();
             _openSearch(q);

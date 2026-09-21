@@ -1154,6 +1154,7 @@ class AppSearchField extends StatelessWidget {
   final double radius;
   final double fontSize;
   final double iconSize;
+  final bool autofocus;
 
   const AppSearchField({
     super.key,
@@ -1170,6 +1171,7 @@ class AppSearchField extends StatelessWidget {
     this.radius = 14,
     this.fontSize = 14.5,
     this.iconSize = 19,
+    this.autofocus = false,
   });
 
   @override
@@ -1189,6 +1191,8 @@ class AppSearchField extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
+              autofocus: autofocus,
+              textInputAction: TextInputAction.search,
               onSubmitted: onSubmitted,
               onChanged: onChanged,
               style: TextStyle(fontSize: fontSize, color: AppTheme.ink),

@@ -18,10 +18,33 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isRegister = false;
   String? _error;
 
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _fullNameController = TextEditingController();
   final _phoneController = TextEditingController();
+
+  static final _emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+
+  String? _validateEmail(String? v) {
+    final value = (v ?? '').trim();
+    if (value.isEmpty) return 'Please enter your email.';
+    if (!_emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email address.';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? v) {
+    final value = v ?? '';
+    if (value.isEmpty) return 'Please enter your password.';
+    if (value.length < 6) return 'Password must be at least 6 characters.';
+    return null;
+  }
+
+  String? _validateRequired(String? v, String message) {
+    return (v ?? '').trim().isEmpty ? message : null;
+  }
 
   @override
   void dispose() {
@@ -52,18 +75,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submitEmail() async {
+    if (!(_formKey.currentState?.validate() ?? false)) return;
     final email = _emailController.text.trim();
     final password = _passwordController.text;
-    if (email.isEmpty || password.isEmpty) {
-      setState(() => _error = 'Please fill in your email and password.');
-      return;
-    }
-    if (_isRegister &&
-        (_fullNameController.text.trim().isEmpty ||
-            _phoneController.text.trim().isEmpty)) {
-      setState(() => _error = 'Please fill in your name and phone.');
-      return;
-    }
 
     setState(() {
       _emailLoading = true;
@@ -98,96 +112,110 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 30),
-              Text(
-                t('vendor_gate_subtitle'),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    fontSize: 14, color: AppTheme.ink2, height: 1.4),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                height: 52,
-                child: FilledButton.icon(
-                  onPressed: _googleLoading ? null : _continueWithGoogle,
-                  icon: _googleLoading
-                      ? const SizedBox(
-                          height: 16,
-                          width: 16,
-                          child: CircularProgressIndicator(
-                              strokeWidth: 2, color: Colors.white))
-                      : const _GoogleLogo(size: 18),
-                  label: Text(t('continue_with_google'),
-                      style: const TextStyle(fontWeight: FontWeight.w700)),
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 30),
+                Text(
+                  t('vendor_gate_subtitle'),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 14, color: AppTheme.ink2, height: 1.4),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  const Expanded(child: Divider(color: AppTheme.line)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(t('or_divider'),
-                        style: const TextStyle(
-                            color: AppTheme.ink2, fontSize: 12)),
+                const SizedBox(height: 24),
+                SizedBox(
+                  height: 52,
+                  child: FilledButton.icon(
+                    onPressed: _googleLoading ? null : _continueWithGoogle,
+                    icon: _googleLoading
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: Colors.white))
+                        : const _GoogleLogo(size: 18),
+                    label: Text(t('continue_with_google'),
+                        style: const TextStyle(fontWeight: FontWeight.w700)),
                   ),
-                  const Expanded(child: Divider(color: AppTheme.line)),
-                ],
-              ),
-              const SizedBox(height: 20),
-              _field(
-                  controller: _emailController,
-                  label: t('email'),
-                  keyboardType: TextInputType.emailAddress),
-              const SizedBox(height: 16),
-              _field(
-                  controller: _passwordController,
-                  label: t('password'),
-                  obscure: true),
-              if (_isRegister) ...[
-                const SizedBox(height: 16),
-                _field(controller: _fullNameController, label: t('full_name')),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Expanded(child: Divider(color: AppTheme.line)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(t('or_divider'),
+                          style: const TextStyle(
+                              color: AppTheme.ink2, fontSize: 12)),
+                    ),
+                    const Expanded(child: Divider(color: AppTheme.line)),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                _field(
+                    controller: _emailController,
+                    label: t('email'),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: _validateEmail),
                 const SizedBox(height: 16),
                 _field(
-                    controller: _phoneController,
-                    label: t('phone'),
-                    keyboardType: TextInputType.phone),
-              ],
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 52,
-                child: OutlinedButton(
-                  onPressed: _emailLoading ? null : _submitEmail,
-                  child: _emailLoading
-                      ? const SizedBox(
-                          height: 16,
-                          width: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2))
-                      : Text(_isRegister ? t('register') : t('login'),
-                          style: const TextStyle(fontWeight: FontWeight.w700)),
+                    controller: _passwordController,
+                    label: t('password'),
+                    obscure: true,
+                    validator: _validatePassword),
+                if (_isRegister) ...[
+                  const SizedBox(height: 16),
+                  _field(
+                      controller: _fullNameController,
+                      label: t('full_name'),
+                      validator: (v) =>
+                          _validateRequired(v, 'Please enter your name.')),
+                  const SizedBox(height: 16),
+                  _field(
+                      controller: _phoneController,
+                      label: t('phone'),
+                      keyboardType: TextInputType.phone,
+                      validator: (v) => _validateRequired(
+                          v, 'Please enter your phone number.')),
+                ],
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: 52,
+                  child: OutlinedButton(
+                    onPressed: _emailLoading ? null : _submitEmail,
+                    child: _emailLoading
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2))
+                        : Text(_isRegister ? t('register') : t('login'),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w700)),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 12),
-              Center(
-                child: TextButton(
-                  onPressed: () => setState(() {
-                    _isRegister = !_isRegister;
-                    _error = null;
-                  }),
-                  child:
-                      Text(_isRegister ? t('have_account') : t('no_account')),
+                const SizedBox(height: 12),
+                Center(
+                  child: TextButton(
+                    onPressed: () => setState(() {
+                      _isRegister = !_isRegister;
+                      _error = null;
+                    }),
+                    child:
+                        Text(_isRegister ? t('have_account') : t('no_account')),
+                  ),
                 ),
-              ),
-              if (_error != null) ...[
-                const SizedBox(height: 6),
-                Text(_error!,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppTheme.red, fontSize: 13)),
+                if (_error != null) ...[
+                  const SizedBox(height: 6),
+                  Text(_error!,
+                      textAlign: TextAlign.center,
+                      style:
+                          const TextStyle(color: AppTheme.red, fontSize: 13)),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -199,6 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
     required String label,
     bool obscure = false,
     TextInputType? keyboardType,
+    String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,19 +238,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontWeight: FontWeight.w600,
                 color: AppTheme.ink)),
         const SizedBox(height: 6),
-        TextField(
+        TextFormField(
           controller: controller,
           obscureText: obscure,
           keyboardType: keyboardType,
+          validator: validator,
           decoration: const InputDecoration(
             isDense: true,
             contentPadding: EdgeInsets.only(bottom: 10),
+            errorMaxLines: 2,
+            errorStyle: TextStyle(fontSize: 11.5, color: AppTheme.red),
             border: UnderlineInputBorder(
                 borderSide: BorderSide(color: AppTheme.line)),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: AppTheme.line)),
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: AppTheme.ink, width: 1.4)),
+            errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppTheme.red)),
+            focusedErrorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppTheme.red, width: 1.4)),
           ),
         ),
       ],
