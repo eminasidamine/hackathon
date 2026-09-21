@@ -173,10 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _PromoBanner(
                       imageUrls: data.banners.map((b) => b.imageUrl).toList(),
                       onTap: _openAllProducts,
-                      onSearchTap: _openSearchSheet,
-                      onFavoritesTap: _openFavorites,
                       onBreadcrumbTap: _openAllProducts,
-                      onNotificationsTap: _openNotifications,
                     ),
                     if (data.products.isNotEmpty)
                       RepaintBoundary(
@@ -249,27 +246,14 @@ class _BrandHeaderBar extends StatelessWidget {
                 onPressed: onSearchTap,
               ),
             ),
-            const Text(
-              'BOUTIGUI',
-              style: TextStyle(
-                fontFamily: 'Georgia',
-                fontFamilyFallback: ['Times New Roman', 'serif'],
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 4,
-                color: AppTheme.ink,
-              ),
-            ),
+            Image.asset('assets/images/boutigui_logo.png', height: 34),
             Align(
               alignment: Alignment.centerRight,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.notifications_none,
-                        color: AppTheme.ink, size: 22),
-                    onPressed: onNotificationsTap,
-                  ),
+                  _NotificationBell(
+                      onTap: onNotificationsTap, color: AppTheme.ink),
                   IconButton(
                     icon: const Icon(CupertinoIcons.heart,
                         color: AppTheme.ink, size: 21),
@@ -288,18 +272,12 @@ class _BrandHeaderBar extends StatelessWidget {
 class _PromoBanner extends StatefulWidget {
   final List<String> imageUrls;
   final VoidCallback onTap;
-  final VoidCallback onSearchTap;
-  final VoidCallback onFavoritesTap;
   final VoidCallback onBreadcrumbTap;
-  final VoidCallback onNotificationsTap;
 
   const _PromoBanner({
     required this.imageUrls,
     required this.onTap,
-    required this.onSearchTap,
-    required this.onFavoritesTap,
     required this.onBreadcrumbTap,
-    required this.onNotificationsTap,
   });
 
   @override
@@ -347,7 +325,7 @@ class _PromoBannerState extends State<_PromoBanner> {
 
     final hasMultiple = urls.length >= 2;
 
-    final height = MediaQuery.sizeOf(context).height * 0.62;
+    final height = MediaQuery.sizeOf(context).height * 0.5;
 
     return GestureDetector(
       onTap: widget.onTap,
@@ -388,40 +366,21 @@ class _PromoBannerState extends State<_PromoBanner> {
               ),
             ),
             Positioned(
-              top: MediaQuery.paddingOf(context).top + 4,
+              top: 14,
               left: 14,
-              right: 6,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: widget.onBreadcrumbTap,
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('New in',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white)),
-                          Icon(Icons.chevron_right,
-                              size: 19, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                  ),
-                  _NotificationBell(onTap: widget.onNotificationsTap),
-                  IconButton(
-                    icon: const Icon(CupertinoIcons.bookmark,
-                        color: Colors.white, size: 22),
-                    onPressed: widget.onFavoritesTap,
-                  ),
-                  IconButton(
-                    icon:
-                        const Icon(Icons.search, color: Colors.white, size: 23),
-                    onPressed: widget.onSearchTap,
-                  ),
-                ],
+              child: InkWell(
+                onTap: widget.onBreadcrumbTap,
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('New in',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white)),
+                    Icon(Icons.chevron_right, size: 19, color: Colors.white),
+                  ],
+                ),
               ),
             ),
             if (hasMultiple)
@@ -747,8 +706,9 @@ class _HomeData {
 
 class _NotificationBell extends StatelessWidget {
   final VoidCallback onTap;
+  final Color color;
 
-  const _NotificationBell({required this.onTap});
+  const _NotificationBell({required this.onTap, this.color = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -757,8 +717,7 @@ class _NotificationBell extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications_none,
-              color: Colors.white, size: 23),
+          icon: Icon(Icons.notifications_none, color: color, size: 22),
           onPressed: onTap,
         ),
         if (unread > 0)
