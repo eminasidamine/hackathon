@@ -260,7 +260,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: _PillButton(
-                              label: 'Favorite brands',
+                              label: 'Locate',
                               enabled:
                                   shop.city != null && shop.city!.isNotEmpty,
                               onTap: () => _openCityMap(shop.city!),
