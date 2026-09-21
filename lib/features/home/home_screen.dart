@@ -242,15 +242,15 @@ class _BrandHeaderBar extends StatelessWidget {
               const SizedBox(width: 16),
               Image.asset('assets/images/boutigui_logo.png', height: 34),
               const Spacer(),
+              _NotificationBell(onTap: onNotificationsTap, color: AppTheme.ink),
+              IconButton(
+                icon: const Icon(CupertinoIcons.bookmark,
+                    color: AppTheme.ink, size: 21),
+                onPressed: onFavoritesTap,
+              ),
               IconButton(
                 icon: const Icon(Icons.search, color: AppTheme.ink, size: 22),
                 onPressed: onSearchTap,
-              ),
-              _NotificationBell(onTap: onNotificationsTap, color: AppTheme.ink),
-              IconButton(
-                icon: const Icon(CupertinoIcons.heart,
-                    color: AppTheme.ink, size: 21),
-                onPressed: onFavoritesTap,
               ),
             ],
           ),
