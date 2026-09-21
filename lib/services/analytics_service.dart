@@ -76,8 +76,11 @@ class VendorAnalytics {
 class AnalyticsService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  Future<VendorAnalytics> fetchForShop(String shopId,
-      {int rangeDays = 30}) async {
+  Future<VendorAnalytics> fetchForShop(
+    String shopId, {
+    int rangeDays = 30,
+    required String Function(String) t,
+  }) async {
     final now = DateTime.now();
     final periodStart = now.subtract(Duration(days: rangeDays));
     final previousStart = now.subtract(Duration(days: rangeDays * 2));
@@ -99,6 +102,7 @@ class AnalyticsService {
       now: now,
       periodStart: periodStart,
       rangeDays: rangeDays,
+      t: t,
     );
   }
 
@@ -108,6 +112,7 @@ class AnalyticsService {
     required DateTime now,
     required DateTime periodStart,
     required int rangeDays,
+    required String Function(String) t,
   }) {
     double revenue = 0;
     double previousRevenue = 0;
@@ -155,8 +160,9 @@ class AnalyticsService {
       byWeekday[createdAt.weekday] = (byWeekday[createdAt.weekday] ?? 0) + 1;
       activeWeeks.add(now.difference(day).inDays ~/ 7);
       final provider = (row['payment_provider'] as String?)?.trim();
-      final providerKey =
-          provider == null || provider.isEmpty ? 'Other' : provider;
+      final providerKey = provider == null || provider.isEmpty
+          ? t('payment_provider_other')
+          : provider;
       byProvider[providerKey] = (byProvider[providerKey] ?? 0) + total;
       for (final item in (row['order_items'] as List? ?? const [])) {
         final map = item as Map<String, dynamic>;
@@ -202,6 +208,7 @@ class AnalyticsService {
         verified: verified,
         activeWeeks: activeWeeks.length,
         rangeDays: rangeDays,
+        t: t,
       ),
     );
   }
@@ -212,6 +219,7 @@ class AnalyticsService {
     required int verified,
     required int activeWeeks,
     required int rangeDays,
+    required String Function(String) t,
   }) {
     final weeksInRange = (rangeDays / 7).ceil();
     final consistency =
@@ -239,28 +247,40 @@ class AnalyticsService {
     final completeness = filled / fields.length;
     return [
       ReadinessPart(
-        label: 'Activity regularity',
+        label: t('readiness_label_activity_regularity'),
         score: consistency * 25,
-        detail:
-            '$activeWeeks week${activeWeeks > 1 ? 's' : ''} with at least one sale out of $weeksInRange',
+        detail: t(activeWeeks > 1
+                ? 'readiness_weeks_plural'
+                : 'readiness_weeks_singular')
+            .replaceAll('{active}', '$activeWeeks')
+            .replaceAll('{total}', '$weeksInRange'),
       ),
       ReadinessPart(
-        label: 'Order volume',
+        label: t('readiness_label_order_volume'),
         score: volume * 25,
-        detail:
-            '$orderCount order${orderCount > 1 ? 's' : ''} over the period (reference: $volumeTarget)',
+        detail: t(orderCount > 1
+                ? 'readiness_orders_plural'
+                : 'readiness_orders_singular')
+            .replaceAll('{n}', '$orderCount')
+            .replaceAll('{target}', '$volumeTarget'),
       ),
       ReadinessPart(
-        label: 'Confirmed digital payments',
+        label: t('readiness_label_digital_payments'),
         score: digital * 25,
-        detail:
-            '$verified payment${verified > 1 ? 's' : ''} found in banking history out of $orderCount',
+        detail: t(verified > 1
+                ? 'readiness_payments_plural'
+                : 'readiness_payments_singular')
+            .replaceAll('{n}', '$verified')
+            .replaceAll('{total}', '$orderCount'),
       ),
       ReadinessPart(
-        label: 'Shop profile',
+        label: t('readiness_label_shop_profile'),
         score: completeness * 25,
-        detail:
-            '$filled field${filled > 1 ? 's' : ''} filled out of ${fields.length}',
+        detail: t(filled > 1
+                ? 'readiness_fields_plural'
+                : 'readiness_fields_singular')
+            .replaceAll('{n}', '$filled')
+            .replaceAll('{total}', '${fields.length}'),
       ),
     ];
   }
@@ -273,54 +293,61 @@ class Insight {
 }
 
 class BoutigueInsights {
-  static const _weekdays = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+  static const _weekdayKeys = [
+    'weekday_monday',
+    'weekday_tuesday',
+    'weekday_wednesday',
+    'weekday_thursday',
+    'weekday_friday',
+    'weekday_saturday',
+    'weekday_sunday',
   ];
 
-  static List<Insight> from(VendorAnalytics a) {
+  static List<Insight> from(VendorAnalytics a, String Function(String) t) {
     if (a.isEmpty) return const [];
     final out = <Insight>[];
     final growth = a.revenueGrowthPct;
     if (growth != null && growth.abs() >= 5) {
-      out.add(Insight(growth > 0
-          ? 'Your sales grew ${growth.abs().round()}% compared to the previous ${a.rangeDays} days.'
-          : 'Your sales dropped ${growth.abs().round()}% compared to the previous ${a.rangeDays} days.'));
+      out.add(Insight(
+          t(growth > 0 ? 'insight_sales_grew' : 'insight_sales_dropped')
+              .replaceAll('{n}', '${growth.abs().round()}')
+              .replaceAll('{days}', '${a.rangeDays}')));
     }
     final busiest = a.busiestWeekday;
     if (busiest != null) {
-      out.add(Insight('Your busiest day is ${_weekdays[busiest - 1]}.'));
+      final day = t(_weekdayKeys[busiest - 1]);
+      out.add(Insight(t('insight_busiest_day').replaceAll('{day}', day)));
       out.add(Insight(
-        'Consider restocking before ${_weekdays[busiest - 1]}.',
+        t('insight_restock_suggestion').replaceAll('{day}', day),
         isSuggestion: true,
       ));
     }
     if (a.topProducts.isNotEmpty) {
-      out.add(Insight('Your best seller is "${a.topProducts.first.name}".'));
+      out.add(Insight(t('insight_best_seller')
+          .replaceAll('{name}', a.topProducts.first.name)));
     }
     if (a.revenueByProvider.isNotEmpty && a.revenue > 0) {
       final top = a.revenueByProvider.entries
           .reduce((x, y) => x.value >= y.value ? x : y);
       final share = (top.value / a.revenue * 100).round();
-      out.add(Insight('$share% of your payments go through ${top.key}.'));
+      out.add(Insight(t('insight_provider_share')
+          .replaceAll('{pct}', '$share')
+          .replaceAll('{provider}', top.key)));
     }
     if (a.awaitingVerification > 0) {
       out.add(Insight(
-        '${a.awaitingVerification} payment reference${a.awaitingVerification > 1 ? 's' : ''} still need${a.awaitingVerification > 1 ? '' : 's'} checking in your banking app.',
+        t(a.awaitingVerification > 1
+                ? 'insight_refs_checking_plural'
+                : 'insight_refs_checking_singular')
+            .replaceAll('{n}', '${a.awaitingVerification}'),
         isSuggestion: true,
       ));
     }
     if (a.customerCount > 0 && a.orderCount > a.customerCount) {
       final repeat = a.orderCount / a.customerCount;
       if (repeat >= 1.3) {
-        out.add(Insight(
-          'Your customers order ${repeat.toStringAsFixed(1)} times on average: repeat customers already drive your business.',
-        ));
+        out.add(Insight(t('insight_repeat_customers')
+            .replaceAll('{x}', repeat.toStringAsFixed(1))));
       }
     }
     return out;

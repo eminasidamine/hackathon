@@ -160,8 +160,9 @@ class _CreateShopViewState extends State<_CreateShopView> {
     } catch (e) {
       setState(() => _saving = false);
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -412,8 +413,9 @@ class _EditShopDialogState extends State<_EditShopDialog> {
     } catch (e) {
       setState(() => _saving = false);
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -631,8 +633,9 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
       widget.onShopUpdated();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -1201,8 +1204,9 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _loadingImages = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -1270,8 +1274,9 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _loadingImages = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -1304,8 +1309,9 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _loadingImages = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -1321,8 +1327,9 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _loadingImages = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -1437,8 +1444,9 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     } catch (e) {
       setState(() => _saving = false);
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -2002,20 +2010,21 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
   }
 
   Future<double?> _askAmount() async {
+    final t = context.read<SettingsController>().t;
     final controller = TextEditingController(
       text: widget.order.total.toStringAsFixed(0),
     );
     return showDialog<double>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Amount received'),
+        title: Text(t('amount_received_title')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'How much did you actually receive for this order? '
-              'The expected total is ${Money.format(widget.order.total)}.',
+              t('amount_received_prompt')
+                  .replaceAll('{total}', Money.format(widget.order.total)),
               style: const TextStyle(
                   fontSize: 13, height: 1.4, color: AppTheme.ink2),
             ),
@@ -2025,14 +2034,15 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
               autofocus: true,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(labelText: 'Amount received'),
+              decoration:
+                  InputDecoration(labelText: t('amount_received_title')),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(t('cancel')),
           ),
           FilledButton(
             onPressed: () {
@@ -2040,7 +2050,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                   double.tryParse(controller.text.trim().replaceAll(',', '.'));
               Navigator.of(context).pop(v);
             },
-            child: const Text('Confirm'),
+            child: Text(t('confirm')),
           ),
         ],
       ),
@@ -2069,7 +2079,9 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
         _amountReceived = previousAmount;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(
+            content:
+                Text(friendlyError(e, context.read<SettingsController>().t))),
       );
     }
   }
@@ -2083,8 +2095,9 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
       if (mounted) setState(() => _proofSignedUrl = url);
     } catch (e) {
       if (mounted)
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:
+                Text(friendlyError(e, context.read<SettingsController>().t))));
     } finally {
       if (mounted) setState(() => _loadingProof = false);
     }
@@ -2099,8 +2112,9 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
     } catch (e) {
       setState(() => _saving = false);
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -2205,22 +2219,22 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                       ),
                     ),
                     IconButton(
-                      tooltip: 'Copy',
+                      tooltip: t('copy_tooltip'),
                       icon: const Icon(Icons.copy_outlined,
                           size: 18, color: AppTheme.ink2),
                       onPressed: () {
                         Clipboard.setData(
                             ClipboardData(text: order.paymentReference!));
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Code copied.')),
+                          SnackBar(content: Text(t('code_copied'))),
                         );
                       },
                     ),
                   ],
                 ),
               const SizedBox(height: 16),
-              const Text('Payment status',
-                  style: TextStyle(
+              Text(t('payment_status_label'),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
                       color: AppTheme.ink)),
@@ -2243,10 +2257,13 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                   const SizedBox(width: 6),
                   Text(
                     switch (_paymentStatus) {
-                      'verified' => 'Verified'
-                          '${_amountReceived != null ? ' — ${Money.format(_amountReceived!)} received' : ''}',
-                      'rejected' => 'Reference not found',
-                      _ => 'Submitted — pending verification',
+                      'verified' => t('payment_verified_label') +
+                          (_amountReceived != null
+                              ? t('payment_verified_amount').replaceAll(
+                                  '{x}', Money.format(_amountReceived!))
+                              : ''),
+                      'rejected' => t('payment_rejected_label'),
+                      _ => t('payment_submitted_label'),
                     },
                     style: const TextStyle(fontSize: 13, color: AppTheme.ink2),
                   ),
@@ -2260,7 +2277,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                       onPressed: _paymentStatus == 'verified'
                           ? null
                           : () => _setPayment('verified'),
-                      child: const Text('Verify'),
+                      child: Text(t('verify_action')),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -2271,33 +2288,34 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                           : () => _setPayment('rejected'),
                       style: OutlinedButton.styleFrom(
                           foregroundColor: AppTheme.red),
-                      child: const Text('Reject'),
+                      child: Text(t('reject_action')),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('Delivery',
-                  style: TextStyle(
+              Text(t('delivery_label'),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
                       color: AppTheme.ink)),
               const SizedBox(height: 6),
               if (order.deliveryMapUrl == null)
-                const Text('No location shared.',
-                    style: TextStyle(fontSize: 12.5, color: AppTheme.muted))
+                Text(t('no_location_shared'),
+                    style:
+                        const TextStyle(fontSize: 12.5, color: AppTheme.muted))
               else
                 OutlinedButton.icon(
                   onPressed: () => launchUrl(Uri.parse(order.deliveryMapUrl!),
                       mode: LaunchMode.externalApplication),
                   icon: const Icon(Icons.map_outlined, size: 18),
-                  label: const Text('Open in Google Maps'),
+                  label: Text(t('open_in_google_maps')),
                 ),
               const SizedBox(height: 16),
               if (order.paymentProofUrl != null &&
                   order.paymentProofUrl!.isNotEmpty) ...[
-                const Text('Payment screenshot (old order)',
-                    style: TextStyle(
+                Text(t('payment_screenshot_old_order'),
+                    style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: AppTheme.ink)),
@@ -2311,7 +2329,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                             width: 14,
                             child: CircularProgressIndicator(strokeWidth: 2))
                         : const Icon(Icons.image_outlined, size: 18),
-                    label: const Text('View screenshot'),
+                    label: Text(t('view_screenshot')),
                   )
                 else
                   ClipRRect(
@@ -2320,10 +2338,9 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                       _proofSignedUrl!,
                       height: 220,
                       fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) => const Text(
-                          'Image not found.',
-                          style:
-                              TextStyle(color: AppTheme.muted, fontSize: 12)),
+                      errorBuilder: (_, __, ___) => Text(t('image_not_found'),
+                          style: const TextStyle(
+                              color: AppTheme.muted, fontSize: 12)),
                     ),
                   ),
               ],
@@ -2462,7 +2479,7 @@ class _PickupLocationFieldState extends State<_PickupLocationField> {
       if (!mounted) return;
       setState(() {
         _locating = false;
-        _error = friendlyError(e);
+        _error = friendlyError(e, context.read<SettingsController>().t);
       });
     }
   }
@@ -2562,6 +2579,7 @@ class _AnalyticsEntryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppTheme.radiusCard),
@@ -2572,26 +2590,27 @@ class _AnalyticsEntryCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppTheme.radiusCard),
           border: Border.all(color: AppTheme.line),
         ),
-        child: const Row(
+        child: Row(
           children: [
-            Icon(Icons.show_chart, size: 20, color: AppTheme.copper),
-            SizedBox(width: 12),
+            const Icon(Icons.show_chart, size: 20, color: AppTheme.copper),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('My activity',
-                      style: TextStyle(
+                  Text(t('vendor_activity_title'),
+                      style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: AppTheme.ink)),
-                  SizedBox(height: 2),
-                  Text('Sales, payments and financial readiness',
-                      style: TextStyle(fontSize: 12, color: AppTheme.ink2)),
+                  const SizedBox(height: 2),
+                  Text(t('activity_entry_subtitle'),
+                      style:
+                          const TextStyle(fontSize: 12, color: AppTheme.ink2)),
                 ],
               ),
             ),
-            Icon(Icons.chevron_right, size: 20, color: AppTheme.muted),
+            const Icon(Icons.chevron_right, size: 20, color: AppTheme.muted),
           ],
         ),
       ),

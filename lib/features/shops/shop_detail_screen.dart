@@ -65,8 +65,9 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
         _isFollowing = !next;
         _followerCount = (_followerCount ?? 0) + (next ? -1 : 1);
       });
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     } finally {
       if (mounted) setState(() => _followLoading = false);
     }

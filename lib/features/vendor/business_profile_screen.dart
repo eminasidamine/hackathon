@@ -2,8 +2,10 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/money.dart';
+import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../models/models.dart';
 import '../../services/analytics_service.dart';
@@ -24,6 +26,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
   late Future<(Shop?, VendorAnalytics)> _future;
   bool _sharing = false;
 
+  String Function(String) get _t => context.read<SettingsController>().t;
+
   @override
   void initState() {
     super.initState();
@@ -32,12 +36,13 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
 
   Future<(Shop?, VendorAnalytics)> _load() async {
     final analytics =
-        await _analytics.fetchForShop(widget.shopId, rangeDays: 365);
+        await _analytics.fetchForShop(widget.shopId, rangeDays: 365, t: _t);
     final shop = await _vendor.fetchMyShop();
     return (shop, analytics);
   }
 
-  Future<void> _share(Shop? shop, VendorAnalytics a) async {
+  Future<void> _share(
+      Shop? shop, VendorAnalytics a, String Function(String) t) async {
     setState(() => _sharing = true);
     try {
       final bytes = await BusinessProfilePdf.build(shop: shop, a: a);
@@ -52,18 +57,14 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not generate the file. $e')),
+        SnackBar(
+            content:
+                Text(t('could_not_generate_file').replaceAll('{e}', '$e'))),
       );
     } finally {
       if (mounted) setState(() => _sharing = false);
     }
   }
-
-  static const _disclaimer =
-      'This file summarizes a business\'s activity as recorded in this app. '
-      'It is not a credit decision, a financing guarantee, or an assessment '
-      'by a financial institution. Figures are computed from the shop\'s '
-      'real orders.';
 
   static String _repeatRate(VendorAnalytics a) => a.customerCount == 0
       ? '—'
@@ -71,14 +72,15 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
         backgroundColor: AppTheme.bg,
         surfaceTintColor: AppTheme.bg,
         iconTheme: const IconThemeData(color: AppTheme.ink),
-        title: const Text('My business profile',
-            style: TextStyle(color: AppTheme.ink)),
+        title: Text(t('business_profile_title'),
+            style: const TextStyle(color: AppTheme.ink)),
       ),
       body: FutureBuilder<(Shop?, VendorAnalytics)>(
         future: _future,
@@ -87,33 +89,34 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snap.hasError) {
-            return _Error(onRetry: () => setState(() => _future = _load()));
+            return _Error(
+                onRetry: () => setState(() => _future = _load()), t: t);
           }
           final (shop, a) = snap.data!;
 
           if (a.isEmpty) {
-            return const _NothingYet();
+            return _NothingYet(t: t);
           }
 
           return ListView(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
             children: [
-              _Header(shop: shop),
+              _Header(shop: shop, t: t),
               const SizedBox(height: 16),
               _Section(
-                title: 'Marketplace history',
+                title: t('marketplace_history_title'),
                 rows: [
-                  ('Orders fulfilled', '${a.orderCount}'),
-                  ('Sales volume', Money.format(a.revenue)),
-                  ('Average order value', Money.format(a.averageOrderValue)),
-                  ('Distinct customers', '${a.customerCount}'),
-                  ('Orders per customer', _repeatRate(a)),
+                  (t('orders_fulfilled'), '${a.orderCount}'),
+                  (t('sales_volume'), Money.format(a.revenue)),
+                  (t('avg_order_value'), Money.format(a.averageOrderValue)),
+                  (t('distinct_customers'), '${a.customerCount}'),
+                  (t('orders_per_customer'), _repeatRate(a)),
                 ],
               ),
               const SizedBox(height: 12),
-              _PaymentsSection(analytics: a),
+              _PaymentsSection(analytics: a, t: t),
               const SizedBox(height: 12),
-              _ReadinessSection(analytics: a),
+              _ReadinessSection(analytics: a, t: t),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(14),
@@ -121,9 +124,9 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                   color: AppTheme.panel,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
                 ),
-                child: const Text(
-                  _disclaimer,
-                  style: TextStyle(
+                child: Text(
+                  t('business_profile_disclaimer'),
+                  style: const TextStyle(
                       fontSize: 11.5, height: 1.45, color: AppTheme.ink2),
                 ),
               ),
@@ -137,7 +140,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                       borderRadius: BorderRadius.circular(AppTheme.radiusPill),
                     ),
                   ),
-                  onPressed: _sharing ? null : () => _share(shop, a),
+                  onPressed: _sharing ? null : () => _share(shop, a, t),
                   icon: _sharing
                       ? const SizedBox(
                           height: 17,
@@ -146,15 +149,17 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               strokeWidth: 2, color: Colors.white))
                       : const Icon(Icons.picture_as_pdf_outlined, size: 18),
                   label: Text(
-                      _sharing ? 'Generating…' : 'Download my profile (PDF)',
+                      _sharing
+                          ? t('generating_ellipsis')
+                          : t('download_profile_pdf'),
                       style: const TextStyle(fontWeight: FontWeight.w700)),
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'You choose who you send it to. Nothing is shared automatically.',
+              Text(
+                t('share_control_note'),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 11.5, height: 1.35, color: AppTheme.muted),
               ),
             ],
@@ -167,7 +172,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
 
 class _Header extends StatelessWidget {
   final Shop? shop;
-  const _Header({required this.shop});
+  final String Function(String) t;
+  const _Header({required this.shop, required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +189,8 @@ class _Header extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('BUSINESS PROFILE',
-              style: TextStyle(
+          Text(t('business_profile_label'),
+              style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.2,
@@ -205,8 +211,8 @@ class _Header extends StatelessWidget {
               if (s?.createdAt != null)
                 _Meta(
                     icon: Icons.calendar_today_outlined,
-                    text:
-                        'Active since ${BusinessProfilePdf.monthYear(s!.createdAt!)}'),
+                    text: t('active_since').replaceAll('{date}',
+                        '${t('month_${s!.createdAt!.month}')} ${s.createdAt!.year}')),
               if (s?.merchantProvider != null &&
                   s!.merchantProvider!.isNotEmpty)
                 _Meta(
@@ -290,7 +296,8 @@ class _Section extends StatelessWidget {
 
 class _PaymentsSection extends StatelessWidget {
   final VendorAnalytics analytics;
-  const _PaymentsSection({required this.analytics});
+  final String Function(String) t;
+  const _PaymentsSection({required this.analytics, required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -307,23 +314,24 @@ class _PaymentsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('DIGITAL PAYMENTS',
-              style: TextStyle(
+          Text(t('digital_payments_label'),
+              style: const TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.6,
                   color: AppTheme.ink)),
           const SizedBox(height: 4),
           Text(
-            '${a.verifiedCount} payment${a.verifiedCount > 1 ? 's' : ''} out of '
-            '${a.orderCount} found in the merchant\'s banking history.',
+            t('payments_found_in_history')
+                .replaceAll('{n}', '${a.verifiedCount}')
+                .replaceAll('{total}', '${a.orderCount}'),
             style: const TextStyle(
                 fontSize: 11.5, height: 1.3, color: AppTheme.muted),
           ),
           const SizedBox(height: 14),
           if (providers.isEmpty)
-            const Text('No payments recorded.',
-                style: TextStyle(fontSize: 13, color: AppTheme.muted))
+            Text(t('no_payments_recorded'),
+                style: const TextStyle(fontSize: 13, color: AppTheme.muted))
           else
             for (final e in providers)
               Padding(
@@ -351,7 +359,8 @@ class _PaymentsSection extends StatelessWidget {
 
 class _ReadinessSection extends StatelessWidget {
   final VendorAnalytics analytics;
-  const _ReadinessSection({required this.analytics});
+  final String Function(String) t;
+  const _ReadinessSection({required this.analytics, required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -370,9 +379,9 @@ class _ReadinessSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              const Expanded(
-                child: Text('FINANCIAL READINESS',
-                    style: TextStyle(
+              Expanded(
+                child: Text(t('readiness_title').toUpperCase(),
+                    style: const TextStyle(
                         fontSize: 11.5,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.6,
@@ -426,29 +435,31 @@ class _ReadinessSection extends StatelessWidget {
 }
 
 class _NothingYet extends StatelessWidget {
-  const _NothingYet();
+  final String Function(String) t;
+  const _NothingYet({required this.t});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Padding(
-        padding: EdgeInsets.all(32),
+        padding: const EdgeInsets.all(32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.description_outlined, size: 40, color: AppTheme.muted),
-            SizedBox(height: 12),
-            Text('No profile yet',
-                style: TextStyle(
+            const Icon(Icons.description_outlined,
+                size: 40, color: AppTheme.muted),
+            const SizedBox(height: 12),
+            Text(t('no_profile_yet_title'),
+                style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.ink)),
-            SizedBox(height: 6),
+            const SizedBox(height: 6),
             Text(
-              'Your business profile builds itself from your sales. It will '
-              'appear as soon as you get your first order.',
+              t('no_profile_yet_subtitle'),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, height: 1.4, color: AppTheme.ink2),
+              style: const TextStyle(
+                  fontSize: 13, height: 1.4, color: AppTheme.ink2),
             ),
           ],
         ),
@@ -459,7 +470,8 @@ class _NothingYet extends StatelessWidget {
 
 class _Error extends StatelessWidget {
   final VoidCallback onRetry;
-  const _Error({required this.onRetry});
+  final String Function(String) t;
+  const _Error({required this.onRetry, required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -472,13 +484,13 @@ class _Error extends StatelessWidget {
             const Icon(Icons.cloud_off_outlined,
                 size: 40, color: AppTheme.muted),
             const SizedBox(height: 12),
-            const Text('Could not load your business profile',
-                style: TextStyle(
+            Text(t('could_not_load_business_profile'),
+                style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.ink)),
             const SizedBox(height: 16),
-            OutlinedButton(onPressed: onRetry, child: const Text('Retry')),
+            OutlinedButton(onPressed: onRetry, child: Text(t('retry'))),
           ],
         ),
       ),

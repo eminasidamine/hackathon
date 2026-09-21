@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/models.dart';
 import '../../core/errors.dart';
+import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../services/notification_service.dart';
 import '../widgets.dart';
@@ -43,6 +44,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(title: const Text('Notifications')),
@@ -60,7 +62,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 EmptyState(
                   icon: Icons.error_outline,
                   title: 'Une erreur est survenue.',
-                  subtitle: friendlyError(snapshot.error!),
+                  subtitle: friendlyError(snapshot.error!, t),
                 ),
               ]);
             }

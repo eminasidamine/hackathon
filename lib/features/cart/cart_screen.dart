@@ -533,7 +533,7 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
       if (!mounted) return;
       setState(() {
         _locating = false;
-        _error = friendlyError(e);
+        _error = friendlyError(e, context.read<SettingsController>().t);
       });
     }
   }
@@ -547,23 +547,22 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
   }
 
   Future<void> _confirm() async {
+    final t = context.read<SettingsController>().t;
     final phone = _phone.text.trim();
     if (phone.isEmpty) {
-      setState(() => _error = 'Phone number is required.');
+      setState(() => _error = t('checkout_phone_required'));
       return;
     }
     if (_deliveryMode == 'delivery' &&
         _position == null &&
         _address.text.trim().isEmpty) {
-      setState(
-          () => _error = 'Share your location, or type your address by hand.');
+      setState(() => _error = t('checkout_share_location_or_address'));
       return;
     }
     final missing = widget.cart.linesByShop.keys
         .any((id) => _references[id]!.text.trim().isEmpty);
     if (missing) {
-      setState(() =>
-          _error = 'Enter the payment reference from your bank for each shop.');
+      setState(() => _error = t('checkout_enter_payment_reference'));
       return;
     }
 
@@ -588,14 +587,15 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
       Navigator.of(context).pop(true);
     } catch (e) {
       if (!mounted) return;
+      final t = context.read<SettingsController>().t;
       setState(() {
         _submitting = false;
 
         final raw = e.toString();
         _error = raw.contains('orders_payment_reference_unique') ||
                 raw.contains('duplicate key')
-            ? 'This payment reference has already been used for another order.'
-            : friendlyError(e);
+            ? t('checkout_reference_already_used')
+            : friendlyError(e, t);
       });
     }
   }

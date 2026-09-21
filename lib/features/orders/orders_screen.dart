@@ -63,7 +63,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
       if (!mounted) return;
       setState(() => _busyOrderId = null);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(
+            content:
+                Text(friendlyError(e, context.read<SettingsController>().t))),
       );
     }
   }
@@ -90,7 +92,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 EmptyState(
                   icon: Icons.error_outline,
                   title: t('error_generic'),
-                  subtitle: friendlyError(snapshot.error!),
+                  subtitle: friendlyError(snapshot.error!, t),
                 ),
               ]);
             }

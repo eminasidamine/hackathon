@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/money.dart';
+import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../services/analytics_service.dart';
 import '../widgets.dart';
@@ -37,25 +39,29 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
     return full.isEmpty ? '' : full.split(' ').first;
   }
 
+  String Function(String) get _t => context.read<SettingsController>().t;
+
   @override
   void initState() {
     super.initState();
-    _future = _analytics.fetchForShop(widget.shopId, rangeDays: _range);
+    _future = _analytics.fetchForShop(widget.shopId, rangeDays: _range, t: _t);
   }
 
   void _reload({int? range}) {
     setState(() {
       if (range != null) _range = range;
-      _future = _analytics.fetchForShop(widget.shopId, rangeDays: _range);
+      _future =
+          _analytics.fetchForShop(widget.shopId, rangeDays: _range, t: _t);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
-        title: const Text('My activity'),
+        title: Text(t('vendor_activity_title')),
         backgroundColor: AppTheme.bg,
       ),
       body: FutureBuilder<VendorAnalytics>(
@@ -65,7 +71,7 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
             return const _DashboardSkeleton();
           }
           if (snap.hasError) {
-            return _DashboardError(onRetry: _reload);
+            return _DashboardError(onRetry: _reload, t: t);
           }
           final a = snap.data!;
           return RefreshIndicator(
@@ -73,37 +79,40 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
               children: [
-                _Greeting(name: _firstName, shop: widget.shopName),
+                _Greeting(name: _firstName, shop: widget.shopName, t: t),
                 const SizedBox(height: 16),
                 _RangePicker(
-                    value: _range, onChanged: (v) => _reload(range: v)),
+                    value: _range, onChanged: (v) => _reload(range: v), t: t),
                 const SizedBox(height: 16),
                 if (a.isEmpty)
-                  const _NoSalesYet()
+                  _NoSalesYet(t: t)
                 else ...[
-                  _KpiGrid(a: a),
+                  _KpiGrid(a: a, t: t),
                   const SizedBox(height: 24),
                   _Block(
-                    title: 'Sales',
-                    subtitle: 'Revenue day by day',
-                    child: SalesChart(points: a.salesByDay),
+                    title: t('block_sales_title'),
+                    subtitle: t('block_sales_subtitle'),
+                    t: t,
+                    child: SalesChart(points: a.salesByDay, t: t),
                   ),
                   const SizedBox(height: 16),
                   _Block(
-                    title: 'Payments',
-                    subtitle: 'Breakdown by payment service',
-                    child: _ProviderSplit(a: a),
+                    title: t('block_payments_title'),
+                    subtitle: t('block_payments_subtitle'),
+                    t: t,
+                    child: _ProviderSplit(a: a, t: t),
                   ),
                   const SizedBox(height: 16),
                   _Block(
-                    title: 'Products',
-                    subtitle: 'Your best sellers over the period',
-                    child: _TopProducts(a: a),
+                    title: t('block_products_title'),
+                    subtitle: t('block_products_subtitle'),
+                    t: t,
+                    child: _TopProducts(a: a, t: t),
                   ),
                   const SizedBox(height: 16),
-                  _ReadinessBlock(a: a, shopId: widget.shopId),
+                  _ReadinessBlock(a: a, shopId: widget.shopId, t: t),
                   const SizedBox(height: 16),
-                  _InsightsBlock(a: a),
+                  _InsightsBlock(a: a, t: t),
                 ],
               ],
             ),
@@ -117,11 +126,14 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
 class _Greeting extends StatelessWidget {
   final String name;
   final String shop;
-  const _Greeting({required this.name, required this.shop});
+  final String Function(String) t;
+  const _Greeting({required this.name, required this.shop, required this.t});
 
   @override
   Widget build(BuildContext context) {
-    final hello = name.trim().isEmpty ? 'Hello 👋' : 'Hello ${name.trim()} 👋';
+    final hello = name.trim().isEmpty
+        ? '${t('vendor_hello')} 👋'
+        : '${t('vendor_hello')} ${name.trim()} 👋';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -131,7 +143,7 @@ class _Greeting extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 color: AppTheme.ink)),
         const SizedBox(height: 4),
-        Text('Here is $shop\'s activity.',
+        Text(t('vendor_activity_subtitle').replaceAll('{shop}', shop),
             style: const TextStyle(fontSize: 14, color: AppTheme.ink2)),
       ],
     );
@@ -141,11 +153,13 @@ class _Greeting extends StatelessWidget {
 class _RangePicker extends StatelessWidget {
   final int value;
   final ValueChanged<int> onChanged;
-  const _RangePicker({required this.value, required this.onChanged});
+  final String Function(String) t;
+  const _RangePicker(
+      {required this.value, required this.onChanged, required this.t});
 
   @override
   Widget build(BuildContext context) {
-    const options = {7: '7 days', 30: '30 days', 90: '90 days'};
+    final options = {7: t('days_7'), 30: t('days_30'), 90: t('days_90')};
     return Row(
       children: options.entries.map((e) {
         final selected = e.key == value;
@@ -178,7 +192,8 @@ class _RangePicker extends StatelessWidget {
 
 class _KpiGrid extends StatelessWidget {
   final VendorAnalytics a;
-  const _KpiGrid({required this.a});
+  final String Function(String) t;
+  const _KpiGrid({required this.a, required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -194,21 +209,24 @@ class _KpiGrid extends StatelessWidget {
               width: width,
               child: _Kpi(
                   value: Money.format(a.revenue),
-                  label: 'Revenue',
+                  label: t('kpi_revenue'),
                   emphasis: true)),
           SizedBox(
               width: width,
-              child: _Kpi(value: '${a.orderCount}', label: 'Orders')),
+              child: _Kpi(value: '${a.orderCount}', label: t('kpi_orders'))),
           SizedBox(
               width: width,
-              child: _Kpi(value: '${a.customerCount}', label: 'Customers')),
+              child:
+                  _Kpi(value: '${a.customerCount}', label: t('kpi_customers'))),
           SizedBox(
             width: width,
             child: _Kpi(
               value: growth == null
                   ? '—'
                   : '${growth >= 0 ? '+' : ''}${growth.round()}%',
-              label: growth == null ? 'Growth (first period)' : 'Growth',
+              label: growth == null
+                  ? t('kpi_growth_first_period')
+                  : t('kpi_growth'),
             ),
           ),
         ],
@@ -258,16 +276,17 @@ class _Kpi extends StatelessWidget {
 
 class SalesChart extends StatelessWidget {
   final List<DailyPoint> points;
-  const SalesChart({super.key, required this.points});
+  final String Function(String) t;
+  const SalesChart({super.key, required this.points, required this.t});
 
   @override
   Widget build(BuildContext context) {
     if (points.length < 2) {
-      return const SizedBox(
+      return SizedBox(
         height: 140,
         child: Center(
-          child: Text('Not enough days yet to draw a chart.',
-              style: TextStyle(fontSize: 13, color: AppTheme.muted)),
+          child: Text(t('chart_not_enough_days'),
+              style: const TextStyle(fontSize: 13, color: AppTheme.muted)),
         ),
       );
     }
@@ -286,7 +305,7 @@ class SalesChart extends StatelessWidget {
           children: [
             Text(_shortDate(points.first.day),
                 style: const TextStyle(fontSize: 11, color: AppTheme.muted)),
-            Text('Peak: ${Money.formatCompact(max)}',
+            Text(t('chart_peak').replaceAll('{x}', Money.formatCompact(max)),
                 style: const TextStyle(fontSize: 11, color: AppTheme.muted)),
             Text(_shortDate(points.last.day),
                 style: const TextStyle(fontSize: 11, color: AppTheme.muted)),
@@ -358,13 +377,14 @@ class _SalesPainter extends CustomPainter {
 
 class _ProviderSplit extends StatelessWidget {
   final VendorAnalytics a;
-  const _ProviderSplit({required this.a});
+  final String Function(String) t;
+  const _ProviderSplit({required this.a, required this.t});
 
   @override
   Widget build(BuildContext context) {
     if (a.revenueByProvider.isEmpty || a.revenue <= 0) {
-      return const Text('No payments over the period.',
-          style: TextStyle(fontSize: 13, color: AppTheme.muted));
+      return Text(t('no_payments_period'),
+          style: const TextStyle(fontSize: 13, color: AppTheme.muted));
     }
     final entries = a.revenueByProvider.entries.toList()
       ..sort((x, y) => y.value.compareTo(x.value));
@@ -383,7 +403,10 @@ class _ProviderSplit extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              '${a.awaitingVerification} reference${a.awaitingVerification > 1 ? 's' : ''} pending verification.',
+              t(a.awaitingVerification > 1
+                      ? 'refs_pending_plural'
+                      : 'refs_pending_singular')
+                  .replaceAll('{n}', '${a.awaitingVerification}'),
               style: const TextStyle(fontSize: 12, color: AppTheme.stockWarn),
             ),
           ),
@@ -437,13 +460,14 @@ class _Bar extends StatelessWidget {
 
 class _TopProducts extends StatelessWidget {
   final VendorAnalytics a;
-  const _TopProducts({required this.a});
+  final String Function(String) t;
+  const _TopProducts({required this.a, required this.t});
 
   @override
   Widget build(BuildContext context) {
     if (a.topProducts.isEmpty) {
-      return const Text('No products sold over the period.',
-          style: TextStyle(fontSize: 13, color: AppTheme.muted));
+      return Text(t('no_products_sold_period'),
+          style: const TextStyle(fontSize: 13, color: AppTheme.muted));
     }
     final best = a.topProducts.first.revenue;
     return Column(
@@ -464,15 +488,18 @@ class _TopProducts extends StatelessWidget {
 class _ReadinessBlock extends StatelessWidget {
   final VendorAnalytics a;
   final String shopId;
-  const _ReadinessBlock({required this.a, required this.shopId});
+  final String Function(String) t;
+  const _ReadinessBlock(
+      {required this.a, required this.shopId, required this.t});
 
   @override
   Widget build(BuildContext context) {
     final score = a.readinessScore.round();
     return _Block(
-      title: 'Financial readiness',
-      subtitle: 'An activity indicator, not a credit score',
+      title: t('readiness_title'),
+      subtitle: t('readiness_subtitle'),
       shopId: shopId,
+      t: t,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -509,12 +536,10 @@ class _ReadinessBlock extends StatelessWidget {
               color: AppTheme.panel,
               borderRadius: BorderRadius.circular(AppTheme.radiusSmall),
             ),
-            child: const Text(
-              'This indicator summarizes your activity on this app. It is not a '
-              'credit decision or a financing guarantee. It can help a '
-              'financial partner better understand a business that is '
-              'otherwise hard to assess.',
-              style: TextStyle(fontSize: 12, color: AppTheme.ink2, height: 1.4),
+            child: Text(
+              t('readiness_disclaimer'),
+              style: const TextStyle(
+                  fontSize: 12, color: AppTheme.ink2, height: 1.4),
             ),
           ),
         ],
@@ -525,15 +550,17 @@ class _ReadinessBlock extends StatelessWidget {
 
 class _InsightsBlock extends StatelessWidget {
   final VendorAnalytics a;
-  const _InsightsBlock({required this.a});
+  final String Function(String) t;
+  const _InsightsBlock({required this.a, required this.t});
 
   @override
   Widget build(BuildContext context) {
-    final insights = BoutigueInsights.from(a);
+    final insights = BoutigueInsights.from(a, t);
     if (insights.isEmpty) return const SizedBox.shrink();
     return _Block(
-      title: 'Insights',
-      subtitle: 'An automatic read of your numbers',
+      title: t('block_insights_title'),
+      subtitle: t('block_insights_subtitle'),
+      t: t,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -557,8 +584,8 @@ class _InsightsBlock extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: i.isSuggestion
-                              ? 'Suggestion — '
-                              : 'Observation — ',
+                              ? t('insight_suggestion_prefix')
+                              : t('insight_observation_prefix'),
                           style: const TextStyle(
                               fontWeight: FontWeight.w700,
                               color: AppTheme.ink2),
@@ -572,10 +599,9 @@ class _InsightsBlock extends StatelessWidget {
             ),
             const SizedBox(height: 12),
           ],
-          const Text(
-            'These lines are computed from your orders. No data is sent to '
-            'an external service.',
-            style: TextStyle(fontSize: 11, color: AppTheme.muted),
+          Text(
+            t('insights_footer'),
+            style: const TextStyle(fontSize: 11, color: AppTheme.muted),
           ),
         ],
       ),
@@ -588,9 +614,14 @@ class _Block extends StatelessWidget {
   final String? subtitle;
   final Widget child;
   final String? shopId;
+  final String Function(String) t;
 
   const _Block(
-      {required this.title, this.subtitle, required this.child, this.shopId});
+      {required this.title,
+      this.subtitle,
+      required this.child,
+      this.shopId,
+      required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -637,8 +668,8 @@ class _Block extends StatelessWidget {
                   ),
                 ),
                 icon: const Icon(Icons.description_outlined, size: 18),
-                label: const Text('Generate my business profile',
-                    style: TextStyle(fontWeight: FontWeight.w700)),
+                label: Text(t('generate_business_profile'),
+                    style: const TextStyle(fontWeight: FontWeight.w700)),
               ),
             ),
           ],
@@ -649,17 +680,17 @@ class _Block extends StatelessWidget {
 }
 
 class _NoSalesYet extends StatelessWidget {
-  const _NoSalesYet();
+  final String Function(String) t;
+  const _NoSalesYet({required this.t});
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(top: 48),
+    return Padding(
+      padding: const EdgeInsets.only(top: 48),
       child: EmptyState(
         icon: Icons.storefront_outlined,
-        title: 'No sales yet',
-        subtitle: 'Share your shop to receive your first orders. Your '
-            'stats will show up here automatically.',
+        title: t('no_sales_yet_title'),
+        subtitle: t('no_sales_yet_subtitle'),
       ),
     );
   }
@@ -667,7 +698,8 @@ class _NoSalesYet extends StatelessWidget {
 
 class _DashboardError extends StatelessWidget {
   final VoidCallback onRetry;
-  const _DashboardError({required this.onRetry});
+  final String Function(String) t;
+  const _DashboardError({required this.onRetry, required this.t});
 
   @override
   Widget build(BuildContext context) {
@@ -680,17 +712,17 @@ class _DashboardError extends StatelessWidget {
             const Icon(Icons.cloud_off_outlined,
                 size: 40, color: AppTheme.muted),
             const SizedBox(height: 12),
-            const Text('Could not load your data',
-                style: TextStyle(
+            Text(t('dashboard_load_error_title'),
+                style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.ink)),
             const SizedBox(height: 6),
-            const Text('Check your connection and try again.',
+            Text(t('check_connection_retry'),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: AppTheme.ink2)),
+                style: const TextStyle(fontSize: 13, color: AppTheme.ink2)),
             const SizedBox(height: 16),
-            OutlinedButton(onPressed: onRetry, child: const Text('Retry')),
+            OutlinedButton(onPressed: onRetry, child: Text(t('retry'))),
           ],
         ),
       ),

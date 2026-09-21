@@ -412,8 +412,9 @@ class _ProductScreenState extends State<ProductScreen> {
               body: EmptyState(
                 icon: Icons.error_outline,
                 title: snapshot.hasError ? t('error_generic') : t('no_results'),
-                subtitle:
-                    snapshot.hasError ? friendlyError(snapshot.error!) : null,
+                subtitle: snapshot.hasError
+                    ? friendlyError(snapshot.error!, t)
+                    : null,
               ),
             );
           }
@@ -1178,7 +1179,7 @@ class _WriteReviewSheetState extends State<_WriteReviewSheet> {
       if (!mounted) return;
       setState(() {
         _saving = false;
-        _error = friendlyError(e);
+        _error = friendlyError(e, context.read<SettingsController>().t);
       });
     }
   }

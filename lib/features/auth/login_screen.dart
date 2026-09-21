@@ -16,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _googleLoading = false;
   bool _emailLoading = false;
   bool _isRegister = false;
+  bool _obscurePassword = true;
   String? _error;
 
   final _formKey = GlobalKey<FormState>();
@@ -26,19 +27,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
   static final _emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
 
+  String Function(String) get _t => context.read<SettingsController>().t;
+
   String? _validateEmail(String? v) {
     final value = (v ?? '').trim();
-    if (value.isEmpty) return 'Please enter your email.';
+    if (value.isEmpty) return _t('validation_email_required');
     if (!_emailRegex.hasMatch(value)) {
-      return 'Please enter a valid email address.';
+      return _t('validation_email_invalid');
     }
     return null;
   }
 
   String? _validatePassword(String? v) {
     final value = v ?? '';
-    if (value.isEmpty) return 'Please enter your password.';
-    if (value.length < 6) return 'Password must be at least 6 characters.';
+    if (value.isEmpty) return _t('validation_password_required');
+    if (value.length < 6) return _t('validation_password_length');
     return null;
   }
 
@@ -164,22 +167,33 @@ class _LoginScreenState extends State<LoginScreen> {
                 _field(
                     controller: _passwordController,
                     label: t('password'),
-                    obscure: true,
-                    validator: _validatePassword),
+                    obscure: _obscurePassword,
+                    validator: _validatePassword,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                        size: 20,
+                        color: AppTheme.ink2,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
+                    )),
                 if (_isRegister) ...[
                   const SizedBox(height: 16),
                   _field(
                       controller: _fullNameController,
                       label: t('full_name'),
                       validator: (v) =>
-                          _validateRequired(v, 'Please enter your name.')),
+                          _validateRequired(v, t('validation_name_required'))),
                   const SizedBox(height: 16),
                   _field(
                       controller: _phoneController,
                       label: t('phone'),
                       keyboardType: TextInputType.phone,
-                      validator: (v) => _validateRequired(
-                          v, 'Please enter your phone number.')),
+                      validator: (v) =>
+                          _validateRequired(v, t('validation_phone_required'))),
                 ],
                 const SizedBox(height: 20),
                 SizedBox(
@@ -228,6 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
     bool obscure = false,
     TextInputType? keyboardType,
     String? Function(String?)? validator,
+    Widget? suffixIcon,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,21 +258,9 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: obscure,
           keyboardType: keyboardType,
           validator: validator,
-          decoration: const InputDecoration(
-            isDense: true,
-            contentPadding: EdgeInsets.only(bottom: 10),
+          decoration: InputDecoration(
             errorMaxLines: 2,
-            errorStyle: TextStyle(fontSize: 11.5, color: AppTheme.red),
-            border: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.line)),
-            enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.line)),
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.ink, width: 1.4)),
-            errorBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.red)),
-            focusedErrorBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppTheme.red, width: 1.4)),
+            suffixIcon: suffixIcon,
           ),
         ),
       ],

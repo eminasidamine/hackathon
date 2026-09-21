@@ -488,6 +488,567 @@ class Strings {
       'en':
           'Set SUPABASE_URL and SUPABASE_ANON_KEY in lib/app_config.dart before running the app.'
     },
+
+    // Vendor activity dashboard ("My activity")
+    'vendor_activity_title': {
+      'fr': 'Mon activité',
+      'ar': 'نشاطي',
+      'en': 'My activity'
+    },
+    'vendor_hello': {'fr': 'Bonjour', 'ar': 'مرحبا', 'en': 'Hello'},
+    'vendor_activity_subtitle': {
+      'fr': 'Voici l\'activité de {shop}.',
+      'ar': 'إليك نشاط {shop}.',
+      'en': 'Here is {shop}\'s activity.',
+    },
+    'days_7': {'fr': '7 jours', 'ar': '7 أيام', 'en': '7 days'},
+    'days_30': {'fr': '30 jours', 'ar': '30 يومًا', 'en': '30 days'},
+    'days_90': {'fr': '90 jours', 'ar': '90 يومًا', 'en': '90 days'},
+    'kpi_revenue': {
+      'fr': 'Chiffre d\'affaires',
+      'ar': 'الإيرادات',
+      'en': 'Revenue'
+    },
+    'kpi_orders': {'fr': 'Commandes', 'ar': 'الطلبات', 'en': 'Orders'},
+    'kpi_customers': {'fr': 'Clients', 'ar': 'العملاء', 'en': 'Customers'},
+    'kpi_growth': {'fr': 'Croissance', 'ar': 'النمو', 'en': 'Growth'},
+    'kpi_growth_first_period': {
+      'fr': 'Croissance (1ère période)',
+      'ar': 'النمو (الفترة الأولى)',
+      'en': 'Growth (first period)',
+    },
+    'block_sales_title': {'fr': 'Ventes', 'ar': 'المبيعات', 'en': 'Sales'},
+    'block_sales_subtitle': {
+      'fr': 'Chiffre d\'affaires jour par jour',
+      'ar': 'الإيرادات يومًا بيوم',
+      'en': 'Revenue day by day',
+    },
+    'chart_not_enough_days': {
+      'fr': 'Pas encore assez de jours pour tracer un graphique.',
+      'ar': 'لا توجد أيام كافية بعد لرسم مخطط.',
+      'en': 'Not enough days yet to draw a chart.',
+    },
+    'chart_peak': {'fr': 'Pic : {x}', 'ar': 'الذروة: {x}', 'en': 'Peak: {x}'},
+    'block_payments_title': {
+      'fr': 'Paiements',
+      'ar': 'المدفوعات',
+      'en': 'Payments'
+    },
+    'block_payments_subtitle': {
+      'fr': 'Répartition par service de paiement',
+      'ar': 'التوزيع حسب خدمة الدفع',
+      'en': 'Breakdown by payment service',
+    },
+    'payment_provider_other': {'fr': 'Autre', 'ar': 'أخرى', 'en': 'Other'},
+    'no_payments_period': {
+      'fr': 'Aucun paiement sur la période.',
+      'ar': 'لا مدفوعات خلال هذه الفترة.',
+      'en': 'No payments over the period.',
+    },
+    'refs_pending_singular': {
+      'fr': '{n} référence en attente de vérification.',
+      'ar': 'مرجع واحد في انتظار التحقق.',
+      'en': '{n} reference pending verification.',
+    },
+    'refs_pending_plural': {
+      'fr': '{n} références en attente de vérification.',
+      'ar': '{n} مراجع في انتظار التحقق.',
+      'en': '{n} references pending verification.',
+    },
+    'block_products_title': {
+      'fr': 'Produits',
+      'ar': 'المنتجات',
+      'en': 'Products'
+    },
+    'block_products_subtitle': {
+      'fr': 'Vos meilleures ventes sur la période',
+      'ar': 'أفضل منتجاتك مبيعًا خلال الفترة',
+      'en': 'Your best sellers over the period',
+    },
+    'no_products_sold_period': {
+      'fr': 'Aucun produit vendu sur la période.',
+      'ar': 'لم يُباع أي منتج خلال هذه الفترة.',
+      'en': 'No products sold over the period.',
+    },
+    'readiness_title': {
+      'fr': 'Préparation financière',
+      'ar': 'الجاهزية المالية',
+      'en': 'Financial readiness',
+    },
+    'readiness_subtitle': {
+      'fr': 'Un indicateur d\'activité, pas un score de crédit',
+      'ar': 'مؤشر نشاط، وليس درجة ائتمانية',
+      'en': 'An activity indicator, not a credit score',
+    },
+    'readiness_disclaimer': {
+      'fr': 'Cet indicateur résume votre activité sur cette application. Ce '
+          'n\'est ni une décision de crédit, ni une garantie de financement. '
+          'Il peut aider un partenaire financier à mieux comprendre une '
+          'activité autrement difficile à évaluer.',
+      'ar': 'يلخّص هذا المؤشر نشاطك على هذا التطبيق. إنه ليس قرار ائتمان ولا '
+          'ضمان تمويل. يمكن أن يساعد شريكًا ماليًا على فهم نشاط تجاري يصعب '
+          'تقييمه بطريقة أخرى.',
+      'en': 'This indicator summarizes your activity on this app. It is not a '
+          'credit decision or a financing guarantee. It can help a '
+          'financial partner better understand a business that is '
+          'otherwise hard to assess.',
+    },
+    'readiness_label_activity_regularity': {
+      'fr': 'Régularité de l\'activité',
+      'ar': 'انتظام النشاط',
+      'en': 'Activity regularity',
+    },
+    'readiness_label_order_volume': {
+      'fr': 'Volume de commandes',
+      'ar': 'حجم الطلبات',
+      'en': 'Order volume',
+    },
+    'readiness_label_digital_payments': {
+      'fr': 'Paiements numériques confirmés',
+      'ar': 'المدفوعات الرقمية المؤكدة',
+      'en': 'Confirmed digital payments',
+    },
+    'readiness_label_shop_profile': {
+      'fr': 'Profil de la boutique',
+      'ar': 'ملف المتجر',
+      'en': 'Shop profile',
+    },
+    'readiness_weeks_singular': {
+      'fr': '{active} semaine avec au moins une vente sur {total}',
+      'ar': 'أسبوع واحد فيه بيع واحد على الأقل من أصل {total}',
+      'en': '{active} week with at least one sale out of {total}',
+    },
+    'readiness_weeks_plural': {
+      'fr': '{active} semaines avec au moins une vente sur {total}',
+      'ar': '{active} أسابيع فيها بيع واحد على الأقل من أصل {total}',
+      'en': '{active} weeks with at least one sale out of {total}',
+    },
+    'readiness_orders_singular': {
+      'fr': '{n} commande sur la période (référence : {target})',
+      'ar': 'طلب واحد خلال الفترة (المرجع: {target})',
+      'en': '{n} order over the period (reference: {target})',
+    },
+    'readiness_orders_plural': {
+      'fr': '{n} commandes sur la période (référence : {target})',
+      'ar': '{n} طلبات خلال الفترة (المرجع: {target})',
+      'en': '{n} orders over the period (reference: {target})',
+    },
+    'readiness_payments_singular': {
+      'fr': '{n} paiement trouvé dans l\'historique bancaire sur {total}',
+      'ar': 'دفعة واحدة موجودة في السجل المصرفي من أصل {total}',
+      'en': '{n} payment found in banking history out of {total}',
+    },
+    'readiness_payments_plural': {
+      'fr': '{n} paiements trouvés dans l\'historique bancaire sur {total}',
+      'ar': '{n} مدفوعات موجودة في السجل المصرفي من أصل {total}',
+      'en': '{n} payments found in banking history out of {total}',
+    },
+    'readiness_fields_singular': {
+      'fr': '{n} champ renseigné sur {total}',
+      'ar': 'حقل واحد معبأ من أصل {total}',
+      'en': '{n} field filled out of {total}',
+    },
+    'readiness_fields_plural': {
+      'fr': '{n} champs renseignés sur {total}',
+      'ar': '{n} حقول معبأة من أصل {total}',
+      'en': '{n} fields filled out of {total}',
+    },
+    'block_insights_title': {
+      'fr': 'Analyse',
+      'ar': 'التحليل',
+      'en': 'Insights'
+    },
+    'block_insights_subtitle': {
+      'fr': 'Une lecture automatique de vos chiffres',
+      'ar': 'قراءة تلقائية لأرقامك',
+      'en': 'An automatic read of your numbers',
+    },
+    'insight_suggestion_prefix': {
+      'fr': 'Suggestion — ',
+      'ar': 'اقتراح — ',
+      'en': 'Suggestion — ',
+    },
+    'insight_observation_prefix': {
+      'fr': 'Constat — ',
+      'ar': 'ملاحظة — ',
+      'en': 'Observation — ',
+    },
+    'insights_footer': {
+      'fr': 'Ces lignes sont calculées à partir de vos commandes. Aucune '
+          'donnée n\'est envoyée à un service externe.',
+      'ar': 'يتم احتساب هذه الأسطر من طلباتك. لا يتم إرسال أي بيانات إلى خدمة '
+          'خارجية.',
+      'en': 'These lines are computed from your orders. No data is sent to '
+          'an external service.',
+    },
+    'generate_business_profile': {
+      'fr': 'Générer mon profil d\'entreprise',
+      'ar': 'إنشاء ملفي التجاري',
+      'en': 'Generate my business profile',
+    },
+    'no_sales_yet_title': {
+      'fr': 'Aucune vente pour l\'instant',
+      'ar': 'لا مبيعات بعد',
+      'en': 'No sales yet'
+    },
+    'no_sales_yet_subtitle': {
+      'fr': 'Partagez votre boutique pour recevoir vos premières commandes. '
+          'Vos statistiques apparaîtront ici automatiquement.',
+      'ar': 'شارك متجرك لتصلك أول طلباتك. ستظهر إحصائياتك هنا تلقائيًا.',
+      'en': 'Share your shop to receive your first orders. Your stats will '
+          'show up here automatically.',
+    },
+    'dashboard_load_error_title': {
+      'fr': 'Impossible de charger vos données',
+      'ar': 'تعذر تحميل بياناتك',
+      'en': 'Could not load your data',
+    },
+    'check_connection_retry': {
+      'fr': 'Vérifiez votre connexion et réessayez.',
+      'ar': 'تحقق من اتصالك وأعد المحاولة.',
+      'en': 'Check your connection and try again.',
+    },
+
+    // Insights (auto-generated sentences)
+    'insight_sales_grew': {
+      'fr':
+          'Vos ventes ont augmenté de {n}% par rapport aux {days} jours précédents.',
+      'ar': 'ارتفعت مبيعاتك بنسبة {n}% مقارنة بالأيام الـ{days} السابقة.',
+      'en': 'Your sales grew {n}% compared to the previous {days} days.',
+    },
+    'insight_sales_dropped': {
+      'fr':
+          'Vos ventes ont baissé de {n}% par rapport aux {days} jours précédents.',
+      'ar': 'انخفضت مبيعاتك بنسبة {n}% مقارنة بالأيام الـ{days} السابقة.',
+      'en': 'Your sales dropped {n}% compared to the previous {days} days.',
+    },
+    'insight_busiest_day': {
+      'fr': 'Votre jour le plus actif est {day}.',
+      'ar': 'يومك الأكثر نشاطًا هو {day}.',
+      'en': 'Your busiest day is {day}.',
+    },
+    'insight_restock_suggestion': {
+      'fr': 'Pensez à réapprovisionner avant {day}.',
+      'ar': 'فكّر في إعادة التموين قبل {day}.',
+      'en': 'Consider restocking before {day}.',
+    },
+    'insight_best_seller': {
+      'fr': 'Votre meilleure vente est « {name} ».',
+      'ar': 'أفضل منتج مبيعًا لديك هو "{name}".',
+      'en': 'Your best seller is "{name}".',
+    },
+    'insight_provider_share': {
+      'fr': '{pct}% de vos paiements passent par {provider}.',
+      'ar': '{pct}% من مدفوعاتك تمر عبر {provider}.',
+      'en': '{pct}% of your payments go through {provider}.',
+    },
+    'insight_refs_checking_singular': {
+      'fr':
+          '{n} référence de paiement reste à vérifier dans votre appli bancaire.',
+      'ar': 'يتبقى مرجع دفع واحد للتحقق منه في تطبيقك المصرفي.',
+      'en': '{n} payment reference still needs checking in your banking app.',
+    },
+    'insight_refs_checking_plural': {
+      'fr':
+          '{n} références de paiement restent à vérifier dans votre appli bancaire.',
+      'ar': 'يتبقى {n} مراجع دفع للتحقق منها في تطبيقك المصرفي.',
+      'en': '{n} payment references still need checking in your banking app.',
+    },
+    'insight_repeat_customers': {
+      'fr': 'Vos clients commandent {x} fois en moyenne : les clients fidèles '
+          'font déjà tourner votre activité.',
+      'ar': 'يطلب عملاؤك {x} مرة في المتوسط: العملاء المتكررون يقودون نشاطك '
+          'التجاري بالفعل.',
+      'en': 'Your customers order {x} times on average: repeat customers '
+          'already drive your business.',
+    },
+    'weekday_monday': {'fr': 'lundi', 'ar': 'الإثنين', 'en': 'Monday'},
+    'weekday_tuesday': {'fr': 'mardi', 'ar': 'الثلاثاء', 'en': 'Tuesday'},
+    'weekday_wednesday': {
+      'fr': 'mercredi',
+      'ar': 'الأربعاء',
+      'en': 'Wednesday'
+    },
+    'weekday_thursday': {'fr': 'jeudi', 'ar': 'الخميس', 'en': 'Thursday'},
+    'weekday_friday': {'fr': 'vendredi', 'ar': 'الجمعة', 'en': 'Friday'},
+    'weekday_saturday': {'fr': 'samedi', 'ar': 'السبت', 'en': 'Saturday'},
+    'weekday_sunday': {'fr': 'dimanche', 'ar': 'الأحد', 'en': 'Sunday'},
+    'month_1': {'fr': 'janvier', 'ar': 'يناير', 'en': 'January'},
+    'month_2': {'fr': 'février', 'ar': 'فبراير', 'en': 'February'},
+    'month_3': {'fr': 'mars', 'ar': 'مارس', 'en': 'March'},
+    'month_4': {'fr': 'avril', 'ar': 'أبريل', 'en': 'April'},
+    'month_5': {'fr': 'mai', 'ar': 'مايو', 'en': 'May'},
+    'month_6': {'fr': 'juin', 'ar': 'يونيو', 'en': 'June'},
+    'month_7': {'fr': 'juillet', 'ar': 'يوليو', 'en': 'July'},
+    'month_8': {'fr': 'août', 'ar': 'أغسطس', 'en': 'August'},
+    'month_9': {'fr': 'septembre', 'ar': 'سبتمبر', 'en': 'September'},
+    'month_10': {'fr': 'octobre', 'ar': 'أكتوبر', 'en': 'October'},
+    'month_11': {'fr': 'novembre', 'ar': 'نوفمبر', 'en': 'November'},
+    'month_12': {'fr': 'décembre', 'ar': 'ديسمبر', 'en': 'December'},
+
+    // Business profile screen
+    'business_profile_title': {
+      'fr': 'Mon profil d\'entreprise',
+      'ar': 'ملفي التجاري',
+      'en': 'My business profile',
+    },
+    'could_not_generate_file': {
+      'fr': 'Impossible de générer le fichier. {e}',
+      'ar': 'تعذر إنشاء الملف. {e}',
+      'en': 'Could not generate the file. {e}',
+    },
+    'business_profile_disclaimer': {
+      'fr': 'Ce fichier résume l\'activité d\'une entreprise telle qu\'enregistrée '
+          'dans cette application. Ce n\'est ni une décision de crédit, ni une '
+          'garantie de financement, ni une évaluation par un établissement '
+          'financier. Les chiffres sont calculés à partir des commandes '
+          'réelles de la boutique.',
+      'ar': 'يلخّص هذا الملف نشاط الشركة كما هو مسجل في هذا التطبيق. إنه ليس '
+          'قرار ائتمان، ولا ضمان تمويل، ولا تقييمًا من مؤسسة مالية. تُحتسب '
+          'الأرقام من طلبات المتجر الحقيقية.',
+      'en': 'This file summarizes a business\'s activity as recorded in this app. '
+          'It is not a credit decision, a financing guarantee, or an assessment '
+          'by a financial institution. Figures are computed from the shop\'s '
+          'real orders.',
+    },
+    'business_profile_label': {
+      'fr': 'PROFIL D\'ENTREPRISE',
+      'ar': 'ملف تجاري',
+      'en': 'BUSINESS PROFILE',
+    },
+    'active_since': {
+      'fr': 'Actif depuis {date}',
+      'ar': 'نشط منذ {date}',
+      'en': 'Active since {date}',
+    },
+    'marketplace_history_title': {
+      'fr': 'Historique sur la marketplace',
+      'ar': 'سجل النشاط في السوق',
+      'en': 'Marketplace history',
+    },
+    'orders_fulfilled': {
+      'fr': 'Commandes honorées',
+      'ar': 'الطلبات المنفذة',
+      'en': 'Orders fulfilled',
+    },
+    'sales_volume': {
+      'fr': 'Volume des ventes',
+      'ar': 'حجم المبيعات',
+      'en': 'Sales volume'
+    },
+    'avg_order_value': {
+      'fr': 'Panier moyen',
+      'ar': 'متوسط قيمة الطلب',
+      'en': 'Average order value',
+    },
+    'distinct_customers': {
+      'fr': 'Clients distincts',
+      'ar': 'عملاء مختلفون',
+      'en': 'Distinct customers',
+    },
+    'orders_per_customer': {
+      'fr': 'Commandes par client',
+      'ar': 'الطلبات لكل عميل',
+      'en': 'Orders per customer',
+    },
+    'digital_payments_label': {
+      'fr': 'PAIEMENTS NUMÉRIQUES',
+      'ar': 'المدفوعات الرقمية',
+      'en': 'DIGITAL PAYMENTS',
+    },
+    'payments_found_in_history': {
+      'fr': '{n} paiement(s) sur {total} trouvé(s) dans l\'historique bancaire '
+          'du commerçant.',
+      'ar': '{n} من أصل {total} مدفوعات موجودة في السجل المصرفي للتاجر.',
+      'en': '{n} payment(s) out of {total} found in the merchant\'s banking '
+          'history.',
+    },
+    'no_payments_recorded': {
+      'fr': 'Aucun paiement enregistré.',
+      'ar': 'لا مدفوعات مسجلة.',
+      'en': 'No payments recorded.',
+    },
+    'no_profile_yet_title': {
+      'fr': 'Pas encore de profil',
+      'ar': 'لا يوجد ملف بعد',
+      'en': 'No profile yet'
+    },
+    'no_profile_yet_subtitle': {
+      'fr':
+          'Votre profil d\'entreprise se construit à partir de vos ventes. Il '
+              'apparaîtra dès votre première commande.',
+      'ar': 'يُبنى ملفك التجاري من مبيعاتك. سيظهر بمجرد استلام أول طلب.',
+      'en': 'Your business profile builds itself from your sales. It will '
+          'appear as soon as you get your first order.',
+    },
+    'could_not_load_business_profile': {
+      'fr': 'Impossible de charger votre profil d\'entreprise',
+      'ar': 'تعذر تحميل ملفك التجاري',
+      'en': 'Could not load your business profile',
+    },
+    'generating_ellipsis': {
+      'fr': 'Génération…',
+      'ar': 'جارٍ الإنشاء…',
+      'en': 'Generating…'
+    },
+    'download_profile_pdf': {
+      'fr': 'Télécharger mon profil (PDF)',
+      'ar': 'تحميل ملفي (PDF)',
+      'en': 'Download my profile (PDF)',
+    },
+    'share_control_note': {
+      'fr':
+          'Vous choisissez à qui l\'envoyer. Rien n\'est partagé automatiquement.',
+      'ar': 'أنت من يختار لمن يرسله. لا شيء يُشارك تلقائيًا.',
+      'en': 'You choose who you send it to. Nothing is shared automatically.',
+    },
+
+    // Vendor: payment status on an order
+    'activity_entry_subtitle': {
+      'fr': 'Ventes, paiements et préparation financière',
+      'ar': 'المبيعات والمدفوعات والجاهزية المالية',
+      'en': 'Sales, payments and financial readiness',
+    },
+    'amount_received_title': {
+      'fr': 'Montant reçu',
+      'ar': 'المبلغ المستلم',
+      'en': 'Amount received',
+    },
+    'amount_received_prompt': {
+      'fr': 'Combien avez-vous réellement reçu pour cette commande ? Le total '
+          'attendu est {total}.',
+      'ar':
+          'كم استلمت فعليًا مقابل هذا الطلب؟ المبلغ الإجمالي المتوقع هو {total}.',
+      'en': 'How much did you actually receive for this order? The expected '
+          'total is {total}.',
+    },
+    'confirm': {'fr': 'Confirmer', 'ar': 'تأكيد', 'en': 'Confirm'},
+    'payment_status_label': {
+      'fr': 'Statut du paiement',
+      'ar': 'حالة الدفع',
+      'en': 'Payment status',
+    },
+    'payment_verified_label': {
+      'fr': 'Vérifié',
+      'ar': 'تم التحقق',
+      'en': 'Verified',
+    },
+    'payment_verified_amount': {
+      'fr': ' — {x} reçu',
+      'ar': ' — تم استلام {x}',
+      'en': ' — {x} received',
+    },
+    'payment_rejected_label': {
+      'fr': 'Référence introuvable',
+      'ar': 'المرجع غير موجود',
+      'en': 'Reference not found',
+    },
+    'payment_submitted_label': {
+      'fr': 'Envoyé — en attente de vérification',
+      'ar': 'مُرسل — في انتظار التحقق',
+      'en': 'Submitted — pending verification',
+    },
+    'verify_action': {'fr': 'Vérifier', 'ar': 'تحقق', 'en': 'Verify'},
+    'reject_action': {'fr': 'Rejeter', 'ar': 'رفض', 'en': 'Reject'},
+    'code_copied': {
+      'fr': 'Code copié.',
+      'ar': 'تم نسخ الرمز.',
+      'en': 'Code copied.'
+    },
+    'delivery_label': {'fr': 'Livraison', 'ar': 'التوصيل', 'en': 'Delivery'},
+    'no_location_shared': {
+      'fr': 'Aucune localisation partagée.',
+      'ar': 'لم تتم مشاركة أي موقع.',
+      'en': 'No location shared.',
+    },
+    'copy_tooltip': {'fr': 'Copier', 'ar': 'نسخ', 'en': 'Copy'},
+    'open_in_google_maps': {
+      'fr': 'Ouvrir dans Google Maps',
+      'ar': 'فتح في خرائط جوجل',
+      'en': 'Open in Google Maps',
+    },
+    'payment_screenshot_old_order': {
+      'fr': 'Capture de paiement (ancienne commande)',
+      'ar': 'لقطة شاشة الدفع (طلب قديم)',
+      'en': 'Payment screenshot (old order)',
+    },
+    'view_screenshot': {
+      'fr': 'Voir la capture',
+      'ar': 'عرض اللقطة',
+      'en': 'View screenshot',
+    },
+    'image_not_found': {
+      'fr': 'Image introuvable.',
+      'ar': 'الصورة غير موجودة.',
+      'en': 'Image not found.',
+    },
+
+    // Login form validation
+    'validation_email_required': {
+      'fr': 'Merci de saisir votre email.',
+      'ar': 'يرجى إدخال بريدك الإلكتروني.',
+      'en': 'Please enter your email.',
+    },
+    'validation_email_invalid': {
+      'fr': 'Merci de saisir une adresse email valide.',
+      'ar': 'يرجى إدخال بريد إلكتروني صالح.',
+      'en': 'Please enter a valid email address.',
+    },
+    'validation_password_required': {
+      'fr': 'Merci de saisir votre mot de passe.',
+      'ar': 'يرجى إدخال كلمة المرور.',
+      'en': 'Please enter your password.',
+    },
+    'validation_password_length': {
+      'fr': 'Le mot de passe doit contenir au moins 6 caractères.',
+      'ar': 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.',
+      'en': 'Password must be at least 6 characters.',
+    },
+    'validation_name_required': {
+      'fr': 'Merci de saisir votre nom.',
+      'ar': 'يرجى إدخال اسمك.',
+      'en': 'Please enter your name.',
+    },
+    'validation_phone_required': {
+      'fr': 'Merci de saisir votre numéro de téléphone.',
+      'ar': 'يرجى إدخال رقم هاتفك.',
+      'en': 'Please enter your phone number.',
+    },
+
+    // Shared error messages
+    'error_no_permission': {
+      'fr':
+          'Vous n\'avez pas les droits nécessaires pour cette action avec ce type de compte.',
+      'ar': 'ليست لديك الصلاحيات اللازمة لهذا الإجراء بهذا النوع من الحسابات.',
+      'en': 'You don\'t have the rights to do this with your account type.',
+    },
+    'checkout_phone_required': {
+      'fr': 'Le numéro de téléphone est requis.',
+      'ar': 'رقم الهاتف مطلوب.',
+      'en': 'Phone number is required.',
+    },
+    'checkout_share_location_or_address': {
+      'fr': 'Partagez votre position, ou saisissez votre adresse manuellement.',
+      'ar': 'شارك موقعك، أو أدخل عنوانك يدويًا.',
+      'en': 'Share your location, or type your address by hand.',
+    },
+    'checkout_enter_payment_reference': {
+      'fr':
+          'Saisissez la référence de paiement de votre banque pour chaque boutique.',
+      'ar': 'أدخل مرجع الدفع من بنكك لكل متجر.',
+      'en': 'Enter the payment reference from your bank for each shop.',
+    },
+    'checkout_reference_already_used': {
+      'fr':
+          'Cette référence de paiement a déjà été utilisée pour une autre commande.',
+      'ar': 'تم استخدام مرجع الدفع هذا لطلب آخر بالفعل.',
+      'en': 'This payment reference has already been used for another order.',
+    },
+    'error_generic_short': {
+      'fr': 'Une erreur est survenue. Veuillez réessayer.',
+      'ar': 'حدث خطأ. يرجى المحاولة مرة أخرى.',
+      'en': 'Something went wrong. Please try again.',
+    },
   };
 
   static String t(String key, String locale) {

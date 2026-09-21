@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/errors.dart';
 import '../../core/money.dart';
+import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../models/models.dart';
 import '../../services/delivery_service.dart';
@@ -78,8 +80,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     } catch (e) {
       if (!mounted) return;
       setState(() => _available = !value);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
     }
   }
 
@@ -117,7 +120,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(
+            content:
+                Text(friendlyError(e, context.read<SettingsController>().t))),
       );
     }
   }
@@ -129,7 +134,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(
+            content:
+                Text(friendlyError(e, context.read<SettingsController>().t))),
       );
     }
   }
@@ -158,7 +165,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(friendlyError(e))),
+        SnackBar(
+            content:
+                Text(friendlyError(e, context.read<SettingsController>().t))),
       );
     }
   }
@@ -169,8 +178,9 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
       contact = await _delivery.fetchContact(req.id);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(friendlyError(e))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content:
+              Text(friendlyError(e, context.read<SettingsController>().t))));
       return;
     }
     if (!mounted || contact == null) return;

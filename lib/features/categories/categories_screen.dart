@@ -104,7 +104,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     return EmptyState(
                       icon: Icons.error_outline,
                       title: t('error_generic'),
-                      subtitle: friendlyError(snapshot.error!),
+                      subtitle: friendlyError(snapshot.error!, t),
                     );
                   }
                   final categories = snapshot.data ?? [];

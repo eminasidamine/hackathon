@@ -68,7 +68,7 @@ class _DriverGateScreenState extends State<DriverGateScreen> {
       if (!mounted) return;
       setState(() {
         _creating = false;
-        _error = friendlyError(e);
+        _error = friendlyError(e, context.read<SettingsController>().t);
       });
     }
   }
