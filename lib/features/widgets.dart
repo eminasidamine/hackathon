@@ -968,17 +968,26 @@ double productGridAspectRatio(double cellWidth,
   return cellWidth / height;
 }
 
-String shopTenureLabel(DateTime createdAt) {
+String shopTenureLabel(DateTime createdAt, String Function(String) t) {
   final now = DateTime.now();
   var months = (now.year - createdAt.year) * 12 + (now.month - createdAt.month);
   if (now.day < createdAt.day) months -= 1;
-  if (months <= 0) return 'less than a month';
-  if (months < 12) return months == 1 ? '1 month' : '$months months';
+  if (months <= 0) return t('tenure_less_than_month');
+  if (months < 12) {
+    return months == 1
+        ? t('tenure_month_singular').replaceAll('{n}', '1')
+        : t('tenure_month_plural').replaceAll('{n}', '$months');
+  }
   final years = months ~/ 12;
   final rem = months % 12;
-  final yearsLabel = years > 1 ? '$years years' : '1 year';
+  final yearsLabel = years > 1
+      ? t('tenure_year_plural').replaceAll('{n}', '$years')
+      : t('tenure_year_singular').replaceAll('{n}', '1');
   if (rem == 0) return yearsLabel;
-  return '$yearsLabel $rem ${rem > 1 ? 'months' : 'month'}';
+  final remLabel = rem > 1
+      ? t('tenure_month_plural').replaceAll('{n}', '$rem')
+      : t('tenure_month_singular').replaceAll('{n}', '1');
+  return '$yearsLabel $remLabel';
 }
 
 class EmptyState extends StatelessWidget {

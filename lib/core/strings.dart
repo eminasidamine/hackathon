@@ -457,6 +457,241 @@ class Strings {
           'All your products and orders will be deleted too. This cannot be undone.',
     },
     'reviews': {'fr': 'Avis', 'ar': 'التقييمات', 'en': 'Reviews'},
+    'profile_updated': {
+      'fr': 'Profil mis à jour.',
+      'ar': 'تم تحديث الملف الشخصي.',
+      'en': 'Profile updated.',
+    },
+    'help_contact_intro': {
+      'fr': 'Une question sur une commande, un paiement ou une boutique ? '
+          'Contactez-nous directement, nous répondons rapidement.',
+      'ar': 'سؤال حول طلب أو دفعة أو متجر؟ تواصل معنا مباشرة، نرد بسرعة.',
+      'en': 'A question about an order, a payment or a shop? Contact us '
+          'directly, we reply fast.',
+    },
+    'view_website_action': {
+      'fr': 'Voir le site',
+      'ar': 'زيارة الموقع',
+      'en': 'View website',
+    },
+    'ago_just_now': {
+      'fr': 'À l\'instant',
+      'ar': 'الآن',
+      'en': 'Just now',
+    },
+    'ago_minutes_template': {
+      'fr': 'Il y a {n} min',
+      'ar': 'منذ {n} دقيقة',
+      'en': '{n} min ago',
+    },
+    'ago_hours_template': {
+      'fr': 'Il y a {n} h',
+      'ar': 'منذ {n} ساعة',
+      'en': '{n} h ago',
+    },
+    'ago_yesterday': {
+      'fr': 'Hier',
+      'ar': 'أمس',
+      'en': 'Yesterday',
+    },
+    'ago_days_template': {
+      'fr': 'Il y a {n} jours',
+      'ar': 'منذ {n} أيام',
+      'en': '{n} days ago',
+    },
+    'notifications_title': {
+      'fr': 'Notifications',
+      'ar': 'الإشعارات',
+      'en': 'Notifications',
+    },
+    'categories_title': {
+      'fr': 'Catégories',
+      'ar': 'الفئات',
+      'en': 'Categories',
+    },
+    'continue_caps': {
+      'fr': 'CONTINUER',
+      'ar': 'متابعة',
+      'en': 'CONTINUE',
+    },
+    'which_categories_intro': {
+      'fr': 'Dans quelles catégories allez-vous vendre ?\nVous pouvez en '
+          'choisir plusieurs.',
+      'ar': 'في أي فئات ستبيع؟\nيمكنك اختيار أكثر من واحدة.',
+      'en': 'What categories will you sell in?\nYou can select more than one.',
+    },
+    'no_category_available': {
+      'fr': 'Aucune catégorie disponible pour le moment.',
+      'ar': 'لا توجد فئة متاحة حاليًا.',
+      'en': 'No category available right now.',
+    },
+    'cancel_order_confirm_title': {
+      'fr': 'Annuler la commande ?',
+      'ar': 'إلغاء الطلب؟',
+      'en': 'Cancel order?',
+    },
+    'cancel_order_confirm_message': {
+      'fr': 'La boutique ne verra plus cette commande. Si vous avez déjà payé, '
+          'contactez-la pour obtenir un remboursement.',
+      'ar': 'لن يرى المتجر هذا الطلب بعد الآن. إذا كنت قد دفعت بالفعل، تواصل '
+          'معه للحصول على استرداد.',
+      'en': 'The shop will no longer see this order. If you already paid, '
+          'contact them to get a refund.',
+    },
+    'back_action': {'fr': 'Retour', 'ar': 'رجوع', 'en': 'Back'},
+    'cancel_order_action': {
+      'fr': 'Annuler la commande',
+      'ar': 'إلغاء الطلب',
+      'en': 'Cancel order',
+    },
+    'payment_code_template': {
+      'fr': 'Code de paiement : {code}',
+      'ar': 'رمز الدفع: {code}',
+      'en': 'Payment code: {code}',
+    },
+    'confirm_order': {
+      'fr': 'Confirmer la commande',
+      'ar': 'تأكيد الطلب',
+      'en': 'Confirm order',
+    },
+    'checkout_intro': {
+      'fr': 'Payez chaque boutique avec son code marchand depuis votre appli '
+          'bancaire, puis saisissez ci-dessous le code que votre banque vous '
+          'renvoie.',
+      'ar':
+          'ادفع لكل متجر برمزه التجاري من تطبيقك المصرفي، ثم أدخل أدناه الرمز '
+              'الذي يرسله لك بنكك.',
+      'en': 'Pay each shop using its merchant code from your banking app, '
+          'then enter below the code your bank sends you back.',
+    },
+    'contact_section': {'fr': 'Contact', 'ar': 'التواصل', 'en': 'Contact'},
+    'phone_number_label': {
+      'fr': 'Numéro de téléphone',
+      'ar': 'رقم الهاتف',
+      'en': 'Phone number',
+    },
+    'how_receive_order_section': {
+      'fr': 'Comment souhaitez-vous recevoir votre commande ?',
+      'ar': 'كيف تريد استلام طلبك؟',
+      'en': 'How do you want to receive your order?',
+    },
+    'rider_delivery_note': {
+      'fr': 'Un livreur se verra proposer cette livraison une fois votre '
+          'commande passée, ou la boutique peut l\'organiser directement et '
+          'vous contacter sur WhatsApp.',
+      'ar': 'سيُعرض هذا التوصيل على سائق بمجرد إتمام طلبك، أو قد يتولى المتجر '
+          'تنظيمه مباشرة ويتواصل معك عبر واتساب.',
+      'en': 'A rider will be offered this delivery once your order is placed, '
+          'or the shop may arrange it directly and contact you on WhatsApp.',
+    },
+    'payment_section': {'fr': 'Paiement', 'ar': 'الدفع', 'en': 'Payment'},
+    'pickup_it_up_label': {
+      'fr': 'Je viendrai la récupérer',
+      'ar': 'سآتي لاستلامه',
+      'en': 'I\'ll pick it up',
+    },
+    'location_saved_simple': {
+      'fr': 'Position enregistrée',
+      'ar': 'تم حفظ الموقع',
+      'en': 'Location saved',
+    },
+    'address_landmark_optional': {
+      'fr': 'Adresse / point de repère (facultatif)',
+      'ar': 'العنوان / معلم قريب (اختياري)',
+      'en': 'Address / landmark (optional)',
+    },
+    'address_landmark_hint': {
+      'fr': 'ex : Tevragh Zeina, près de la pharmacie',
+      'ar': 'مثال: تفرغ زينة، بالقرب من الصيدلية',
+      'en': 'e.g. Tevragh Zeina, near the pharmacy',
+    },
+    'tenure_less_than_month': {
+      'fr': 'moins d\'un mois',
+      'ar': 'أقل من شهر',
+      'en': 'less than a month',
+    },
+    'tenure_month_singular': {
+      'fr': '{n} mois',
+      'ar': 'شهر واحد',
+      'en': '{n} month',
+    },
+    'tenure_month_plural': {
+      'fr': '{n} mois',
+      'ar': '{n} أشهر',
+      'en': '{n} months',
+    },
+    'tenure_year_singular': {
+      'fr': '{n} an',
+      'ar': 'سنة واحدة',
+      'en': '{n} year',
+    },
+    'tenure_year_plural': {
+      'fr': '{n} ans',
+      'ar': '{n} سنوات',
+      'en': '{n} years',
+    },
+    'resale_store_tenure_template': {
+      'fr': 'Boutique • {tenure} avec nous',
+      'ar': 'متجر • {tenure} معنا',
+      'en': 'Resale Store • {tenure} with us',
+    },
+    'item_count_singular': {'fr': 'article', 'ar': 'منتج', 'en': 'item'},
+    'item_count_plural': {'fr': 'articles', 'ar': 'منتجات', 'en': 'items'},
+    'wishlist_label': {
+      'fr': 'Favoris',
+      'ar': 'المفضلة',
+      'en': 'Wishlist',
+    },
+    'locate_label': {'fr': 'Localiser', 'ar': 'تحديد الموقع', 'en': 'Locate'},
+    'reviews_count_template': {
+      'fr': 'Avis ({count})',
+      'ar': 'التقييمات ({count})',
+      'en': 'Reviews ({count})',
+    },
+    'customer_fallback': {'fr': 'Client', 'ar': 'عميل', 'en': 'Customer'},
+    'on_product_template': {
+      'fr': 'Sur « {product} »',
+      'ar': 'على "{product}"',
+      'en': 'On "{product}"',
+    },
+    'about_this_product': {
+      'fr': 'À propos de ce produit',
+      'ar': 'حول هذا المنتج',
+      'en': 'About this product',
+    },
+    'choose_option_before_bag_template': {
+      'fr': '{option} — choisissez une option avant d\'ajouter au panier.',
+      'ar': '{option} — اختر خيارًا قبل الإضافة إلى الحقيبة.',
+      'en': '{option} — choose an option before adding to bag.',
+    },
+    'stock_adjusted_template': {
+      'fr': 'Seulement {stock} en stock — votre panier a été ajusté selon la '
+          'disponibilité.',
+      'ar': 'يتوفر {stock} فقط — تم تعديل حقيبتك وفق المتاح.',
+      'en': 'Only {stock} in stock — your bag was adjusted to what\'s '
+          'available.',
+    },
+    'write_a_review': {
+      'fr': 'Laisser un avis',
+      'ar': 'اكتب تقييمًا',
+      'en': 'Write a review',
+    },
+    'select_your_template': {
+      'fr': 'Choisissez votre {label}',
+      'ar': 'اختر {label}',
+      'en': 'Select your {label}',
+    },
+    'share_review_hint': {
+      'fr': 'Partagez quelques mots sur ce produit (facultatif)',
+      'ar': 'شارك بضع كلمات حول هذا المنتج (اختياري)',
+      'en': 'Share a few words about this product (optional)',
+    },
+    'submit_review': {
+      'fr': 'Envoyer l\'avis',
+      'ar': 'إرسال التقييم',
+      'en': 'Submit review',
+    },
+    'option_fallback_label': {'fr': 'Option', 'ar': 'خيار', 'en': 'Option'},
     'description': {'fr': 'Description', 'ar': 'الوصف', 'en': 'Description'},
     'save': {'fr': 'Enregistrer', 'ar': 'حفظ', 'en': 'Save'},
     'cancel': {'fr': 'Annuler', 'ar': 'إلغاء', 'en': 'Cancel'},

@@ -604,6 +604,7 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     final shops = widget.cart.linesByShop;
     return Padding(
       padding: EdgeInsets.fromLTRB(
@@ -622,30 +623,31 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
                     borderRadius: BorderRadius.circular(2)),
               ),
             ),
-            const Text('Confirm order',
-                style: TextStyle(
+            Text(t('confirm_order'),
+                style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.ink)),
             const SizedBox(height: 6),
-            const Text(
-              'Pay each shop using its merchant code from your banking app, '
-              'then enter below the code your bank sends you back.',
-              style: TextStyle(fontSize: 13, color: AppTheme.ink2, height: 1.4),
+            Text(
+              t('checkout_intro'),
+              style: const TextStyle(
+                  fontSize: 13, color: AppTheme.ink2, height: 1.4),
             ),
             const SizedBox(height: 20),
-            const _SectionLabel('Contact'),
+            _SectionLabel(t('contact_section')),
             const SizedBox(height: 8),
             TextField(
               controller: _phone,
               keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(labelText: 'Phone number'),
+              decoration: InputDecoration(labelText: t('phone_number_label')),
             ),
             const SizedBox(height: 20),
-            const _SectionLabel('How do you want to receive your order?'),
+            _SectionLabel(t('how_receive_order_section')),
             const SizedBox(height: 8),
             _DeliveryModeToggle(
               value: _deliveryMode,
+              t: t,
               onChanged: (value) => setState(() {
                 _deliveryMode = value;
                 _error = null;
@@ -661,15 +663,14 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
                 onPlaceSelected: _usePlace,
               ),
               const SizedBox(height: 8),
-              const Text(
-                "A rider will be offered this delivery once your order is placed, or the "
-                "shop may arrange it directly and contact you on WhatsApp.",
-                style: TextStyle(
+              Text(
+                t('rider_delivery_note'),
+                style: const TextStyle(
                     fontSize: 12, color: AppTheme.muted, height: 1.35),
               ),
             ],
             const SizedBox(height: 22),
-            if (shops.isNotEmpty) const _SectionLabel('Payment'),
+            if (shops.isNotEmpty) _SectionLabel(t('payment_section')),
             if (shops.isNotEmpty) const SizedBox(height: 8),
             if (_loadingShops)
               const Padding(
@@ -705,7 +706,7 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
                       width: 18,
                       child: CircularProgressIndicator(
                           strokeWidth: 2, color: Colors.white))
-                  : const Text('Confirm order'),
+                  : Text(t('confirm_order')),
             ),
           ],
         ),
@@ -734,9 +735,11 @@ class _SectionLabel extends StatelessWidget {
 
 class _DeliveryModeToggle extends StatelessWidget {
   final String value;
+  final String Function(String) t;
   final ValueChanged<String> onChanged;
 
-  const _DeliveryModeToggle({required this.value, required this.onChanged});
+  const _DeliveryModeToggle(
+      {required this.value, required this.t, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -748,7 +751,7 @@ class _DeliveryModeToggle extends StatelessWidget {
         children: [
           Expanded(
             child: _DeliveryModeOption(
-              label: 'Delivery',
+              label: t('delivery_label'),
               icon: Icons.delivery_dining_outlined,
               selected: value == 'delivery',
               onTap: () => onChanged('delivery'),
@@ -757,7 +760,7 @@ class _DeliveryModeToggle extends StatelessWidget {
           const SizedBox(width: 4),
           Expanded(
             child: _DeliveryModeOption(
-              label: "I'll pick it up",
+              label: t('pickup_it_up_label'),
               icon: Icons.storefront_outlined,
               selected: value == 'pickup',
               onTap: () => onChanged('pickup'),
@@ -833,6 +836,7 @@ class _LocationField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     final located = position != null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -848,8 +852,9 @@ class _LocationField extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2))
               : Icon(located ? Icons.check_circle_outline : Icons.my_location,
                   size: 18),
-          label:
-              Text(located ? 'Location saved' : 'Or use my current location'),
+          label: Text(located
+              ? t('location_saved_simple')
+              : t('use_current_location_action')),
         ),
         if (located) ...[
           const SizedBox(height: 10),
@@ -861,9 +866,9 @@ class _LocationField extends StatelessWidget {
         const SizedBox(height: 10),
         TextField(
           controller: addressController,
-          decoration: const InputDecoration(
-            labelText: 'Address / landmark (optional)',
-            hintText: 'e.g. Tevragh Zeina, near the pharmacy',
+          decoration: InputDecoration(
+            labelText: t('address_landmark_optional'),
+            hintText: t('address_landmark_hint'),
           ),
         ),
       ],

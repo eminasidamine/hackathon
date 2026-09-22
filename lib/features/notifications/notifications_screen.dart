@@ -33,13 +33,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     await _future;
   }
 
-  String _ago(DateTime date) {
+  String _ago(DateTime date, String Function(String) t) {
     final diff = DateTime.now().difference(date);
-    if (diff.inMinutes < 1) return "Just now";
-    if (diff.inMinutes < 60) return 'Il y a ${diff.inMinutes} min';
-    if (diff.inHours < 24) return 'Il y a ${diff.inHours} h';
-    if (diff.inDays == 1) return 'Hier';
-    return 'Il y a ${diff.inDays} jours';
+    if (diff.inMinutes < 1) return t('ago_just_now');
+    if (diff.inMinutes < 60) {
+      return t('ago_minutes_template').replaceAll('{n}', '${diff.inMinutes}');
+    }
+    if (diff.inHours < 24) {
+      return t('ago_hours_template').replaceAll('{n}', '${diff.inHours}');
+    }
+    if (diff.inDays == 1) return t('ago_yesterday');
+    return t('ago_days_template').replaceAll('{n}', '${diff.inDays}');
   }
 
   @override
@@ -47,7 +51,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     final t = context.watch<SettingsController>().t;
     return Scaffold(
       backgroundColor: AppTheme.bg,
-      appBar: AppBar(title: const Text('Notifications')),
+      appBar: AppBar(title: Text(t('notifications_title'))),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder<List<AppNotification>>(
@@ -119,7 +123,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       height: 1.35)),
                             ],
                             const SizedBox(height: 6),
-                            Text(_ago(item.createdAt),
+                            Text(_ago(item.createdAt, t),
                                 style: const TextStyle(
                                     fontSize: 11.5, color: AppTheme.muted)),
                           ],

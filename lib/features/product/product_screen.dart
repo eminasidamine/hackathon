@@ -39,11 +39,12 @@ class _SellerSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'About this product',
+          t('about_this_product'),
           style: AppTheme.system(
               size: 17, weight: FontWeight.w700, letterSpacing: 0),
         ),
@@ -77,7 +78,7 @@ class _SellerSection extends StatelessWidget {
                     if (shop.createdAt != null) ...[
                       const SizedBox(height: 3),
                       Text(
-                        shopTenureLabel(shop.createdAt!),
+                        shopTenureLabel(shop.createdAt!, t),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -356,9 +357,10 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   void _addToCart(Product product) {
+    final t = context.read<SettingsController>().t;
     if (product.hasOptions && _selectedOption == null) {
-      setState(() => _optionError =
-          '${product.optionName} — choose an option before adding to bag.');
+      setState(() => _optionError = t('choose_option_before_bag_template')
+          .replaceAll('{option}', product.optionName ?? ''));
       return;
     }
 
@@ -368,8 +370,8 @@ class _ProductScreenState extends State<ProductScreen> {
     if (capped) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                'Only ${product.stock} in stock — your bag was adjusted to what\'s available.')),
+            content: Text(t('stock_adjusted_template')
+                .replaceAll('{stock}', '${product.stock}'))),
       );
       return;
     }
@@ -623,7 +625,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             TextButton(
                               onPressed: () => _openWriteReview(
                                   _reviewableOrderId!, product.id),
-                              child: const Text('Write a review'),
+                              child: Text(t('write_a_review')),
                             ),
                         ],
                       ),
@@ -936,6 +938,7 @@ class _SizeDropdownField extends StatelessWidget {
   bool _isSoldOut(int i) => i < soldOut.length && soldOut[i];
 
   Future<void> _openPicker(BuildContext context) async {
+    final t = context.read<SettingsController>().t;
     final chosen = await showModalBottomSheet<String>(
       context: context,
       backgroundColor: AppTheme.card,
@@ -952,7 +955,8 @@ class _SizeDropdownField extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Select your ${label.toLowerCase()}',
+                      t('select_your_template')
+                          .replaceAll('{label}', label.toLowerCase()),
                       style: AppTheme.system(size: 17, weight: FontWeight.w600),
                     ),
                   ),
@@ -1005,6 +1009,7 @@ class _SizeDropdownField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     final hasSelection = selected != null && selected!.isNotEmpty;
     return InkWell(
       onTap: () => _openPicker(context),
@@ -1019,7 +1024,10 @@ class _SizeDropdownField extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                hasSelection ? selected! : 'Select your ${label.toLowerCase()}',
+                hasSelection
+                    ? selected!
+                    : t('select_your_template')
+                        .replaceAll('{label}', label.toLowerCase()),
                 overflow: TextOverflow.ellipsis,
                 style: AppTheme.system(
                   size: 15,
@@ -1186,6 +1194,7 @@ class _WriteReviewSheetState extends State<_WriteReviewSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return SafeArea(
       top: false,
       child: Padding(
@@ -1195,8 +1204,8 @@ class _WriteReviewSheetState extends State<_WriteReviewSheet> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('Write a review',
-                style: TextStyle(
+            Text(t('write_a_review'),
+                style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.ink)),
@@ -1222,8 +1231,8 @@ class _WriteReviewSheetState extends State<_WriteReviewSheet> {
               controller: _comment,
               minLines: 3,
               maxLines: 5,
-              decoration: const InputDecoration(
-                hintText: 'Share a few words about this product (optional)',
+              decoration: InputDecoration(
+                hintText: t('share_review_hint'),
               ),
             ),
             if (_error != null) ...[
@@ -1240,7 +1249,7 @@ class _WriteReviewSheetState extends State<_WriteReviewSheet> {
                       width: 18,
                       child: CircularProgressIndicator(
                           strokeWidth: 2, color: Colors.white))
-                  : const Text('Submit review'),
+                  : Text(t('submit_review')),
             ),
           ],
         ),
@@ -1323,7 +1332,7 @@ class _AddedToBagSheet extends StatelessWidget {
                       if (option != null) ...[
                         const SizedBox(height: 10),
                         Text(
-                          '${product.optionName ?? 'Option'} $option',
+                          '${product.optionName ?? t('option_fallback_label')} $option',
                           style: const TextStyle(
                               fontSize: 13, color: AppTheme.ink2),
                         ),

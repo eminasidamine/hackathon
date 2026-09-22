@@ -127,8 +127,9 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
     }
   }
 
-  String _tenureLabel(DateTime createdAt) =>
-      'Resale Store • ${shopTenureLabel(createdAt)} with us';
+  String _tenureLabel(DateTime createdAt, String Function(String) t) =>
+      t('resale_store_tenure_template')
+          .replaceAll('{tenure}', shopTenureLabel(createdAt, t));
 
   @override
   Widget build(BuildContext context) {
@@ -198,8 +199,8 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                                 _ShopStat(
                                     value: '${data.productCount}',
                                     label: data.productCount > 1
-                                        ? 'items'
-                                        : 'item'),
+                                        ? t('item_count_plural')
+                                        : t('item_count_singular')),
                                 _ShopStat(
                                   value: '${_followerCount ?? ''}',
                                   label: (_followerCount ?? 0) > 1
@@ -217,7 +218,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                _tenureLabel(shop.createdAt!),
+                                _tenureLabel(shop.createdAt!, t),
                                 style: const TextStyle(
                                     fontSize: 13,
                                     color: AppTheme.ink2,
@@ -253,7 +254,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                         children: [
                           Expanded(
                             child: _PillButton(
-                              label: 'Wishlist',
+                              label: t('wishlist_label'),
                               active: _favoritesOnly,
                               onTap: () => setState(
                                   () => _favoritesOnly = !_favoritesOnly),
@@ -262,7 +263,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: _PillButton(
-                              label: 'Locate',
+                              label: t('locate_label'),
                               enabled:
                                   shop.city != null && shop.city!.isNotEmpty,
                               onTap: () => _openCityMap(shop.city!),
@@ -303,6 +304,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                 child: _ShopTabBar(
                   active: _activeTab,
                   reviewCount: data.reviews.length,
+                  t: t,
                   onSelect: (tab) => setState(() => _activeTab = tab),
                 ),
               ),
@@ -315,7 +317,7 @@ class _ShopDetailScreenState extends State<ShopDetailScreen> {
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                       children: [
                         _CategoryChip(
-                            label: 'All',
+                            label: t('all_chip'),
                             selected: _categoryFilter == null,
                             onTap: () =>
                                 setState(() => _categoryFilter = null)),
@@ -499,11 +501,13 @@ class _PillButton extends StatelessWidget {
 class _ShopTabBar extends StatelessWidget {
   final _ShopTab active;
   final int reviewCount;
+  final String Function(String) t;
   final ValueChanged<_ShopTab> onSelect;
 
   const _ShopTabBar(
       {required this.active,
       required this.reviewCount,
+      required this.t,
       required this.onSelect});
 
   @override
@@ -513,12 +517,13 @@ class _ShopTabBar extends StatelessWidget {
       child: Row(
         children: [
           _ShopTabItem(
-              label: 'Items',
+              label: t('items_label'),
               selected: active == _ShopTab.products,
               onTap: () => onSelect(_ShopTab.products)),
           const SizedBox(width: 24),
           _ShopTabItem(
-              label: 'Reviews ($reviewCount)',
+              label: t('reviews_count_template')
+                  .replaceAll('{count}', '$reviewCount'),
               selected: active == _ShopTab.reviews,
               onTap: () => onSelect(_ShopTab.reviews)),
         ],
@@ -603,6 +608,7 @@ class _ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -617,7 +623,7 @@ class _ReviewCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  review.authorName ?? 'Customer',
+                  review.authorName ?? t('customer_fallback'),
                   style: const TextStyle(
                       fontSize: 13.5,
                       fontWeight: FontWeight.w600,
@@ -640,7 +646,7 @@ class _ReviewCard extends StatelessWidget {
           ),
           if (productName.isNotEmpty) ...[
             const SizedBox(height: 3),
-            Text('On "$productName"',
+            Text(t('on_product_template').replaceAll('{product}', productName),
                 style: const TextStyle(fontSize: 11.5, color: AppTheme.muted)),
           ],
           if (review.comment != null && review.comment!.isNotEmpty) ...[

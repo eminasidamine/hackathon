@@ -31,22 +31,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   Future<void> _cancel(OrderModel order) async {
+    final t = context.read<SettingsController>().t;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Cancel order?'),
-        content: const Text(
-          "The shop will no longer see this order. If you already paid, "
-          "contact them to get a refund.",
-        ),
+        title: Text(t('cancel_order_confirm_title')),
+        content: Text(t('cancel_order_confirm_message')),
         actions: [
           TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Back')),
+              child: Text(t('back_action'))),
           FilledButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
             style: FilledButton.styleFrom(backgroundColor: AppTheme.red),
-            child: const Text('Cancel order'),
+            child: Text(t('cancel_order_action')),
           ),
         ],
       ),
@@ -142,7 +140,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
-                                  'Code de paiement : ${order.paymentReference}',
+                                  t('payment_code_template').replaceAll(
+                                      '{code}', order.paymentReference!),
                                   style: const TextStyle(
                                       fontSize: 12.5, color: AppTheme.ink2),
                                 ),
@@ -164,7 +163,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                     width: 16,
                                     child: CircularProgressIndicator(
                                         strokeWidth: 2))
-                                : const Text('Cancel order'),
+                                : Text(t('cancel_order_action')),
                           ),
                         ],
                       ],

@@ -83,8 +83,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error)));
     } else {
+      final t = context.read<SettingsController>().t;
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Profile updated.')));
+          .showSnackBar(SnackBar(content: Text(t('profile_updated'))));
     }
   }
 

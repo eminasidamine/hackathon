@@ -74,11 +74,10 @@ class _HelpScreenState extends State<HelpScreen> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'Une question sur une commande, un paiement ou une boutique ? '
-                  'Contact us directly, we reply fast.',
+                Text(
+                  t('help_contact_intro'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: AppTheme.ink2),
+                  style: const TextStyle(color: AppTheme.ink2),
                 ),
                 const SizedBox(height: 24),
                 if (hasPhone)
@@ -92,7 +91,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   OutlinedButton.icon(
                     onPressed: () => _openWebsite(settings.websiteUrl!),
                     icon: const Icon(Icons.public, size: 18),
-                    label: const Text('Voir le site'),
+                    label: Text(t('view_website_action')),
                   ),
                 ],
               ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/settings_controller.dart';
 import '../../core/theme.dart';
 import '../../models/models.dart';
 import '../../services/catalog_service.dart';
@@ -31,6 +33,7 @@ class _VendorCategoriesScreenState extends State<VendorCategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
@@ -38,8 +41,8 @@ class _VendorCategoriesScreenState extends State<VendorCategoriesScreen> {
         surfaceTintColor: AppTheme.bg,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppTheme.ink),
-        title: const Text('Categories',
-            style: TextStyle(
+        title: Text(t('categories_title'),
+            style: const TextStyle(
                 color: AppTheme.ink,
                 fontWeight: FontWeight.w600,
                 fontSize: 17)),
@@ -59,22 +62,22 @@ class _VendorCategoriesScreenState extends State<VendorCategoriesScreen> {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
                     children: [
-                      const Text(
-                        'What categories will you sell in?\nYou can select more than one.',
+                      Text(
+                        t('which_categories_intro'),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 15.5,
                             color: AppTheme.muted,
                             height: 1.35),
                       ),
                       const SizedBox(height: 26),
                       if (categories.isEmpty)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 24),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 24),
                           child: Text(
-                            'No category available right now.',
+                            t('no_category_available'),
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: AppTheme.muted),
+                            style: const TextStyle(color: AppTheme.muted),
                           ),
                         )
                       else
@@ -126,7 +129,7 @@ class _VendorCategoriesScreenState extends State<VendorCategoriesScreen> {
                     width: double.infinity,
                     child: FilledButton(
                       onPressed: _selected.isEmpty ? null : _continue,
-                      child: const Text('CONTINUE'),
+                      child: Text(t('continue_caps')),
                     ),
                   ),
                 ),
