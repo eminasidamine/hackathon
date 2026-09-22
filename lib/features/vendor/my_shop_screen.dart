@@ -790,6 +790,7 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
               builder: (_) => VendorDashboardScreen(
                 shopId: widget.shop.id,
                 shopName: widget.shop.name,
+                shopLogoUrl: widget.shop.logoUrl,
               ),
             ),
           ),
@@ -2433,13 +2434,10 @@ class _MerchantCodeFields extends StatelessWidget {
         TextFormField(
           controller: codeController,
           decoration: InputDecoration(
-            labelText: t('merchant_code_label'),
-            helperText: t('merchant_code_helper'),
-            helperMaxLines: 2,
+            labelText: t('merchant_code_form_label'),
+            helperText: t('merchant_code_helper_optional'),
+            helperMaxLines: 3,
           ),
-          validator: (v) => (v == null || v.trim().isEmpty)
-              ? t('merchant_code_required_hint')
-              : null,
         ),
       ],
     );

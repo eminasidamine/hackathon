@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/money.dart';
 import '../../core/settings_controller.dart';
@@ -12,13 +11,13 @@ import 'business_profile_screen.dart';
 class VendorDashboardScreen extends StatefulWidget {
   final String shopId;
   final String shopName;
-  final String vendorFirstName;
+  final String? shopLogoUrl;
 
   const VendorDashboardScreen({
     super.key,
     required this.shopId,
     required this.shopName,
-    this.vendorFirstName = '',
+    this.shopLogoUrl,
   });
 
   @override
@@ -29,15 +28,6 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
   final AnalyticsService _analytics = AnalyticsService();
   late Future<VendorAnalytics> _future;
   int _range = 30;
-
-  String get _firstName {
-    if (widget.vendorFirstName.trim().isNotEmpty) {
-      return widget.vendorFirstName;
-    }
-    final meta = Supabase.instance.client.auth.currentUser?.userMetadata;
-    final full = (meta?['full_name'] as String?)?.trim() ?? '';
-    return full.isEmpty ? '' : full.split(' ').first;
-  }
 
   String Function(String) get _t => context.read<SettingsController>().t;
 
@@ -79,7 +69,10 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
               children: [
-                _Greeting(name: _firstName, shop: widget.shopName, t: t),
+                _Greeting(
+                    shop: widget.shopName,
+                    shopLogoUrl: widget.shopLogoUrl,
+                    t: t),
                 const SizedBox(height: 16),
                 _RangePicker(
                     value: _range, onChanged: (v) => _reload(range: v), t: t),
@@ -124,43 +117,26 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
 }
 
 class _Greeting extends StatelessWidget {
-  final String name;
   final String shop;
+  final String? shopLogoUrl;
   final String Function(String) t;
-  const _Greeting({required this.name, required this.shop, required this.t});
+  const _Greeting(
+      {required this.shop, required this.shopLogoUrl, required this.t});
 
   @override
   Widget build(BuildContext context) {
-    final hello = name.trim().isEmpty
-        ? '${t('vendor_hello')} 👋'
-        : '${t('vendor_hello')} ${name.trim()} 👋';
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          width: 46,
-          height: 46,
-          decoration: BoxDecoration(
-            color: AppTheme.copper.withValues(alpha: 0.14),
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.storefront_rounded,
-              color: AppTheme.copper, size: 22),
-        ),
+        ShopAvatar(name: shop, logoUrl: shopLogoUrl, size: 46),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(hello,
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.ink)),
-              const SizedBox(height: 2),
-              Text(t('vendor_activity_subtitle').replaceAll('{shop}', shop),
-                  style: const TextStyle(fontSize: 13, color: AppTheme.ink2)),
-            ],
+          child: Center(
+            child: Text(
+              t('vendor_activity_subtitle').replaceAll('{shop}', shop),
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 13, color: AppTheme.ink2),
+            ),
           ),
         ),
       ],
@@ -264,13 +240,14 @@ class _Kpi extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: emphasis ? AppTheme.copper : AppTheme.panel,
+        color: emphasis ? AppTheme.kpiHighlight : AppTheme.panel,
         borderRadius: BorderRadius.circular(AppTheme.radiusCard),
-        border: emphasis ? null : Border.all(color: AppTheme.line),
+        border: Border.all(
+            color: emphasis ? AppTheme.kpiHighlightBorder : AppTheme.line),
         boxShadow: emphasis
             ? [
                 BoxShadow(
-                  color: AppTheme.copper.withValues(alpha: 0.28),
+                  color: AppTheme.kpiHighlightBorder.withValues(alpha: 0.5),
                   blurRadius: 14,
                   offset: const Offset(0, 6),
                 ),
@@ -288,17 +265,13 @@ class _Kpi extends StatelessWidget {
               style: TextStyle(
                 fontSize: emphasis ? 24 : 22,
                 fontWeight: FontWeight.w700,
-                color: emphasis ? Colors.white : AppTheme.ink,
+                color: AppTheme.ink,
               ),
             ),
           ),
           const SizedBox(height: 4),
           Text(label,
-              style: TextStyle(
-                  fontSize: 12,
-                  color: emphasis
-                      ? Colors.white.withValues(alpha: 0.85)
-                      : AppTheme.ink2)),
+              style: const TextStyle(fontSize: 12, color: AppTheme.ink2)),
         ],
       ),
     );

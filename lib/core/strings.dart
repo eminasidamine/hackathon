@@ -1567,6 +1567,21 @@ class Strings {
       'ar': 'مطلوب لاستلام المدفوعات عبر التطبيق',
       'en': 'Required to receive payments through the app',
     },
+    'merchant_code_form_label': {
+      'fr': 'Code marchand (facultatif)',
+      'ar': 'رمز التاجر (اختياري)',
+      'en': 'Merchant code (optional)',
+    },
+    'merchant_code_helper_optional': {
+      'fr': 'Si vous n\'avez pas encore de code marchand, laissez ce champ '
+          'vide — vos clients pourront quand même commander, puis vous '
+          'contacter pour convenir du paiement.',
+      'ar': 'إذا لم يكن لديك رمز تاجر بعد، اترك هذا الحقل فارغًا — سيتمكن '
+          'عملاؤك من الطلب رغم ذلك، ثم التواصل معك للاتفاق على الدفع.',
+      'en': 'If you don\'t have a merchant code yet, leave this field blank '
+          '— your customers can still order, then contact you to arrange '
+          'payment.',
+    },
     'pickup_location_label': {
       'fr': 'Lieu de récupération (pour les livreurs)',
       'ar': 'مكان الاستلام (للسائقين)',

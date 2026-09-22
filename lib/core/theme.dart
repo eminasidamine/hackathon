@@ -29,6 +29,8 @@ class AppTheme {
   static const Color amber = Color(0xFFF5A623);
   static const Color stockWarn = Color(0xFFE0A34D);
   static const Color verifiedBlue = Color(0xFF6FB4F0);
+  static const Color kpiHighlight = Color(0xFFE6F2FE);
+  static const Color kpiHighlightBorder = Color(0xFFBFDDFA);
   static const Color imageBg = Color(0xFFFFFFFF);
   static const Color red = Color(0xFFE0473E);
   static const Color redPress = Color(0xFFC53D35);
