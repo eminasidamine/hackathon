@@ -267,6 +267,7 @@ class _PhotoPositionScreenState extends State<PhotoPositionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     final alignment = Alignment(_focalX * 2 - 1, _focalY * 2 - 1);
     final rawImage = widget.bytes != null
         ? Image.memory(widget.bytes!, fit: BoxFit.cover, alignment: alignment)
@@ -316,12 +317,12 @@ class _PhotoPositionScreenState extends State<PhotoPositionScreen> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(24, 10, 24, 4),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 10, 24, 4),
               child: Text(
-                'Ce point et ce zoom restent identiques sur les autres formats de carte.',
+                t('photo_position_hint'),
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white54, fontSize: 12),
+                style: const TextStyle(color: Colors.white54, fontSize: 12),
               ),
             ),
             Padding(
@@ -331,8 +332,8 @@ class _PhotoPositionScreenState extends State<PhotoPositionScreen> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('Cancel',
-                        style: TextStyle(color: Colors.white70)),
+                    child: Text(t('cancel'),
+                        style: const TextStyle(color: Colors.white70)),
                   ),
                   IconButton(
                       onPressed: _reset,
@@ -340,7 +341,7 @@ class _PhotoPositionScreenState extends State<PhotoPositionScreen> {
                   FilledButton(
                     onPressed: () =>
                         Navigator.of(context).pop((_focalX, _focalY, _zoom)),
-                    child: const Text('OK'),
+                    child: Text(t('ok_action')),
                   ),
                 ],
               ),

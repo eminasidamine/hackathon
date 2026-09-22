@@ -25,6 +25,9 @@ Future<void> openDriverSpace(BuildContext context) async {
 
 const List<String> kVehicleTypes = ['Motorcycle', 'Car'];
 
+String _vehicleTypeLabel(String type, String Function(String) t) =>
+    type == 'Motorcycle' ? t('vehicle_motorcycle') : t('vehicle_car');
+
 class DriverGateScreen extends StatefulWidget {
   const DriverGateScreen({super.key});
 
@@ -98,19 +101,18 @@ class _DriverGateScreenState extends State<DriverGateScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: 60),
-                    const Text(
-                      'Deliver with us',
-                      style: TextStyle(
+                    Text(
+                      t('deliver_with_us_title'),
+                      style: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
                           color: AppTheme.ink,
                           height: 1.1),
                     ),
                     const SizedBox(height: 14),
-                    const Text(
-                      'Pick up orders from shops nearby and get paid for the delivery. '
-                      'Log in or create an account to continue.',
-                      style: TextStyle(
+                    Text(
+                      t('deliver_with_us_subtitle'),
+                      style: const TextStyle(
                           fontSize: 15, color: AppTheme.ink2, height: 1.4),
                     ),
                     const SizedBox(height: 30),
@@ -153,8 +155,8 @@ class _DriverGateScreenState extends State<DriverGateScreen> {
                         ),
                       ),
                       const SizedBox(height: 22),
-                      const Text('Vehicle',
-                          style: TextStyle(
+                      Text(t('vehicle_label'),
+                          style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.ink)),
@@ -165,7 +167,7 @@ class _DriverGateScreenState extends State<DriverGateScreen> {
                         children: [
                           for (final v in kVehicleTypes)
                             _VehicleChip(
-                              label: v,
+                              label: _vehicleTypeLabel(v, t),
                               selected: _vehicleType == v,
                               onTap: () => setState(() => _vehicleType = v),
                             ),
@@ -180,7 +182,7 @@ class _DriverGateScreenState extends State<DriverGateScreen> {
                                 width: 18,
                                 child: CircularProgressIndicator(
                                     strokeWidth: 2, color: Colors.white))
-                            : const Text('START DELIVERING'),
+                            : Text(t('start_delivering_action')),
                       ),
                       const SizedBox(height: 10),
                       TextButton(

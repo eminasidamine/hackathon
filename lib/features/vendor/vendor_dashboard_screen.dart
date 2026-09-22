@@ -93,6 +93,7 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
                     title: t('block_sales_title'),
                     subtitle: t('block_sales_subtitle'),
                     t: t,
+                    icon: Icons.show_chart_rounded,
                     child: SalesChart(points: a.salesByDay, t: t),
                   ),
                   const SizedBox(height: 16),
@@ -100,6 +101,7 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
                     title: t('block_payments_title'),
                     subtitle: t('block_payments_subtitle'),
                     t: t,
+                    icon: Icons.account_balance_wallet_outlined,
                     child: _ProviderSplit(a: a, t: t),
                   ),
                   const SizedBox(height: 16),
@@ -107,6 +109,7 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
                     title: t('block_products_title'),
                     subtitle: t('block_products_subtitle'),
                     t: t,
+                    icon: Icons.shopping_bag_outlined,
                     child: _TopProducts(a: a, t: t),
                   ),
                   const SizedBox(height: 16),
@@ -134,17 +137,35 @@ class _Greeting extends StatelessWidget {
     final hello = name.trim().isEmpty
         ? '${t('vendor_hello')} 👋'
         : '${t('vendor_hello')} ${name.trim()} 👋';
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(hello,
-            style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-                color: AppTheme.ink)),
-        const SizedBox(height: 4),
-        Text(t('vendor_activity_subtitle').replaceAll('{shop}', shop),
-            style: const TextStyle(fontSize: 14, color: AppTheme.ink2)),
+        Container(
+          width: 46,
+          height: 46,
+          decoration: BoxDecoration(
+            color: AppTheme.copper.withValues(alpha: 0.14),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Icons.storefront_rounded,
+              color: AppTheme.copper, size: 22),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(hello,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.ink)),
+              const SizedBox(height: 2),
+              Text(t('vendor_activity_subtitle').replaceAll('{shop}', shop),
+                  style: const TextStyle(fontSize: 13, color: AppTheme.ink2)),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -246,9 +267,18 @@ class _Kpi extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.panel,
+        color: emphasis ? AppTheme.copper : AppTheme.panel,
         borderRadius: BorderRadius.circular(AppTheme.radiusCard),
-        border: Border.all(color: AppTheme.line),
+        border: emphasis ? null : Border.all(color: AppTheme.line),
+        boxShadow: emphasis
+            ? [
+                BoxShadow(
+                  color: AppTheme.copper.withValues(alpha: 0.28),
+                  blurRadius: 14,
+                  offset: const Offset(0, 6),
+                ),
+              ]
+            : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,13 +291,17 @@ class _Kpi extends StatelessWidget {
               style: TextStyle(
                 fontSize: emphasis ? 24 : 22,
                 fontWeight: FontWeight.w700,
-                color: AppTheme.ink,
+                color: emphasis ? Colors.white : AppTheme.ink,
               ),
             ),
           ),
           const SizedBox(height: 4),
           Text(label,
-              style: const TextStyle(fontSize: 12, color: AppTheme.ink2)),
+              style: TextStyle(
+                  fontSize: 12,
+                  color: emphasis
+                      ? Colors.white.withValues(alpha: 0.85)
+                      : AppTheme.ink2)),
         ],
       ),
     );
@@ -500,19 +534,38 @@ class _ReadinessBlock extends StatelessWidget {
       subtitle: t('readiness_subtitle'),
       shopId: shopId,
       t: t,
+      icon: Icons.speed_rounded,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
             children: [
-              Text('$score',
-                  style: const TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.ink)),
-              const SizedBox(width: 4),
+              SizedBox(
+                width: 72,
+                height: 72,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: 72,
+                      height: 72,
+                      child: CircularProgressIndicator(
+                        value: (score / 100).clamp(0.0, 1.0),
+                        strokeWidth: 6,
+                        backgroundColor: AppTheme.line,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppTheme.copper),
+                      ),
+                    ),
+                    Text('$score',
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.ink)),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
               const Text('/ 100',
                   style: TextStyle(fontSize: 16, color: AppTheme.ink2)),
             ],
@@ -561,6 +614,7 @@ class _InsightsBlock extends StatelessWidget {
       title: t('block_insights_title'),
       subtitle: t('block_insights_subtitle'),
       t: t,
+      icon: Icons.auto_awesome_outlined,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -615,13 +669,15 @@ class _Block extends StatelessWidget {
   final Widget child;
   final String? shopId;
   final String Function(String) t;
+  final IconData? icon;
 
   const _Block(
       {required this.title,
       this.subtitle,
       required this.child,
       this.shopId,
-      required this.t});
+      required this.t,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -632,18 +688,40 @@ class _Block extends StatelessWidget {
         color: AppTheme.card,
         borderRadius: BorderRadius.circular(AppTheme.radiusCard),
         border: Border.all(color: AppTheme.line),
+        boxShadow: [
+          BoxShadow(
+            color: AppTheme.ink.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title.toUpperCase(),
-              style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.6,
-                  color: AppTheme.ink)),
+          Row(
+            children: [
+              if (icon != null) ...[
+                Container(
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    color: AppTheme.copper.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  child: Icon(icon, size: 15, color: AppTheme.copper),
+                ),
+                const SizedBox(width: 10),
+              ],
+              Text(title.toUpperCase(),
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.6,
+                      color: AppTheme.ink)),
+            ],
+          ),
           if (subtitle != null) ...[
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(subtitle!,
                 style: const TextStyle(fontSize: 12, color: AppTheme.muted)),
           ],

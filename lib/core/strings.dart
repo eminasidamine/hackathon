@@ -460,6 +460,12 @@ class Strings {
     'description': {'fr': 'Description', 'ar': 'الوصف', 'en': 'Description'},
     'save': {'fr': 'Enregistrer', 'ar': 'حفظ', 'en': 'Save'},
     'cancel': {'fr': 'Annuler', 'ar': 'إلغاء', 'en': 'Cancel'},
+    'ok_action': {'fr': 'OK', 'ar': 'موافق', 'en': 'OK'},
+    'photo_position_hint': {
+      'fr': 'Ce point et ce zoom restent identiques sur les autres formats de carte.',
+      'ar': 'تبقى هذه النقطة ومستوى التكبير كما هما في أشكال البطاقات الأخرى.',
+      'en': 'This point and zoom stay the same across the other card formats.',
+    },
     'submit_application': {
       'fr': 'Envoyer la candidature',
       'ar': 'إرسال الطلب',
@@ -1043,6 +1049,197 @@ class Strings {
           'Cette référence de paiement a déjà été utilisée pour une autre commande.',
       'ar': 'تم استخدام مرجع الدفع هذا لطلب آخر بالفعل.',
       'en': 'This payment reference has already been used for another order.',
+    },
+    // Driver space
+    'delivery_space_title': {
+      'fr': 'Espace livraison',
+      'ar': 'مساحة التوصيل',
+      'en': 'Delivery space',
+    },
+    'tab_available': {'fr': 'Disponibles', 'ar': 'متاحة', 'en': 'Available'},
+    'tab_my_deliveries': {
+      'fr': 'Mes livraisons',
+      'ar': 'توصيلاتي',
+      'en': 'My deliveries',
+    },
+    'driver_online_status': {
+      'fr': 'Vous êtes en ligne — visible pour les nouvelles livraisons',
+      'ar': 'أنت متصل — مرئي للتوصيلات الجديدة',
+      'en': "You're online — visible for new deliveries",
+    },
+    'driver_offline_status': {
+      'fr':
+          'Vous êtes hors ligne — aucune nouvelle livraison ne vous parviendra',
+      'ar': 'أنت غير متصل — لن تصلك أي توصيلات جديدة',
+      'en': "You're offline — no new deliveries will reach you",
+    },
+    'no_deliveries_waiting_title': {
+      'fr': 'Aucune livraison en attente',
+      'ar': 'لا توجد توصيلات في الانتظار',
+      'en': 'No deliveries waiting',
+    },
+    'no_deliveries_waiting_subtitle': {
+      'fr':
+          'Les nouvelles demandes apparaîtront ici dès qu\'un client commande une livraison.',
+      'ar': 'ستظهر الطلبات الجديدة هنا بمجرد أن يطلب عميل توصيلاً.',
+      'en':
+          'New requests will appear here the moment a customer orders delivery.',
+    },
+    'no_deliveries_yet_title': {
+      'fr': 'Aucune livraison pour l\'instant',
+      'ar': 'لا توصيلات بعد',
+      'en': 'No deliveries yet',
+    },
+    'no_deliveries_yet_subtitle': {
+      'fr': 'Les livraisons que vous acceptez apparaîtront ici.',
+      'ar': 'ستظهر هنا التوصيلات التي تقبلها.',
+      'en': 'Deliveries you accept will show up here.',
+    },
+    'delivery_accepted_snackbar': {
+      'fr':
+          'Livraison acceptée — voir « Mes livraisons » pour le contact du client.',
+      'ar':
+          'تم قبول التوصيل — راجع "توصيلاتي" لمعرفة معلومات التواصل مع العميل.',
+      'en':
+          'Delivery accepted — check "My deliveries" for the customer contact.',
+    },
+    'cancel_delivery_confirm_title': {
+      'fr': 'Annuler cette livraison ?',
+      'ar': 'إلغاء هذا التوصيل؟',
+      'en': 'Cancel this delivery?',
+    },
+    'cancel_delivery_confirm_body': {
+      'fr':
+          'Elle retournera sur le tableau pour qu\'un autre livreur puisse l\'accepter.',
+      'ar': 'ستعود إلى اللوحة ليقبلها سائق آخر.',
+      'en': 'It will go back to the board for another driver to accept.',
+    },
+    'keep_it': {'fr': 'Garder', 'ar': 'الاحتفاظ بها', 'en': 'Keep it'},
+    'cancel_delivery_action': {
+      'fr': 'Annuler la livraison',
+      'ar': 'إلغاء التوصيل',
+      'en': 'Cancel delivery',
+    },
+    'application_not_approved_title': {
+      'fr': 'Candidature non approuvée',
+      'ar': 'لم تتم الموافقة على الطلب',
+      'en': 'Application not approved',
+    },
+    'application_under_review_title': {
+      'fr': 'Candidature en cours d\'examen',
+      'ar': 'الطلب قيد المراجعة',
+      'en': 'Application under review',
+    },
+    'application_not_approved_body': {
+      'fr':
+          'Votre candidature de livreur n\'a pas été approuvée. Contactez-nous '
+              'si vous pensez qu\'il s\'agit d\'une erreur.',
+      'ar':
+          'لم تتم الموافقة على طلبك كسائق. تواصل معنا إذا كنت تعتقد أن هذا خطأ.',
+      'en':
+          "Your driver application wasn't approved. Contact us if you think this is a mistake.",
+    },
+    'application_under_review_body': {
+      'fr':
+          'Nous examinons votre candidature de livreur. Vous pourrez accepter '
+              'des livraisons dès qu\'elle sera approuvée.',
+      'ar': 'نراجع طلبك كسائق. ستتمكن من قبول التوصيلات بمجرد الموافقة عليه.',
+      'en':
+          "We're reviewing your driver application. You'll be able to accept deliveries once it's approved.",
+    },
+    'shop_fallback_label': {'fr': 'Boutique', 'ar': 'متجر', 'en': 'Shop'},
+    'distance_unknown': {
+      'fr': 'Distance inconnue',
+      'ar': 'المسافة غير معروفة',
+      'en': 'Distance unknown',
+    },
+    'accept_action': {'fr': 'Accepter', 'ar': 'قبول', 'en': 'Accept'},
+    'contact_action': {'fr': 'Contacter', 'ar': 'اتصال', 'en': 'Contact'},
+    'delivered_action': {'fr': 'Livré', 'ar': 'تم التسليم', 'en': 'Delivered'},
+    'delivery_point_title': {
+      'fr': 'Point de livraison',
+      'ar': 'نقطة التوصيل',
+      'en': 'Delivery point',
+    },
+    'open_in_maps': {
+      'fr': 'Ouvrir dans Maps',
+      'ar': 'فتح في الخرائط',
+      'en': 'Open in Maps',
+    },
+    'customer_contact_title': {
+      'fr': 'Contact client',
+      'ar': 'معلومات التواصل مع العميل',
+      'en': 'Customer contact',
+    },
+    'visible_because_accepted': {
+      'fr': 'Visible car vous avez accepté cette livraison.',
+      'ar': 'مرئي لأنك قبلت هذا التوصيل.',
+      'en': 'Visible because you accepted this delivery.',
+    },
+    'call_action': {'fr': 'Appeler', 'ar': 'اتصال', 'en': 'Call'},
+    'whatsapp_action': {'fr': 'WhatsApp', 'ar': 'واتساب', 'en': 'WhatsApp'},
+    'deliver_with_us_title': {
+      'fr': 'Livrez avec nous',
+      'ar': 'وصّل معنا',
+      'en': 'Deliver with us',
+    },
+    'deliver_with_us_subtitle': {
+      'fr': 'Récupérez des commandes chez des boutiques proches et soyez payé '
+          'pour la livraison. Connectez-vous ou créez un compte pour continuer.',
+      'ar':
+          'استلم الطلبات من المتاجر القريبة واحصل على أجر مقابل التوصيل. سجّل '
+              'الدخول أو أنشئ حسابًا للمتابعة.',
+      'en': 'Pick up orders from shops nearby and get paid for the delivery. '
+          'Log in or create an account to continue.',
+    },
+    'vehicle_label': {'fr': 'Véhicule', 'ar': 'المركبة', 'en': 'Vehicle'},
+    'vehicle_motorcycle': {
+      'fr': 'Moto',
+      'ar': 'دراجة نارية',
+      'en': 'Motorcycle'
+    },
+    'vehicle_car': {'fr': 'Voiture', 'ar': 'سيارة', 'en': 'Car'},
+    'start_delivering_action': {
+      'fr': 'COMMENCER À LIVRER',
+      'ar': 'ابدأ التوصيل',
+      'en': 'START DELIVERING',
+    },
+    // Business profile PDF
+    'pdf_city_label': {'fr': 'Ville', 'ar': 'المدينة', 'en': 'City'},
+    'pdf_active_since_label': {
+      'fr': 'Actif depuis',
+      'ar': 'نشط منذ',
+      'en': 'Active since',
+    },
+    'pdf_payment_service_label': {
+      'fr': 'Service de paiement',
+      'ar': 'خدمة الدفع',
+      'en': 'Payment service',
+    },
+    'pdf_generated_on_label': {
+      'fr': 'Généré le',
+      'ar': 'أُنشئ في',
+      'en': 'Generated on',
+    },
+    'pdf_page_label': {'fr': 'page', 'ar': 'صفحة', 'en': 'page'},
+    'pdf_no_mismatch': {
+      'fr': 'Aucun écart entre les montants reçus et les totaux des commandes.',
+      'ar': 'لا يوجد فرق بين المبالغ المستلمة وإجماليات الطلبات.',
+      'en': 'No mismatch between amounts received and order totals.',
+    },
+    'pdf_mismatch_singular': {
+      'fr':
+          '{n} commande présente un écart entre le montant reçu et le montant dû.',
+      'ar': 'طلب واحد يُظهر فرقًا بين المبلغ المستلم والمبلغ المستحق.',
+      'en':
+          '{n} order shows a mismatch between the amount received and the amount due.',
+    },
+    'pdf_mismatch_plural': {
+      'fr':
+          '{n} commandes présentent un écart entre le montant reçu et le montant dû.',
+      'ar': '{n} طلبات تُظهر فرقًا بين المبلغ المستلم والمبلغ المستحق.',
+      'en':
+          '{n} orders show a mismatch between the amount received and the amount due.',
     },
     'error_generic_short': {
       'fr': 'Une erreur est survenue. Veuillez réessayer.',

@@ -8,32 +8,12 @@ import 'analytics_service.dart';
 class BusinessProfilePdf {
   BusinessProfilePdf._();
 
-  static const _disclaimer =
-      'This file summarizes a business\'s activity as recorded in this app. It '
-      'is not a credit decision, a financing guarantee, or an assessment by a '
-      'financial institution. Figures are computed automatically from the '
-      'shop\'s real orders.';
+  static String monthYear(DateTime d, String Function(String) t) =>
+      '${t('month_${d.month}')} ${d.year}';
 
-  static const _months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  static String monthYear(DateTime d) => '${_months[d.month - 1]} ${d.year}';
-
-  static String _today() {
+  static String _today(String Function(String) t) {
     final n = DateTime.now();
-    return '${n.day} ${_months[n.month - 1]} ${n.year}';
+    return '${n.day} ${t('month_${n.month}')} ${n.year}';
   }
 
   static PdfColor get _ink => const PdfColor.fromInt(0xFF2B2B2B);
@@ -45,9 +25,10 @@ class BusinessProfilePdf {
   static Future<List<int>> build({
     required Shop? shop,
     required VendorAnalytics a,
+    required String Function(String) t,
   }) async {
     final doc = pw.Document(
-      title: 'Business profile — ${shop?.name ?? ''}',
+      title: '${t('business_profile_title')} — ${shop?.name ?? ''}',
     );
 
     doc.addPage(
@@ -58,24 +39,24 @@ class BusinessProfilePdf {
           alignment: pw.Alignment.centerRight,
           margin: const pw.EdgeInsets.only(top: 12),
           child: pw.Text(
-            '${shop?.name ?? ''} · page ${context.pageNumber}/${context.pagesCount}',
+            '${shop?.name ?? ''} · ${t('pdf_page_label')} ${context.pageNumber}/${context.pagesCount}',
             style: pw.TextStyle(fontSize: 8, color: _ink2),
           ),
         ),
         build: (context) => [
-          _header(shop),
+          _header(shop, t),
           pw.SizedBox(height: 22),
-          _section('Marketplace history', [
-            ('Orders fulfilled', '${a.orderCount}'),
-            ('Sales volume', Money.format(a.revenue)),
-            ('Average order value', Money.format(a.averageOrderValue)),
-            ('Distinct customers', '${a.customerCount}'),
-            ('Orders per customer', _repeat(a)),
+          _section(t('marketplace_history_title'), [
+            (t('orders_fulfilled'), '${a.orderCount}'),
+            (t('sales_volume'), Money.format(a.revenue)),
+            (t('avg_order_value'), Money.format(a.averageOrderValue)),
+            (t('distinct_customers'), '${a.customerCount}'),
+            (t('orders_per_customer'), _repeat(a)),
           ]),
           pw.SizedBox(height: 16),
-          _payments(a),
+          _payments(a, t),
           pw.SizedBox(height: 16),
-          _readiness(a),
+          _readiness(a, t),
           pw.SizedBox(height: 20),
           pw.Container(
             padding: const pw.EdgeInsets.all(12),
@@ -83,7 +64,7 @@ class BusinessProfilePdf {
               color: const PdfColor.fromInt(0xFFF6F3F4),
               borderRadius: pw.BorderRadius.circular(6),
             ),
-            child: pw.Text(_disclaimer,
+            child: pw.Text(t('business_profile_disclaimer'),
                 style:
                     pw.TextStyle(fontSize: 8.5, color: _ink2, lineSpacing: 2)),
           ),
@@ -98,7 +79,7 @@ class BusinessProfilePdf {
       ? '—'
       : (a.orderCount / a.customerCount).toStringAsFixed(1);
 
-  static pw.Widget _header(Shop? shop) {
+  static pw.Widget _header(Shop? shop, String Function(String) t) {
     return pw.Container(
       padding: const pw.EdgeInsets.all(20),
       decoration: pw.BoxDecoration(
@@ -108,7 +89,7 @@ class BusinessProfilePdf {
       child: pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
-          pw.Text('BUSINESS PROFILE',
+          pw.Text(t('business_profile_label'),
               style: pw.TextStyle(
                   fontSize: 9,
                   letterSpacing: 1.2,
@@ -124,13 +105,14 @@ class BusinessProfilePdf {
             runSpacing: 3,
             children: [
               if (shop?.city != null && shop!.city!.isNotEmpty)
-                _meta('City', shop.city!),
+                _meta(t('pdf_city_label'), shop.city!),
               if (shop?.createdAt != null)
-                _meta('Active since', monthYear(shop!.createdAt!)),
+                _meta(t('pdf_active_since_label'),
+                    monthYear(shop!.createdAt!, t)),
               if (shop?.merchantProvider != null &&
                   shop!.merchantProvider!.isNotEmpty)
-                _meta('Payment service', shop.merchantProvider!),
-              _meta('Generated on', _today()),
+                _meta(t('pdf_payment_service_label'), shop.merchantProvider!),
+              _meta(t('pdf_generated_on_label'), _today(t)),
             ],
           ),
         ],
@@ -198,30 +180,32 @@ class BusinessProfilePdf {
     );
   }
 
-  static pw.Widget _payments(VendorAnalytics a) {
+  static pw.Widget _payments(VendorAnalytics a, String Function(String) t) {
     final providers = a.revenueByProvider.entries.toList()
       ..sort((x, y) => y.value.compareTo(x.value));
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        _title('Digital payments'),
+        _title(t('digital_payments_label')),
         pw.Text(
-          '${a.verifiedCount} payment${a.verifiedCount > 1 ? 's' : ''} out of '
-          '${a.orderCount} found in the merchant\'s banking history.',
+          t('payments_found_in_history')
+              .replaceAll('{n}', '${a.verifiedCount}')
+              .replaceAll('{total}', '${a.orderCount}'),
           style: pw.TextStyle(fontSize: 9, color: _ink2),
         ),
         pw.SizedBox(height: 3),
         pw.Text(
           a.mismatchCount == 0
-              ? 'No mismatch between amounts received and order totals.'
-              : '${a.mismatchCount} order${a.mismatchCount > 1 ? 's' : ''} '
-                  'show${a.mismatchCount > 1 ? '' : 's'} a mismatch between the '
-                  'amount received and the amount due.',
+              ? t('pdf_no_mismatch')
+              : t(a.mismatchCount > 1
+                      ? 'pdf_mismatch_plural'
+                      : 'pdf_mismatch_singular')
+                  .replaceAll('{n}', '${a.mismatchCount}'),
           style: pw.TextStyle(fontSize: 9, color: _ink2),
         ),
         pw.SizedBox(height: 10),
         if (providers.isEmpty)
-          pw.Text('No payments recorded.',
+          pw.Text(t('no_payments_recorded'),
               style: pw.TextStyle(fontSize: 10, color: _ink2))
         else
           pw.Table(
@@ -258,7 +242,7 @@ class BusinessProfilePdf {
     );
   }
 
-  static pw.Widget _readiness(VendorAnalytics a) {
+  static pw.Widget _readiness(VendorAnalytics a, String Function(String) t) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
@@ -266,7 +250,7 @@ class BusinessProfilePdf {
           crossAxisAlignment: pw.CrossAxisAlignment.start,
           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
           children: [
-            _title('Financial readiness'),
+            _title(t('readiness_title')),
             pw.RichText(
               text: pw.TextSpan(children: [
                 pw.TextSpan(

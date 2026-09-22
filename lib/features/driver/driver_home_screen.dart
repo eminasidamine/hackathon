@@ -114,9 +114,10 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
       _tabController.animateTo(1);
       await _loadMine();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Delivery accepted — check "My deliveries" for the customer contact.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(context
+              .read<SettingsController>()
+              .t('delivery_accepted_snackbar'))));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -142,19 +143,19 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
   }
 
   Future<void> _release(DeliveryRequest req) async {
+    final t = context.read<SettingsController>().t;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Cancel this delivery?'),
-        content: const Text(
-            'It will go back to the board for another driver to accept.'),
+        title: Text(t('cancel_delivery_confirm_title')),
+        content: Text(t('cancel_delivery_confirm_body')),
         actions: [
           TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Keep it')),
+              child: Text(t('keep_it'))),
           FilledButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Cancel delivery')),
+              child: Text(t('cancel_delivery_action'))),
         ],
       ),
     );
@@ -206,12 +207,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     if (_loadingAvailability) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     if (_myProfile == null || !_myProfile!.isApproved) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Delivery space')),
+        appBar: AppBar(title: Text(t('delivery_space_title'))),
         body: Padding(
           padding: const EdgeInsets.all(24),
           child: Center(
@@ -228,8 +230,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
                 const SizedBox(height: 16),
                 Text(
                   _myProfile?.isRejected ?? false
-                      ? 'Application not approved'
-                      : 'Application under review',
+                      ? t('application_not_approved_title')
+                      : t('application_under_review_title'),
                   style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
@@ -239,8 +241,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
                 const SizedBox(height: 8),
                 Text(
                   _myProfile?.isRejected ?? false
-                      ? "Your driver application wasn't approved. Contact us if you think this is a mistake."
-                      : "We're reviewing your driver application. You'll be able to accept deliveries once it's approved.",
+                      ? t('application_not_approved_body')
+                      : t('application_under_review_body'),
                   style: const TextStyle(
                       fontSize: 13.5, color: AppTheme.ink2, height: 1.4),
                   textAlign: TextAlign.center,
@@ -251,20 +253,23 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
         ),
       );
     }
-    return _buildBoardScaffold();
+    return _buildBoardScaffold(t);
   }
 
-  Widget _buildBoardScaffold() {
+  Widget _buildBoardScaffold(String Function(String) t) {
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
-        title: const Text('Delivery space'),
+        title: Text(t('delivery_space_title')),
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppTheme.ink,
           unselectedLabelColor: AppTheme.muted,
           indicatorColor: AppTheme.ink,
-          tabs: const [Tab(text: 'Available'), Tab(text: 'My deliveries')],
+          tabs: [
+            Tab(text: t('tab_available')),
+            Tab(text: t('tab_my_deliveries'))
+          ],
         ),
       ),
       body: Column(
@@ -285,8 +290,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
                 Expanded(
                   child: Text(
                     _available
-                        ? "You're online — visible for new deliveries"
-                        : "You're offline — no new deliveries will reach you",
+                        ? t('driver_online_status')
+                        : t('driver_offline_status'),
                     style:
                         const TextStyle(fontSize: 12.5, color: AppTheme.ink2),
                   ),
@@ -304,8 +309,8 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildBoard(),
-                _buildMine(),
+                _buildBoard(t),
+                _buildMine(t),
               ],
             ),
           ),
@@ -314,13 +319,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     );
   }
 
-  Widget _buildBoard() {
+  Widget _buildBoard(String Function(String) t) {
     if (_board.isEmpty) {
-      return const EmptyState(
+      return EmptyState(
         icon: Icons.moped_outlined,
-        title: 'No deliveries waiting',
-        subtitle:
-            'New requests will appear here the moment a customer orders delivery.',
+        title: t('no_deliveries_waiting_title'),
+        subtitle: t('no_deliveries_waiting_subtitle'),
       );
     }
     return ListView.builder(
@@ -334,13 +338,13 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
     );
   }
 
-  Widget _buildMine() {
+  Widget _buildMine(String Function(String) t) {
     if (_loadingMine) return const Center(child: CircularProgressIndicator());
     if (_mine.isEmpty) {
-      return const EmptyState(
+      return EmptyState(
         icon: Icons.local_shipping_outlined,
-        title: 'No deliveries yet',
-        subtitle: 'Deliveries you accept will show up here.',
+        title: t('no_deliveries_yet_title'),
+        subtitle: t('no_deliveries_yet_subtitle'),
       );
     }
     return RefreshIndicator(
@@ -358,7 +362,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen>
             onDelivered: req.isAccepted ? () => _markDelivered(req) : null,
             statusLabel: req.isAccepted
                 ? null
-                : (req.isDelivered ? 'Delivered' : req.status),
+                : (req.isDelivered ? t('delivered_action') : req.status),
           );
         },
       ),
@@ -387,7 +391,8 @@ class _DeliveryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pickupLabel = shop?.name ?? 'Shop';
+    final t = context.watch<SettingsController>().t;
+    final pickupLabel = shop?.name ?? t('shop_fallback_label');
     final pickupCity = shop?.city;
 
     final mapLat = request.dropoffLat;
@@ -453,8 +458,8 @@ class _DeliveryCard extends StatelessWidget {
                   itemBuilder: (context) => [
                     PopupMenuItem(
                       onTap: onCancel,
-                      child: const Text('Cancel delivery',
-                          style: TextStyle(color: AppTheme.red)),
+                      child: Text(t('cancel_delivery_action'),
+                          style: const TextStyle(color: AppTheme.red)),
                     ),
                   ],
                 ),
@@ -479,7 +484,7 @@ class _DeliveryCard extends StatelessWidget {
             child: Text(
               request.distanceKm != null
                   ? '${request.distanceKm!.toStringAsFixed(1)} km'
-                  : 'Distance unknown',
+                  : t('distance_unknown'),
               style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
@@ -491,7 +496,7 @@ class _DeliveryCard extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                  onPressed: onAccept, child: const Text('Accept')),
+                  onPressed: onAccept, child: Text(t('accept_action'))),
             ),
           ] else if (onContact != null || onDelivered != null) ...[
             const SizedBox(height: 10),
@@ -499,12 +504,13 @@ class _DeliveryCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                      onPressed: onContact, child: const Text('Contact')),
+                      onPressed: onContact, child: Text(t('contact_action'))),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: FilledButton(
-                      onPressed: onDelivered, child: const Text('Delivered')),
+                      onPressed: onDelivered,
+                      child: Text(t('delivered_action'))),
                 ),
               ],
             ),
@@ -537,14 +543,15 @@ class _FullMapScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delivery point'),
+        title: Text(t('delivery_point_title')),
         actions: [
           IconButton(
             onPressed: _openInMaps,
             icon: const Icon(Icons.navigation_outlined),
-            tooltip: 'Open in Maps',
+            tooltip: t('open_in_maps'),
           ),
         ],
       ),
@@ -592,21 +599,22 @@ class _ContactSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return SafeArea(
       top: false,
       child: ListView(
         controller: scrollController,
         padding: const EdgeInsets.fromLTRB(20, 18, 20, 24),
         children: [
-          const Text('Customer contact',
-              style: TextStyle(
+          Text(t('customer_contact_title'),
+              style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppTheme.ink)),
           const SizedBox(height: 4),
-          const Text(
-            'Visible because you accepted this delivery.',
-            style: TextStyle(fontSize: 12, color: AppTheme.muted),
+          Text(
+            t('visible_because_accepted'),
+            style: const TextStyle(fontSize: 12, color: AppTheme.muted),
           ),
           const SizedBox(height: 18),
           Text(contact.fullName,
@@ -636,7 +644,7 @@ class _ContactSheet extends StatelessWidget {
           OutlinedButton.icon(
             onPressed: request.deliveryMapUrl == null ? null : _openInMaps,
             icon: const Icon(Icons.navigation_outlined, size: 18),
-            label: const Text('Open in Maps'),
+            label: Text(t('open_in_maps')),
           ),
           const SizedBox(height: 10),
           Row(
@@ -645,13 +653,13 @@ class _ContactSheet extends StatelessWidget {
                   child: OutlinedButton.icon(
                       onPressed: _call,
                       icon: const Icon(Icons.call_outlined, size: 18),
-                      label: const Text('Call'))),
+                      label: Text(t('call_action')))),
               const SizedBox(width: 10),
               Expanded(
                   child: FilledButton.icon(
                       onPressed: _whatsapp,
                       icon: const Icon(Icons.chat_bubble_outline, size: 18),
-                      label: const Text('WhatsApp'))),
+                      label: Text(t('whatsapp_action')))),
             ],
           ),
         ],

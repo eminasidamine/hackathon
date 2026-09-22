@@ -45,7 +45,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
       Shop? shop, VendorAnalytics a, String Function(String) t) async {
     setState(() => _sharing = true);
     try {
-      final bytes = await BusinessProfilePdf.build(shop: shop, a: a);
+      final bytes = await BusinessProfilePdf.build(shop: shop, a: a, t: t);
       final name = (shop?.name ?? 'shop')
           .toLowerCase()
           .replaceAll(RegExp(r'[^a-z0-9]+'), '-')
