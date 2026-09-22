@@ -391,7 +391,7 @@ class _ReadinessSection extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
-                      color: AppTheme.copper)),
+                      color: AppTheme.ink)),
               const Text(' / 100',
                   style: TextStyle(fontSize: 13, color: AppTheme.ink2)),
             ],
@@ -419,8 +419,7 @@ class _ReadinessSection extends StatelessWidget {
                 value: (p.score / 25).clamp(0.0, 1.0),
                 minHeight: 5,
                 backgroundColor: AppTheme.line,
-                valueColor:
-                    const AlwaysStoppedAnimation<Color>(AppTheme.copper),
+                valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.ink),
               ),
             ),
             const SizedBox(height: 3),

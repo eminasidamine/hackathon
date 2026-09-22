@@ -20,7 +20,6 @@ class BusinessProfilePdf {
   static PdfColor get _ink2 => const PdfColor.fromInt(0xFF5C5658);
   static PdfColor get _line => const PdfColor.fromInt(0xFFE8E2E3);
   static PdfColor get _tint => const PdfColor.fromInt(0xFFF6F3F4);
-  static PdfColor get _copper => const PdfColor.fromInt(0xFFD2793F);
 
   static Future<List<int>> build({
     required Shop? shop,
@@ -258,7 +257,7 @@ class BusinessProfilePdf {
                     style: pw.TextStyle(
                         fontSize: 20,
                         fontWeight: pw.FontWeight.bold,
-                        color: _copper)),
+                        color: _ink)),
                 pw.TextSpan(
                     text: ' / 100',
                     style: pw.TextStyle(fontSize: 10, color: _ink2)),
@@ -291,7 +290,7 @@ class BusinessProfilePdf {
                   pw.Container(
                     height: 4,
                     width: (p.score / 25).clamp(0.0, 1.0) * 515,
-                    decoration: pw.BoxDecoration(color: _copper),
+                    decoration: pw.BoxDecoration(color: _ink),
                   ),
                 ]),
                 pw.SizedBox(height: 2),

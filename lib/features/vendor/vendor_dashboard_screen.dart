@@ -130,13 +130,10 @@ class _Greeting extends StatelessWidget {
       children: [
         ShopAvatar(name: shop, logoUrl: shopLogoUrl, size: 46),
         const SizedBox(width: 12),
-        Expanded(
-          child: Center(
-            child: Text(
-              t('vendor_activity_subtitle').replaceAll('{shop}', shop),
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 13, color: AppTheme.ink2),
-            ),
+        Flexible(
+          child: Text(
+            t('vendor_activity_subtitle').replaceAll('{shop}', shop),
+            style: const TextStyle(fontSize: 13, color: AppTheme.ink2),
           ),
         ),
       ],
@@ -358,8 +355,8 @@ class _SalesPainter extends CustomPainter {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppTheme.copper.withValues(alpha: 0.22),
-            AppTheme.copper.withValues(alpha: 0.02),
+            AppTheme.kpiHighlight,
+            AppTheme.kpiHighlight.withValues(alpha: 0),
           ],
         ).createShader(Offset.zero & size),
     );
@@ -367,7 +364,7 @@ class _SalesPainter extends CustomPainter {
     canvas.drawPath(
       line,
       Paint()
-        ..color = AppTheme.copper
+        ..color = AppTheme.ink
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2
         ..strokeCap = StrokeCap.round
@@ -454,7 +451,7 @@ class _Bar extends StatelessWidget {
             value: fraction.clamp(0.0, 1.0),
             minHeight: 6,
             backgroundColor: AppTheme.line,
-            valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.copper),
+            valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.ink),
           ),
         ),
       ],
@@ -523,8 +520,8 @@ class _ReadinessBlock extends StatelessWidget {
                         value: (score / 100).clamp(0.0, 1.0),
                         strokeWidth: 6,
                         backgroundColor: AppTheme.line,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                            AppTheme.copper),
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(AppTheme.ink),
                       ),
                     ),
                     Text('$score',
@@ -596,7 +593,7 @@ class _InsightsBlock extends StatelessWidget {
                       ? Icons.lightbulb_outline
                       : Icons.insights_outlined,
                   size: 16,
-                  color: i.isSuggestion ? AppTheme.copper : AppTheme.ink2,
+                  color: i.isSuggestion ? AppTheme.ink : AppTheme.ink2,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -674,10 +671,11 @@ class _Block extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
-                    color: AppTheme.copper.withValues(alpha: 0.12),
+                    color: AppTheme.kpiHighlight,
                     borderRadius: BorderRadius.circular(9),
+                    border: Border.all(color: AppTheme.kpiHighlightBorder),
                   ),
-                  child: Icon(icon, size: 15, color: AppTheme.copper),
+                  child: Icon(icon, size: 15, color: AppTheme.ink),
                 ),
                 const SizedBox(width: 10),
               ],
