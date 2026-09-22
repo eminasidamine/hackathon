@@ -60,7 +60,10 @@ class OrderService {
             'client_city': profileRow['city'],
             'client_address':
                 cleanAddress.isEmpty ? profileRow['address'] : cleanAddress,
-            'payment_reference': paymentReferencesByShop[shopId]?.trim() ?? '',
+            'payment_reference':
+                (paymentReferencesByShop[shopId]?.trim() ?? '').isEmpty
+                    ? null
+                    : paymentReferencesByShop[shopId]!.trim(),
             'payment_provider': providerByShop[shopId],
             'delivery_lat': deliveryLat,
             'delivery_lng': deliveryLng,
