@@ -559,8 +559,10 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
       setState(() => _error = t('checkout_share_location_or_address'));
       return;
     }
-    final missing = widget.cart.linesByShop.keys
-        .any((id) => _references[id]!.text.trim().isEmpty);
+    final missing = widget.cart.linesByShop.keys.any((id) {
+      final hasCode = (_shops[id]?.merchantCode ?? '').trim().isNotEmpty;
+      return hasCode && _references[id]!.text.trim().isEmpty;
+    });
     if (missing) {
       setState(() => _error = t('checkout_enter_payment_reference'));
       return;
@@ -886,6 +888,7 @@ class _ShopPaymentBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     final hasCode = merchantCode != null && merchantCode!.trim().isNotEmpty;
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -931,7 +934,7 @@ class _ShopPaymentBlock extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Merchant code${merchantProvider != null && merchantProvider!.isNotEmpty ? ' · $merchantProvider' : ''}',
+                          '${t('merchant_code_label')}${merchantProvider != null && merchantProvider!.isNotEmpty ? ' · $merchantProvider' : ''}',
                           style: const TextStyle(
                               fontSize: 11.5, color: AppTheme.muted),
                         ),
@@ -948,13 +951,13 @@ class _ShopPaymentBlock extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    tooltip: 'Copy',
+                    tooltip: t('copy_tooltip'),
                     icon: const Icon(Icons.copy_outlined,
                         size: 18, color: AppTheme.ink2),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: merchantCode!));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Merchant code copied.')),
+                        SnackBar(content: Text(t('merchant_code_copied'))),
                       );
                     },
                   ),
@@ -967,21 +970,22 @@ class _ShopPaymentBlock extends StatelessWidget {
               decoration: BoxDecoration(
                   color: AppTheme.panel,
                   borderRadius: BorderRadius.circular(12)),
-              child: const Text(
-                "This shop hasn't registered its merchant code yet. "
-                "Contact them on WhatsApp to get their code before paying.",
-                style: TextStyle(
+              child: Text(
+                t('no_merchant_code_message'),
+                style: const TextStyle(
                     fontSize: 12.5, color: AppTheme.ink2, height: 1.35),
               ),
             ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: controller,
-            decoration: const InputDecoration(
-              labelText: 'Payment reference received',
-              hintText: 'The reference your bank gave you',
+          if (hasCode) ...[
+            const SizedBox(height: 12),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                labelText: t('payment_reference_label'),
+                hintText: t('payment_reference_hint'),
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );

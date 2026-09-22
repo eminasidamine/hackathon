@@ -91,7 +91,6 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
                   const SizedBox(height: 24),
                   _Block(
                     title: t('block_sales_title'),
-                    subtitle: t('block_sales_subtitle'),
                     t: t,
                     icon: Icons.show_chart_rounded,
                     child: SalesChart(points: a.salesByDay, t: t),
@@ -99,7 +98,6 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
                   const SizedBox(height: 16),
                   _Block(
                     title: t('block_payments_title'),
-                    subtitle: t('block_payments_subtitle'),
                     t: t,
                     icon: Icons.account_balance_wallet_outlined,
                     child: _ProviderSplit(a: a, t: t),
@@ -107,7 +105,6 @@ class _VendorDashboardScreenState extends State<VendorDashboardScreen> {
                   const SizedBox(height: 16),
                   _Block(
                     title: t('block_products_title'),
-                    subtitle: t('block_products_subtitle'),
                     t: t,
                     icon: Icons.shopping_bag_outlined,
                     child: _TopProducts(a: a, t: t),
@@ -612,7 +609,6 @@ class _InsightsBlock extends StatelessWidget {
     if (insights.isEmpty) return const SizedBox.shrink();
     return _Block(
       title: t('block_insights_title'),
-      subtitle: t('block_insights_subtitle'),
       t: t,
       icon: Icons.auto_awesome_outlined,
       child: Column(

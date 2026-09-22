@@ -21,12 +21,6 @@ class OrderService {
     if (user == null) throw Exception('Not signed in');
     final cleanPhone = phone.trim();
     if (cleanPhone.isEmpty) throw Exception('Phone number is required.');
-    for (final shopId in cart.linesByShop.keys) {
-      final ref = paymentReferencesByShop[shopId]?.trim() ?? '';
-      if (ref.isEmpty) {
-        throw Exception('Missing payment code for a shop.');
-      }
-    }
     final cleanAddress = (deliveryAddress ?? '').trim();
     if (deliveryLat == null && cleanAddress.isEmpty) {
       throw Exception('Delivery location is required.');
@@ -66,7 +60,7 @@ class OrderService {
             'client_city': profileRow['city'],
             'client_address':
                 cleanAddress.isEmpty ? profileRow['address'] : cleanAddress,
-            'payment_reference': paymentReferencesByShop[shopId]!.trim(),
+            'payment_reference': paymentReferencesByShop[shopId]?.trim() ?? '',
             'payment_provider': providerByShop[shopId],
             'delivery_lat': deliveryLat,
             'delivery_lng': deliveryLng,

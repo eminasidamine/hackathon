@@ -42,13 +42,15 @@ class _MyShopScreenState extends State<MyShopScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
         backgroundColor: AppTheme.bg,
         surfaceTintColor: AppTheme.bg,
         iconTheme: const IconThemeData(color: AppTheme.ink),
-        title: const Text('My shop', style: TextStyle(color: AppTheme.ink)),
+        title: Text(t('my_shop_title'),
+            style: const TextStyle(color: AppTheme.ink)),
       ),
       body: SafeArea(
         child: FutureBuilder<Shop?>(
@@ -178,23 +180,25 @@ class _CreateShopViewState extends State<_CreateShopView> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Create your shop',
-            style: TextStyle(
+          Text(
+            t('create_shop_title'),
+            style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w700,
                 letterSpacing: -0.4,
                 color: AppTheme.ink),
           ),
           const SizedBox(height: 8),
-          const Text(
-            "Like a profile: the photo and WhatsApp number are required (customers need them to recognize and contact you). Your shop stays private until the admin approves it — you'll then be visible on the home page.",
-            style: TextStyle(fontSize: 13.5, color: AppTheme.ink2, height: 1.4),
+          Text(
+            t('create_shop_intro'),
+            style: const TextStyle(
+                fontSize: 13.5, color: AppTheme.ink2, height: 1.4),
           ),
           const SizedBox(height: 22),
           Center(
@@ -237,9 +241,9 @@ class _CreateShopViewState extends State<_CreateShopView> {
           ),
           if (_logoMissingError) ...[
             const SizedBox(height: 8),
-            const Center(
-              child: Text('Photo required — tap the circle to add one.',
-                  style: TextStyle(fontSize: 12, color: AppTheme.red)),
+            Center(
+              child: Text(t('photo_required_tap'),
+                  style: const TextStyle(fontSize: 12, color: AppTheme.red)),
             ),
           ],
           const SizedBox(height: 26),
@@ -250,29 +254,29 @@ class _CreateShopViewState extends State<_CreateShopView> {
               children: [
                 TextFormField(
                   controller: _name,
-                  decoration: const InputDecoration(labelText: 'Shop name'),
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Required' : null,
+                  decoration: InputDecoration(labelText: t('shop_name')),
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? t('required_field')
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                     controller: _description,
                     maxLines: 3,
-                    decoration: const InputDecoration(
-                        labelText: 'Description (optional)')),
+                    decoration:
+                        InputDecoration(labelText: t('description_optional'))),
                 const SizedBox(height: 12),
                 TextFormField(
                     controller: _city,
-                    decoration:
-                        const InputDecoration(labelText: 'City (optional)')),
+                    decoration: InputDecoration(labelText: t('city_optional'))),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _whatsapp,
                   keyboardType: TextInputType.phone,
                   decoration:
-                      const InputDecoration(labelText: 'WhatsApp number'),
+                      InputDecoration(labelText: t('whatsapp_number_label')),
                   validator: (v) => (v == null || v.trim().isEmpty)
-                      ? 'Required — customers need it to contact you'
+                      ? t('whatsapp_required_hint')
                       : null,
                 ),
                 const SizedBox(height: 12),
@@ -300,7 +304,7 @@ class _CreateShopViewState extends State<_CreateShopView> {
                           width: 18,
                           child: CircularProgressIndicator(
                               strokeWidth: 2, color: Colors.white))
-                      : const Text('CREATE MY SHOP'),
+                      : Text(t('create_my_shop_caps')),
                 ),
               ],
             ),
@@ -476,37 +480,39 @@ class _EditShopDialogState extends State<_EditShopDialog> {
                 ),
                 if (_logoMissingError) ...[
                   const SizedBox(height: 6),
-                  const Center(
-                    child: Text('Photo required',
-                        style: TextStyle(fontSize: 12, color: AppTheme.red)),
+                  Center(
+                    child: Text(t('photo_required_short'),
+                        style:
+                            const TextStyle(fontSize: 12, color: AppTheme.red)),
                   ),
                 ],
                 const SizedBox(height: 18),
                 TextFormField(
                   controller: _name,
-                  decoration: const InputDecoration(labelText: 'Shop name'),
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Required' : null,
+                  decoration: InputDecoration(labelText: t('shop_name')),
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? t('required_field')
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
                     controller: _description,
                     maxLines: 3,
-                    decoration: const InputDecoration(
-                        labelText: 'Description (optional)')),
+                    decoration:
+                        InputDecoration(labelText: t('description_optional'))),
                 const SizedBox(height: 12),
                 TextFormField(
                     controller: _city,
-                    decoration:
-                        const InputDecoration(labelText: 'City (optional)')),
+                    decoration: InputDecoration(labelText: t('city_optional'))),
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _whatsapp,
                   keyboardType: TextInputType.phone,
                   decoration:
-                      const InputDecoration(labelText: 'WhatsApp number'),
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Required' : null,
+                      InputDecoration(labelText: t('whatsapp_number_label')),
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? t('required_field')
+                      : null,
                 ),
                 const SizedBox(height: 12),
                 _MerchantCodeFields(
@@ -532,7 +538,7 @@ class _EditShopDialogState extends State<_EditShopDialog> {
       actions: [
         TextButton(
             onPressed: _saving ? null : () => Navigator.of(context).pop(false),
-            child: const Text('Cancel')),
+            child: Text(t('cancel'))),
         FilledButton(
           onPressed: _saving ? null : _save,
           child: _saving
@@ -541,7 +547,7 @@ class _EditShopDialogState extends State<_EditShopDialog> {
                   width: 16,
                   child: CircularProgressIndicator(
                       strokeWidth: 2, color: Colors.white))
-              : const Text('Save'),
+              : Text(t('save')),
         ),
       ],
     );
@@ -618,7 +624,7 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
         actions: [
           TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel')),
+              child: Text(t('cancel'))),
           FilledButton(
             style: FilledButton.styleFrom(backgroundColor: AppTheme.red),
             onPressed: () => Navigator.of(context).pop(true),
@@ -673,18 +679,20 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
   }
 
   Future<void> _delete(Product p) async {
+    final t = context.read<SettingsController>().t;
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('Delete "${p.name}"?'),
-        content: const Text('This action cannot be undone.'),
+        title: Text(
+            t('delete_product_confirm_title').replaceAll('{name}', p.name)),
+        content: Text(t('action_cannot_be_undone')),
         actions: [
           TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel')),
+              child: Text(t('cancel'))),
           FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Delete')),
+              child: Text(t('delete_action'))),
         ],
       ),
     );
@@ -726,8 +734,8 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
                     ),
                     child: Text(
                       shop.isVisible
-                          ? 'Boutique active'
-                          : "En attente de validation par l'administration",
+                          ? t('shop_active_badge')
+                          : t('shop_pending_badge'),
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -793,13 +801,13 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
           children: [
             Expanded(
                 child: _DashboardTabButton(
-                    label: 'Produits',
+                    label: t('my_products_tab'),
                     active: _tab == 0,
                     onTap: () => setState(() => _tab = 0))),
             const SizedBox(width: 8),
             Expanded(
                 child: _DashboardTabButton(
-                    label: 'Commandes',
+                    label: t('orders_tab_label'),
                     active: _tab == 1,
                     onTap: () => setState(() => _tab = 1))),
           ],
@@ -811,14 +819,14 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                for (final entry in const [
-                  ['all', 'Toutes'],
-                  ['pending', 'En attente'],
-                  ['confirmed', 'Confirmed'],
-                  ['preparing', 'Preparing'],
-                  ['delivering', 'En livraison'],
-                  ['delivered', 'Delivered'],
-                  ['cancelled', 'Cancelled'],
+                for (final entry in [
+                  ['all', t('all_chip')],
+                  ['pending', t('order_status_pending')],
+                  ['confirmed', t('order_status_confirmed')],
+                  ['preparing', t('order_status_preparing')],
+                  ['delivering', t('order_status_delivering')],
+                  ['delivered', t('order_status_delivered')],
+                  ['cancelled', t('order_status_cancelled')],
                 ])
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
@@ -849,8 +857,8 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Text(
                     _orderFilter == 'all'
-                        ? 'No orders yet.'
-                        : 'No orders in this state.',
+                        ? t('no_orders_yet')
+                        : t('no_orders_in_state'),
                     style: const TextStyle(color: AppTheme.muted, fontSize: 13),
                   ),
                 );
@@ -867,16 +875,16 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('My products',
-                  style: TextStyle(
+              Text(t('my_products_section_title'),
+                  style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: AppTheme.ink)),
               TextButton.icon(
                 onPressed: _openAddProduct,
                 icon: const Icon(Icons.add, size: 18, color: AppTheme.ink),
-                label: const Text('Add',
-                    style: TextStyle(
+                label: Text(t('add_action'),
+                    style: const TextStyle(
                         color: AppTheme.ink, fontWeight: FontWeight.w600)),
               ),
             ],
@@ -887,7 +895,7 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
             onChanged: (v) =>
                 setState(() => _productQuery = v.trim().toLowerCase()),
             decoration: InputDecoration(
-              hintText: 'Search my products',
+              hintText: t('search_my_products_hint'),
               prefixIcon:
                   const Icon(Icons.search, size: 19, color: AppTheme.muted),
               isDense: true,
@@ -924,8 +932,8 @@ class _MyShopDashboardState extends State<_MyShopDashboard> {
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Text(
                     _productQuery.isEmpty
-                        ? 'Aucun produit pour le moment.'
-                        : 'Aucun produit ne correspond.',
+                        ? t('no_products_yet')
+                        : t('no_products_match'),
                     style: const TextStyle(color: AppTheme.muted, fontSize: 13),
                   ),
                 );
@@ -1281,18 +1289,19 @@ class _MyProductScreenState extends State<_MyProductScreen> {
   }
 
   Future<void> _deleteExistingPhoto(ProductImage image) async {
+    final t = context.read<SettingsController>().t;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Delete this photo?'),
-        content: const Text('This photo will be removed from the product.'),
+        title: Text(t('delete_photo_confirm_title')),
+        content: Text(t('delete_photo_confirm_message')),
         actions: [
           TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel')),
+              child: Text(t('cancel'))),
           FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Delete')),
+              child: Text(t('delete_action'))),
         ],
       ),
     );
@@ -1333,28 +1342,28 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     }
   }
 
-  String? _validateVariants() {
+  String? _validateVariants(String Function(String) t) {
     if (_noVariants) return null;
     if (_optionName.text.trim().isEmpty) {
-      return "Give the option a name (Size, Color...), or check \u201cthis product has no variants\u201d.";
+      return t('option_name_required');
     }
     if (_optionType == 'color') {
-      if (_selectedHex.isEmpty)
-        return 'Touche au moins une teinte dans la palette.';
+      if (_selectedHex.isEmpty) return t('select_one_shade');
     } else {
       final values = _optionValues.text
           .split(',')
           .map((v) => v.trim())
           .where((v) => v.isNotEmpty);
-      if (values.isEmpty) return 'Ajoute au moins un choix (ex : 36, 37, 38).';
+      if (values.isEmpty) return t('add_one_choice');
     }
     return null;
   }
 
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
+    final t = context.read<SettingsController>().t;
 
-    final variantsError = _validateVariants();
+    final variantsError = _validateVariants(t);
     setState(() => _optionsError = variantsError);
     if (variantsError != null) return;
     setState(() => _saving = true);
@@ -1452,6 +1461,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Scaffold(
       backgroundColor: AppTheme.bg,
       appBar: AppBar(
@@ -1459,7 +1469,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
         elevation: 0,
         iconTheme: const IconThemeData(color: AppTheme.ink),
         title: Text(
-          _isEditing ? 'Modifier le produit' : 'Nouveau produit',
+          _isEditing ? t('edit_product_title') : t('new_product_title'),
           style: const TextStyle(
               color: AppTheme.ink, fontSize: 16, fontWeight: FontWeight.w700),
         ),
@@ -1471,38 +1481,38 @@ class _MyProductScreenState extends State<_MyProductScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('Photos',
-                  style: TextStyle(
+              Text(t('photos_label'),
+                  style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: AppTheme.ink)),
               const SizedBox(height: 4),
-              const Text(
-                "The first photo is the one shown on the product page and in listings — use the arrows to reorder, and tap a photo to choose the part to always keep visible.",
-                style:
-                    TextStyle(fontSize: 12, color: AppTheme.ink2, height: 1.4),
+              Text(
+                t('photos_instructions'),
+                style: const TextStyle(
+                    fontSize: 12, color: AppTheme.ink2, height: 1.4),
               ),
               const SizedBox(height: 12),
-              _buildPhotosSection(),
+              _buildPhotosSection(t),
               const SizedBox(height: 24),
               TextFormField(
                 controller: _brand,
-                decoration: const InputDecoration(
-                    labelText:
-                        'Brand (optional — otherwise your shop name is shown)'),
+                decoration:
+                    InputDecoration(labelText: t('brand_optional_hint')),
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _name,
-                decoration: const InputDecoration(labelText: 'Product name'),
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Required' : null,
+                decoration: InputDecoration(labelText: t('product_name_label')),
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? t('required_field')
+                    : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
                   controller: _description,
                   maxLines: 3,
-                  decoration: const InputDecoration(labelText: 'Description')),
+                  decoration: InputDecoration(labelText: t('description'))),
               const SizedBox(height: 12),
               Row(
                 children: [
@@ -1511,11 +1521,11 @@ class _MyProductScreenState extends State<_MyProductScreen> {
                       controller: _price,
                       keyboardType: TextInputType.number,
                       decoration:
-                          const InputDecoration(labelText: 'Price (MRU)'),
+                          InputDecoration(labelText: t('price_mru_label')),
                       validator: (v) => (v == null ||
                               double.tryParse(v.trim().replaceAll(',', '.')) ==
                                   null)
-                          ? 'Prix invalide'
+                          ? t('invalid_price')
                           : null,
                     ),
                   ),
@@ -1524,10 +1534,10 @@ class _MyProductScreenState extends State<_MyProductScreen> {
                     child: TextFormField(
                       controller: _stock,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(labelText: 'Stock'),
+                      decoration: InputDecoration(labelText: t('stock_label')),
                       validator: (v) {
                         final n = int.tryParse((v ?? '').trim());
-                        if (n == null || n < 0) return 'Stock invalide';
+                        if (n == null || n < 0) return t('invalid_stock');
                         return null;
                       },
                     ),
@@ -1538,28 +1548,28 @@ class _MyProductScreenState extends State<_MyProductScreen> {
               TextFormField(
                 controller: _compareAtPrice,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    labelText: 'Crossed-out price (optional)'),
+                decoration:
+                    InputDecoration(labelText: t('compare_price_optional')),
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) return null;
                   return double.tryParse(v.trim().replaceAll(',', '.')) == null
-                      ? 'Prix invalide'
+                      ? t('invalid_price')
                       : null;
                 },
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
                 value: _categoryId,
-                decoration: const InputDecoration(labelText: 'Category'),
+                decoration: InputDecoration(labelText: t('category')),
                 items: [
-                  const DropdownMenuItem(value: null, child: Text('None')),
+                  DropdownMenuItem(value: null, child: Text(t('none_option'))),
                   ..._categories.map((c) =>
                       DropdownMenuItem(value: c.id, child: Text(c.name))),
                 ],
                 onChanged: (v) => setState(() => _categoryId = v),
               ),
               const SizedBox(height: 20),
-              _buildVariantsSection(),
+              _buildVariantsSection(t),
               const SizedBox(height: 26),
               FilledButton(
                 onPressed: _saving ? null : _save,
@@ -1569,7 +1579,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
                         width: 18,
                         child: CircularProgressIndicator(
                             strokeWidth: 2, color: Colors.white))
-                    : const Text('SAVE'),
+                    : Text(t('save_caps')),
               ),
             ],
           ),
@@ -1578,20 +1588,20 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     );
   }
 
-  Widget _buildVariantsSection() {
+  Widget _buildVariantsSection(String Function(String) t) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Variants',
-            style: TextStyle(
+        Text(t('variants_label'),
+            style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
                 color: AppTheme.ink)),
         const SizedBox(height: 4),
-        const Text(
-          'Une taille pour une chaussure, une teinte pour du maquillage. '
-          'La cliente devra en choisir une avant de commander.',
-          style: TextStyle(fontSize: 12, color: AppTheme.ink2, height: 1.35),
+        Text(
+          t('variants_hint'),
+          style:
+              const TextStyle(fontSize: 12, color: AppTheme.ink2, height: 1.35),
         ),
         const SizedBox(height: 8),
         CheckboxListTile(
@@ -1602,21 +1612,21 @@ class _MyProductScreenState extends State<_MyProductScreen> {
           }),
           contentPadding: EdgeInsets.zero,
           controlAffinity: ListTileControlAffinity.leading,
-          title: const Text("Ce produit n'a pas de variantes",
-              style: TextStyle(fontSize: 13.5, color: AppTheme.ink)),
+          title: Text(t('no_variants_checkbox'),
+              style: const TextStyle(fontSize: 13.5, color: AppTheme.ink)),
         ),
         if (!_noVariants) ...[
           const SizedBox(height: 4),
           SegmentedButton<String>(
-            segments: const [
+            segments: [
               ButtonSegment(
                   value: 'text',
-                  label: Text('Text'),
-                  icon: Icon(Icons.straighten, size: 16)),
+                  label: Text(t('variant_type_text')),
+                  icon: const Icon(Icons.straighten, size: 16)),
               ButtonSegment(
                   value: 'color',
-                  label: Text('Color'),
-                  icon: Icon(Icons.palette_outlined, size: 16)),
+                  label: Text(t('variant_type_color')),
+                  icon: const Icon(Icons.palette_outlined, size: 16)),
             ],
             selected: {_optionType},
             onSelectionChanged: (set) => setState(() {
@@ -1632,20 +1642,18 @@ class _MyProductScreenState extends State<_MyProductScreen> {
           const SizedBox(height: 12),
           TextFormField(
             controller: _optionName,
-            decoration: const InputDecoration(
-                labelText: "Nom de l'option (ex : Taille, Couleur)"),
+            decoration: InputDecoration(labelText: t('option_name_hint')),
           ),
           const SizedBox(height: 12),
           if (_optionType == 'text')
             TextFormField(
               controller: _optionValues,
-              decoration: const InputDecoration(
-                  labelText: 'Options, comma-separated (e.g. 36, 37, 38)'),
+              decoration: InputDecoration(labelText: t('option_values_hint')),
             )
           else ...[
-            const Text(
-              'Touche les teintes que tu vends.',
-              style: TextStyle(fontSize: 12.5, color: AppTheme.ink2),
+            Text(
+              t('touch_shades_hint'),
+              style: const TextStyle(fontSize: 12.5, color: AppTheme.ink2),
             ),
             const SizedBox(height: 10),
             Wrap(
@@ -1670,9 +1678,9 @@ class _MyProductScreenState extends State<_MyProductScreen> {
             ),
             if (_selectedHex.isNotEmpty) ...[
               const SizedBox(height: 18),
-              const Text(
-                'Chosen shades — check the ones that are out of stock',
-                style: TextStyle(
+              Text(
+                t('chosen_shades_label'),
+                style: const TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w600,
                     color: AppTheme.ink),
@@ -1697,9 +1705,9 @@ class _MyProductScreenState extends State<_MyProductScreen> {
                           child: Text(swatchName(hex),
                               style: const TextStyle(
                                   fontSize: 13.5, color: AppTheme.ink))),
-                      const Text('Out of stock',
-                          style:
-                              TextStyle(fontSize: 12, color: AppTheme.muted)),
+                      Text(t('out_of_stock_label'),
+                          style: const TextStyle(
+                              fontSize: 12, color: AppTheme.muted)),
                       Checkbox(
                         value: _soldOutHex.contains(hex),
                         onChanged: (v) => setState(() {
@@ -1711,7 +1719,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
                         }),
                       ),
                       IconButton(
-                        tooltip: 'Remove',
+                        tooltip: t('remove_tooltip'),
                         icon: const Icon(Icons.close,
                             size: 18, color: AppTheme.muted),
                         onPressed: () => setState(() {
@@ -1734,7 +1742,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
     );
   }
 
-  Widget _buildPhotosSection() {
+  Widget _buildPhotosSection(String Function(String) t) {
     final tiles = <Widget>[];
     if (_isEditing) {
       for (var i = 0; i < _existingImages.length; i++) {
@@ -1745,6 +1753,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
           alignment: Alignment(image.focalX * 2 - 1, image.focalY * 2 - 1),
           zoom: image.zoom,
           isCover: i == 0,
+          coverLabel: t('cover_badge'),
           onMoveLeft: i > 0 ? () => _moveExistingPhoto(i, -1) : null,
           onMoveRight: i < _existingImages.length - 1
               ? () => _moveExistingPhoto(i, 1)
@@ -1762,6 +1771,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
               Alignment(_queuedFocalX[i] * 2 - 1, _queuedFocalY[i] * 2 - 1),
           zoom: _queuedZoom[i],
           isCover: i == 0,
+          coverLabel: t('cover_badge'),
           onMoveLeft: i > 0 ? () => _moveQueuedPhoto(i, -1) : null,
           onMoveRight:
               i < _queuedBytes.length - 1 ? () => _moveQueuedPhoto(i, 1) : null,
@@ -1806,6 +1816,7 @@ class _PhotoTile extends StatelessWidget {
   final Alignment alignment;
   final double zoom;
   final bool isCover;
+  final String coverLabel;
   final VoidCallback? onMoveLeft;
   final VoidCallback? onMoveRight;
   final VoidCallback onDelete;
@@ -1817,6 +1828,7 @@ class _PhotoTile extends StatelessWidget {
     required this.alignment,
     required this.zoom,
     required this.isCover,
+    required this.coverLabel,
     required this.onMoveLeft,
     required this.onMoveRight,
     required this.onDelete,
@@ -1857,8 +1869,8 @@ class _PhotoTile extends StatelessWidget {
                 color: Colors.black54,
                 padding: const EdgeInsets.symmetric(vertical: 2),
                 alignment: Alignment.center,
-                child: const Text('Cover',
-                    style: TextStyle(
+                child: Text(coverLabel,
+                    style: const TextStyle(
                         fontSize: 8.5,
                         color: Colors.white,
                         fontWeight: FontWeight.w600)),
@@ -2141,8 +2153,8 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                   style: const TextStyle(fontSize: 13, color: AppTheme.ink2),
                 ),
               const SizedBox(height: 16),
-              const Text('Items',
-                  style: TextStyle(
+              Text(t('items_label'),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
                       color: AppTheme.ink)),
@@ -2182,8 +2194,8 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Total',
-                      style: TextStyle(
+                  Text(t('total'),
+                      style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 14,
                           color: AppTheme.ink)),
@@ -2195,16 +2207,17 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text('Payment reference',
-                  style: TextStyle(
+              Text(t('payment_reference_title'),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
                       color: AppTheme.ink)),
               const SizedBox(height: 6),
               if (order.paymentReference == null ||
                   order.paymentReference!.isEmpty)
-                const Text('No code (order placed before code-based payment).',
-                    style: TextStyle(fontSize: 12.5, color: AppTheme.muted))
+                Text(t('no_code_order_message'),
+                    style:
+                        const TextStyle(fontSize: 12.5, color: AppTheme.muted))
               else
                 Row(
                   children: [
@@ -2345,8 +2358,8 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                   ),
               ],
               const SizedBox(height: 16),
-              const Text('Status',
-                  style: TextStyle(
+              Text(t('status_label'),
+                  style: const TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 13,
                       color: AppTheme.ink)),
@@ -2367,7 +2380,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
       actions: [
         TextButton(
             onPressed: _saving ? null : () => Navigator.of(context).pop(false),
-            child: const Text('Close')),
+            child: Text(t('close_action'))),
         FilledButton(
           onPressed: _saving ? null : _save,
           child: _saving
@@ -2376,7 +2389,7 @@ class _MyOrderDetailDialogState extends State<_MyOrderDetailDialog> {
                   width: 16,
                   child: CircularProgressIndicator(
                       strokeWidth: 2, color: Colors.white))
-              : const Text('Save status'),
+              : Text(t('save_status_action')),
         ),
       ],
     );
@@ -2403,12 +2416,13 @@ class _MerchantCodeFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         DropdownButtonFormField<String>(
           value: provider,
-          decoration: const InputDecoration(labelText: 'Mobile bank'),
+          decoration: InputDecoration(labelText: t('mobile_bank_label')),
           items: [
             for (final p in _kMerchantProviders)
               DropdownMenuItem(value: p, child: Text(p))
@@ -2418,14 +2432,13 @@ class _MerchantCodeFields extends StatelessWidget {
         const SizedBox(height: 12),
         TextFormField(
           controller: codeController,
-          decoration: const InputDecoration(
-            labelText: 'Merchant code',
-            helperText:
-                'Customers will pay with this code from their banking app.',
+          decoration: InputDecoration(
+            labelText: t('merchant_code_label'),
+            helperText: t('merchant_code_helper'),
             helperMaxLines: 2,
           ),
           validator: (v) => (v == null || v.trim().isEmpty)
-              ? 'Required — without it, no one can pay you'
+              ? t('merchant_code_required_hint')
               : null,
         ),
       ],
@@ -2495,23 +2508,25 @@ class _PickupLocationFieldState extends State<_PickupLocationField> {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     final located = _lat != null && _lng != null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          'Pickup location (for delivery drivers)',
-          style: TextStyle(
+        Text(
+          t('pickup_location_label'),
+          style: const TextStyle(
               fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.ink),
         ),
         const SizedBox(height: 4),
-        const Text(
-          "Optional, but needed for drivers to see the distance before accepting a delivery for your shop.",
-          style: TextStyle(fontSize: 12, color: AppTheme.muted, height: 1.3),
+        Text(
+          t('pickup_location_hint'),
+          style:
+              const TextStyle(fontSize: 12, color: AppTheme.muted, height: 1.3),
         ),
         const SizedBox(height: 8),
         PlaceSearchField(
-            onSelected: _usePlace, hintText: 'Search your shop address'),
+            onSelected: _usePlace, hintText: t('search_shop_address_hint')),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: _locating ? null : _useMyPosition,
@@ -2523,8 +2538,10 @@ class _PickupLocationFieldState extends State<_PickupLocationField> {
               : Icon(located ? Icons.check_circle_outline : Icons.my_location,
                   size: 18),
           label: Text(located
-              ? 'Location saved (${_lat!.toStringAsFixed(5)}, ${_lng!.toStringAsFixed(5)})'
-              : 'Or use my current location'),
+              ? t('location_saved_template')
+                  .replaceAll('{lat}', _lat!.toStringAsFixed(5))
+                  .replaceAll('{lng}', _lng!.toStringAsFixed(5))
+              : t('use_current_location_action')),
         ),
         if (_error != null) ...[
           const SizedBox(height: 6),
@@ -2631,6 +2648,7 @@ class _DashboardCounters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = context.watch<SettingsController>().t;
     return Row(
       children: [
         Expanded(
@@ -2638,7 +2656,7 @@ class _DashboardCounters extends StatelessWidget {
             future: productsFuture,
             builder: (context, snapshot) => _CounterTile(
               value: snapshot.hasData ? '${snapshot.data!.length}' : '—',
-              label: 'produits',
+              label: t('counter_products'),
             ),
           ),
         ),
@@ -2652,7 +2670,7 @@ class _DashboardCounters extends StatelessWidget {
                   : null;
               return _CounterTile(
                 value: pending == null ? '—' : '$pending',
-                label: 'to process',
+                label: t('counter_to_process'),
                 highlight: (pending ?? 0) > 0,
               );
             },
@@ -2664,7 +2682,7 @@ class _DashboardCounters extends StatelessWidget {
             future: followersFuture,
             builder: (context, snapshot) => _CounterTile(
               value: snapshot.hasData ? '${snapshot.data}' : '—',
-              label: 'followers',
+              label: t('shop_followers'),
             ),
           ),
         ),

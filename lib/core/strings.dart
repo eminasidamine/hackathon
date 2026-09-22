@@ -462,7 +462,8 @@ class Strings {
     'cancel': {'fr': 'Annuler', 'ar': 'إلغاء', 'en': 'Cancel'},
     'ok_action': {'fr': 'OK', 'ar': 'موافق', 'en': 'OK'},
     'photo_position_hint': {
-      'fr': 'Ce point et ce zoom restent identiques sur les autres formats de carte.',
+      'fr':
+          'Ce point et ce zoom restent identiques sur les autres formats de carte.',
       'ar': 'تبقى هذه النقطة ومستوى التكبير كما هما في أشكال البطاقات الأخرى.',
       'en': 'This point and zoom stay the same across the other card formats.',
     },
@@ -1043,6 +1044,337 @@ class Strings {
           'Saisissez la référence de paiement de votre banque pour chaque boutique.',
       'ar': 'أدخل مرجع الدفع من بنكك لكل متجر.',
       'en': 'Enter the payment reference from your bank for each shop.',
+    },
+    'merchant_code_label': {
+      'fr': 'Code marchand',
+      'ar': 'رمز التاجر',
+      'en': 'Merchant code',
+    },
+    'merchant_code_copied': {
+      'fr': 'Code marchand copié.',
+      'ar': 'تم نسخ رمز التاجر.',
+      'en': 'Merchant code copied.',
+    },
+    'no_merchant_code_message': {
+      'fr': 'Cette boutique n\'a pas encore enregistré son code marchand. '
+          'Votre commande sera quand même passée — convenez du paiement '
+          'directement avec la boutique.',
+      'ar': 'لم يسجل هذا المتجر رمز التاجر الخاص به بعد. سيُنشأ طلبك رغم ذلك — '
+          'اتفق على الدفع مباشرة مع المتجر.',
+      'en': "This shop hasn't registered its merchant code yet. Your order "
+          'will still be placed — arrange the payment directly with the shop.',
+    },
+    'payment_reference_label': {
+      'fr': 'Référence de paiement reçue',
+      'ar': 'مرجع الدفع المستلم',
+      'en': 'Payment reference received',
+    },
+    'payment_reference_hint': {
+      'fr': 'La référence donnée par votre banque',
+      'ar': 'المرجع الذي أعطاك إياه بنكك',
+      'en': 'The reference your bank gave you',
+    },
+    // My shop
+    'my_shop_title': {'fr': 'Ma boutique', 'ar': 'متجري', 'en': 'My shop'},
+    'create_shop_title': {
+      'fr': 'Crée ta boutique',
+      'ar': 'أنشئ متجرك',
+      'en': 'Create your shop',
+    },
+    'create_shop_intro': {
+      'fr': 'Comme un profil : la photo et le numéro WhatsApp sont obligatoires '
+          '(les clients en ont besoin pour te reconnaître et te contacter). Ta '
+          'boutique reste privée jusqu\'à validation par l\'administrateur — tu '
+          'seras alors visible sur la page d\'accueil.',
+      'ar': 'مثل الملف الشخصي: الصورة ورقم واتساب إلزاميان (يحتاجهما العملاء '
+          'للتعرف عليك والتواصل معك). يبقى متجرك خاصًا حتى يوافق المسؤول عليه '
+          '— ستصبح حينها مرئيًا في الصفحة الرئيسية.',
+      'en': 'Like a profile: the photo and WhatsApp number are required '
+          '(customers need them to recognize and contact you). Your shop stays '
+          'private until the admin approves it — you\'ll then be visible on '
+          'the home page.',
+    },
+    'photo_required_tap': {
+      'fr': 'Photo requise — touchez le cercle pour en ajouter une.',
+      'ar': 'الصورة مطلوبة — اضغط على الدائرة لإضافة واحدة.',
+      'en': 'Photo required — tap the circle to add one.',
+    },
+    'required_field': {'fr': 'Obligatoire', 'ar': 'مطلوب', 'en': 'Required'},
+    'description_optional': {
+      'fr': 'Description (facultatif)',
+      'ar': 'الوصف (اختياري)',
+      'en': 'Description (optional)',
+    },
+    'city_optional': {
+      'fr': 'Ville (facultatif)',
+      'ar': 'المدينة (اختياري)',
+      'en': 'City (optional)',
+    },
+    'whatsapp_number_label': {
+      'fr': 'Numéro WhatsApp',
+      'ar': 'رقم واتساب',
+      'en': 'WhatsApp number',
+    },
+    'whatsapp_required_hint': {
+      'fr': 'Obligatoire — les clients en ont besoin pour te contacter',
+      'ar': 'مطلوب — يحتاجه العملاء للتواصل معك',
+      'en': 'Required — customers need it to contact you',
+    },
+    'create_my_shop_caps': {
+      'fr': 'CRÉER MA BOUTIQUE',
+      'ar': 'إنشاء متجري',
+      'en': 'CREATE MY SHOP',
+    },
+    'photo_required_short': {
+      'fr': 'Photo requise',
+      'ar': 'الصورة مطلوبة',
+      'en': 'Photo required',
+    },
+    'shop_active_badge': {
+      'fr': 'Boutique active',
+      'ar': 'المتجر نشط',
+      'en': 'Shop active',
+    },
+    'shop_pending_badge': {
+      'fr': 'En attente de validation par l\'administration',
+      'ar': 'في انتظار موافقة الإدارة',
+      'en': 'Pending admin approval',
+    },
+    'my_products_tab': {'fr': 'Produits', 'ar': 'المنتجات', 'en': 'Products'},
+    'orders_tab_label': {'fr': 'Commandes', 'ar': 'الطلبات', 'en': 'Orders'},
+    'no_orders_yet': {
+      'fr': 'Aucune commande pour l\'instant.',
+      'ar': 'لا طلبات بعد.',
+      'en': 'No orders yet.',
+    },
+    'no_orders_in_state': {
+      'fr': 'Aucune commande dans cet état.',
+      'ar': 'لا طلبات في هذه الحالة.',
+      'en': 'No orders in this state.',
+    },
+    'my_products_section_title': {
+      'fr': 'Mes produits',
+      'ar': 'منتجاتي',
+      'en': 'My products',
+    },
+    'add_action': {'fr': 'Ajouter', 'ar': 'إضافة', 'en': 'Add'},
+    'search_my_products_hint': {
+      'fr': 'Rechercher dans mes produits',
+      'ar': 'ابحث في منتجاتي',
+      'en': 'Search my products',
+    },
+    'no_products_yet': {
+      'fr': 'Aucun produit pour le moment.',
+      'ar': 'لا منتجات بعد.',
+      'en': 'No products yet.',
+    },
+    'no_products_match': {
+      'fr': 'Aucun produit ne correspond.',
+      'ar': 'لا منتجات مطابقة.',
+      'en': 'No products match.',
+    },
+    'delete_product_confirm_title': {
+      'fr': 'Supprimer « {name} » ?',
+      'ar': 'حذف "{name}"؟',
+      'en': 'Delete "{name}"?',
+    },
+    'action_cannot_be_undone': {
+      'fr': 'Cette action est irréversible.',
+      'ar': 'لا يمكن التراجع عن هذا الإجراء.',
+      'en': 'This action cannot be undone.',
+    },
+    'delete_action': {'fr': 'Supprimer', 'ar': 'حذف', 'en': 'Delete'},
+    'edit_product_title': {
+      'fr': 'Modifier le produit',
+      'ar': 'تعديل المنتج',
+      'en': 'Edit product',
+    },
+    'new_product_title': {
+      'fr': 'Nouveau produit',
+      'ar': 'منتج جديد',
+      'en': 'New product',
+    },
+    'photos_label': {'fr': 'Photos', 'ar': 'الصور', 'en': 'Photos'},
+    'photos_instructions': {
+      'fr': 'La première photo est celle affichée sur la page produit et dans '
+          'les listes — utilisez les flèches pour réordonner, et touchez une '
+          'photo pour choisir la partie à toujours garder visible.',
+      'ar': 'الصورة الأولى هي التي تظهر في صفحة المنتج والقوائم — استخدم الأسهم '
+          'لإعادة الترتيب، واضغط على صورة لاختيار الجزء الذي يبقى مرئيًا دائمًا.',
+      'en': 'The first photo is the one shown on the product page and in '
+          'listings — use the arrows to reorder, and tap a photo to choose '
+          'the part to always keep visible.',
+    },
+    'brand_optional_hint': {
+      'fr': 'Marque (facultatif — sinon le nom de ta boutique est affiché)',
+      'ar': 'العلامة التجارية (اختياري — وإلا يُعرض اسم متجرك)',
+      'en': 'Brand (optional — otherwise your shop name is shown)',
+    },
+    'product_name_label': {
+      'fr': 'Nom du produit',
+      'ar': 'اسم المنتج',
+      'en': 'Product name',
+    },
+    'price_mru_label': {
+      'fr': 'Prix (MRU)',
+      'ar': 'السعر (أوقية)',
+      'en': 'Price (MRU)',
+    },
+    'invalid_price': {
+      'fr': 'Prix invalide',
+      'ar': 'سعر غير صالح',
+      'en': 'Invalid price',
+    },
+    'stock_label': {'fr': 'Stock', 'ar': 'المخزون', 'en': 'Stock'},
+    'invalid_stock': {
+      'fr': 'Stock invalide',
+      'ar': 'مخزون غير صالح',
+      'en': 'Invalid stock',
+    },
+    'compare_price_optional': {
+      'fr': 'Prix barré (facultatif)',
+      'ar': 'السعر قبل الخصم (اختياري)',
+      'en': 'Crossed-out price (optional)',
+    },
+    'none_option': {'fr': 'Aucune', 'ar': 'لا شيء', 'en': 'None'},
+    'save_caps': {'fr': 'ENREGISTRER', 'ar': 'حفظ', 'en': 'SAVE'},
+    'variants_label': {'fr': 'Variantes', 'ar': 'الخيارات', 'en': 'Variants'},
+    'variants_hint': {
+      'fr': 'Une taille pour une chaussure, une teinte pour du maquillage. Le '
+          'client devra en choisir une avant de commander.',
+      'ar': 'مقاس للحذاء، درجة لون لمستحضرات التجميل. سيتعين على العميل اختيار '
+          'واحد قبل الطلب.',
+      'en': 'A size for a shoe, a shade for makeup. The customer will need to '
+          'pick one before ordering.',
+    },
+    'no_variants_checkbox': {
+      'fr': 'Ce produit n\'a pas de variantes',
+      'ar': 'هذا المنتج ليس له خيارات',
+      'en': 'This product has no variants',
+    },
+    'variant_type_text': {'fr': 'Texte', 'ar': 'نص', 'en': 'Text'},
+    'variant_type_color': {'fr': 'Couleur', 'ar': 'لون', 'en': 'Color'},
+    'option_name_hint': {
+      'fr': 'Nom de l\'option (ex : Taille, Couleur)',
+      'ar': 'اسم الخيار (مثال: المقاس، اللون)',
+      'en': 'Option name (e.g. Size, Color)',
+    },
+    'option_values_hint': {
+      'fr': 'Options séparées par des virgules (ex : 36, 37, 38)',
+      'ar': 'الخيارات مفصولة بفواصل (مثال: 36، 37، 38)',
+      'en': 'Options, comma-separated (e.g. 36, 37, 38)',
+    },
+    'touch_shades_hint': {
+      'fr': 'Touchez les teintes que vous vendez.',
+      'ar': 'اضغط على الدرجات التي تبيعها.',
+      'en': 'Tap the shades you sell.',
+    },
+    'chosen_shades_label': {
+      'fr': 'Teintes choisies — cochez celles en rupture de stock',
+      'ar': 'الدرجات المختارة — حدد التي نفد مخزونها',
+      'en': 'Chosen shades — check the ones that are out of stock',
+    },
+    'out_of_stock_label': {
+      'fr': 'Rupture de stock',
+      'ar': 'نفد المخزون',
+      'en': 'Out of stock',
+    },
+    'remove_tooltip': {'fr': 'Retirer', 'ar': 'إزالة', 'en': 'Remove'},
+    'option_name_required': {
+      'fr': 'Donnez un nom à l\'option (Taille, Couleur…), ou cochez « ce '
+          'produit n\'a pas de variantes ».',
+      'ar': 'أعط اسمًا للخيار (المقاس، اللون...)، أو حدد "هذا المنتج ليس له '
+          'خيارات".',
+      'en': 'Give the option a name (Size, Color...), or check "this product '
+          'has no variants".',
+    },
+    'select_one_shade': {
+      'fr': 'Touchez au moins une teinte dans la palette.',
+      'ar': 'اضغط على درجة واحدة على الأقل من اللوحة.',
+      'en': 'Tap at least one shade in the palette.',
+    },
+    'add_one_choice': {
+      'fr': 'Ajoutez au moins un choix (ex : 36, 37, 38).',
+      'ar': 'أضف خيارًا واحدًا على الأقل (مثال: 36، 37، 38).',
+      'en': 'Add at least one option (e.g. 36, 37, 38).',
+    },
+    'cover_badge': {'fr': 'Couverture', 'ar': 'الغلاف', 'en': 'Cover'},
+    'items_label': {'fr': 'Articles', 'ar': 'العناصر', 'en': 'Items'},
+    'payment_reference_title': {
+      'fr': 'Référence de paiement',
+      'ar': 'مرجع الدفع',
+      'en': 'Payment reference',
+    },
+    'no_code_order_message': {
+      'fr': 'Aucun code — le client et vous convenez du paiement directement.',
+      'ar': 'لا يوجد رمز — يتفق العميل معك مباشرة على الدفع.',
+      'en': 'No code — you and the customer arrange the payment directly.',
+    },
+    'status_label': {'fr': 'Statut', 'ar': 'الحالة', 'en': 'Status'},
+    'close_action': {'fr': 'Fermer', 'ar': 'إغلاق', 'en': 'Close'},
+    'save_status_action': {
+      'fr': 'Enregistrer le statut',
+      'ar': 'حفظ الحالة',
+      'en': 'Save status',
+    },
+    'mobile_bank_label': {
+      'fr': 'Banque mobile',
+      'ar': 'البنك المحمول',
+      'en': 'Mobile bank',
+    },
+    'merchant_code_helper': {
+      'fr': 'Les clients paieront avec ce code depuis leur appli bancaire.',
+      'ar': 'سيدفع العملاء بهذا الرمز من تطبيقهم المصرفي.',
+      'en': 'Customers will pay with this code from their banking app.',
+    },
+    'merchant_code_required_hint': {
+      'fr': 'Requis pour recevoir des paiements via l\'application',
+      'ar': 'مطلوب لاستلام المدفوعات عبر التطبيق',
+      'en': 'Required to receive payments through the app',
+    },
+    'pickup_location_label': {
+      'fr': 'Lieu de récupération (pour les livreurs)',
+      'ar': 'مكان الاستلام (للسائقين)',
+      'en': 'Pickup location (for delivery drivers)',
+    },
+    'pickup_location_hint': {
+      'fr': 'Facultatif, mais nécessaire pour que les livreurs voient la '
+          'distance avant d\'accepter une livraison pour votre boutique.',
+      'ar': 'اختياري، لكنه ضروري كي يرى السائقون المسافة قبل قبول توصيل '
+          'لمتجرك.',
+      'en': 'Optional, but needed for drivers to see the distance before '
+          'accepting a delivery for your shop.',
+    },
+    'search_shop_address_hint': {
+      'fr': 'Rechercher l\'adresse de votre boutique',
+      'ar': 'ابحث عن عنوان متجرك',
+      'en': 'Search your shop address',
+    },
+    'location_saved_template': {
+      'fr': 'Position enregistrée ({lat}, {lng})',
+      'ar': 'تم حفظ الموقع ({lat}, {lng})',
+      'en': 'Location saved ({lat}, {lng})',
+    },
+    'use_current_location_action': {
+      'fr': 'Ou utiliser ma position actuelle',
+      'ar': 'أو استخدم موقعي الحالي',
+      'en': 'Or use my current location',
+    },
+    'counter_products': {'fr': 'produits', 'ar': 'منتجات', 'en': 'products'},
+    'counter_to_process': {
+      'fr': 'à traiter',
+      'ar': 'قيد المعالجة',
+      'en': 'to process',
+    },
+    'delete_photo_confirm_title': {
+      'fr': 'Supprimer cette photo ?',
+      'ar': 'حذف هذه الصورة؟',
+      'en': 'Delete this photo?',
+    },
+    'delete_photo_confirm_message': {
+      'fr': 'Cette photo sera retirée du produit.',
+      'ar': 'ستتم إزالة هذه الصورة من المنتج.',
+      'en': 'This photo will be removed from the product.',
     },
     'checkout_reference_already_used': {
       'fr':
