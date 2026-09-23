@@ -317,54 +317,14 @@ class _CategoryDialogState extends State<_CategoryDialog> {
     final bytes = await picked.readAsBytes();
 
     if (!mounted) return;
-    final result = await Navigator.of(context).push<(double, double, double)>(
-      MaterialPageRoute(
-          builder: (_) => PhotoPositionScreen(
-              bytes: bytes, frameAspectRatio: kCategoryImageAspectRatio)),
-    );
-    if (result == null) return;
     setState(() {
       _pickedBytes = bytes;
       _pickedExt =
           picked.name.contains('.') ? picked.name.split('.').last : 'jpg';
-      _focalX = result.$1;
-      _focalY = result.$2;
-      _zoom = result.$3;
+      _focalX = 0.5;
+      _focalY = 0.5;
+      _zoom = 1.0;
     });
-  }
-
-  Future<void> _repositionImage() async {
-    if (!_hasImage) return;
-    final hasNewPick = _pickedBytes != null;
-    final result = await Navigator.of(context).push<(double, double, double)>(
-      MaterialPageRoute(
-        builder: (_) => PhotoPositionScreen(
-          bytes: hasNewPick ? _pickedBytes : null,
-          url: hasNewPick ? null : widget.existing!.imageUrl,
-          initialFocalX: _focalX,
-          initialFocalY: _focalY,
-          initialZoom: _zoom,
-          frameAspectRatio: kCategoryImageAspectRatio,
-        ),
-      ),
-    );
-    if (result == null || !mounted) return;
-    setState(() {
-      _focalX = result.$1;
-      _focalY = result.$2;
-      _zoom = result.$3;
-    });
-    if (!hasNewPick && widget.existing != null) {
-      try {
-        await widget.admin.updateCategoryImagePosition(
-            id: widget.existing!.id,
-            focalX: _focalX,
-            focalY: _focalY,
-            zoom: _zoom);
-      } catch (e) {
-        if (mounted) showAdminError(context, e);
-      }
-    }
   }
 
   Future<void> _save() async {
@@ -469,40 +429,18 @@ class _CategoryDialogState extends State<_CategoryDialog> {
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    GestureDetector(
-                      onTap: _hasImage ? _repositionImage : null,
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: SizedBox(
-                              width: 52,
-                              height: 52,
-                              child: !_hasImage
-                                  ? Container(
-                                      color: const Color(0xFFF2EDEB),
-                                      child: const Icon(Icons.image_outlined,
-                                          color: AdminTheme.muted, size: 20),
-                                    )
-                                  : _buildPreviewImage(existingImage),
-                            ),
-                          ),
-                          if (_hasImage)
-                            Positioned(
-                              left: 2,
-                              bottom: 2,
-                              child: Container(
-                                width: 18,
-                                height: 18,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.black54),
-                                alignment: Alignment.center,
-                                child: const Icon(Icons.control_camera,
-                                    size: 11, color: Colors.white),
-                              ),
-                            ),
-                        ],
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox(
+                        width: 52,
+                        height: 52,
+                        child: !_hasImage
+                            ? Container(
+                                color: const Color(0xFFF2EDEB),
+                                child: const Icon(Icons.image_outlined,
+                                    color: AdminTheme.muted, size: 20),
+                              )
+                            : _buildPreviewImage(existingImage),
                       ),
                     ),
                     const SizedBox(width: 12),
