@@ -1093,6 +1093,7 @@ class _MyProductScreenState extends State<_MyProductScreen> {
   String? _optionsError;
   String? _categoryId;
   List<Category> _categories = [];
+  bool _categoriesLoaded = false;
   bool _saving = false;
   bool _loadingImages = false;
 
@@ -1138,7 +1139,12 @@ class _MyProductScreenState extends State<_MyProductScreen> {
         p != null && (p.optionName == null || p.optionName!.trim().isEmpty);
     _categoryId = p?.categoryId ?? widget.initialCategoryId;
     _catalog.fetchCategories().then((cats) {
-      if (mounted) setState(() => _categories = cats);
+      if (mounted) {
+        setState(() {
+          _categories = cats;
+          _categoriesLoaded = true;
+        });
+      }
     });
     if (_isEditing) _loadImages();
   }
@@ -1559,16 +1565,32 @@ class _MyProductScreenState extends State<_MyProductScreen> {
                 },
               ),
               const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
-                value: _categoryId,
-                decoration: InputDecoration(labelText: t('category')),
-                items: [
-                  DropdownMenuItem(value: null, child: Text(t('none_option'))),
-                  ..._categories.map((c) =>
-                      DropdownMenuItem(value: c.id, child: Text(c.name))),
-                ],
-                onChanged: (v) => setState(() => _categoryId = v),
-              ),
+              if (_categoriesLoaded)
+                DropdownButtonFormField<String>(
+                  value: _categoryId,
+                  decoration: InputDecoration(labelText: t('category')),
+                  items: [
+                    DropdownMenuItem(
+                        value: null, child: Text(t('none_option'))),
+                    ..._categories.map((c) =>
+                        DropdownMenuItem(value: c.id, child: Text(c.name))),
+                  ],
+                  onChanged: (v) => setState(() => _categoryId = v),
+                )
+              else
+                InputDecorator(
+                  decoration: InputDecoration(labelText: t('category')),
+                  child: const SizedBox(
+                    height: 20,
+                    child: Center(
+                      child: SizedBox(
+                        height: 14,
+                        width: 14,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                  ),
+                ),
               const SizedBox(height: 20),
               _buildVariantsSection(t),
               const SizedBox(height: 26),

@@ -6,7 +6,12 @@ bool isNarrowAdmin(BuildContext context) =>
     MediaQuery.sizeOf(context).width < 700;
 
 double adminDialogWidth(BuildContext context, double desired) {
-  return (MediaQuery.sizeOf(context).width - 48).clamp(240, desired);
+  // AlertDialog reserves its own inset padding (40 per side by default) plus
+  // internal content padding on top of whatever width we ask for here — if
+  // we don't budget for that too, the content we request gets squeezed
+  // narrower than expected once actually laid out inside the dialog, which
+  // is what made the gender SegmentedButton wrap its "Women" label on phones.
+  return (MediaQuery.sizeOf(context).width - 112).clamp(200, desired);
 }
 
 class AdminPageHeader extends StatelessWidget {

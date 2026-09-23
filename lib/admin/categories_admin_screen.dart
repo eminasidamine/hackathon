@@ -450,6 +450,13 @@ class _CategoryDialogState extends State<_CategoryDialog> {
                 const SizedBox(height: 6),
                 SegmentedButton<String>(
                   emptySelectionAllowed: true,
+                  style: const ButtonStyle(
+                    padding: WidgetStatePropertyAll(
+                        EdgeInsets.symmetric(horizontal: 4)),
+                    visualDensity: VisualDensity.compact,
+                    textStyle:
+                        WidgetStatePropertyAll(TextStyle(fontSize: 12.5)),
+                  ),
                   segments: const [
                     ButtonSegment(value: '*', label: Text('Both')),
                     ButtonSegment(value: 'women', label: Text('Women')),

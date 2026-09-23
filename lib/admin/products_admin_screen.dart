@@ -334,6 +334,7 @@ class _ProductDialogState extends State<_ProductDialog> {
   String? _shopId;
   String? _categoryId;
   List<Category> _categories = [];
+  bool _categoriesLoaded = false;
   bool _saving = false;
   Uint8ListHolder? _pickedImage;
 
@@ -355,7 +356,12 @@ class _ProductDialogState extends State<_ProductDialog> {
         (widget.shops.isNotEmpty ? widget.shops.first.shop.id : null);
     _categoryId = p?.categoryId;
     widget.admin.fetchAllCategoriesFlat().then((cats) {
-      if (mounted) setState(() => _categories = cats);
+      if (mounted) {
+        setState(() {
+          _categories = cats;
+          _categoriesLoaded = true;
+        });
+      }
     });
   }
 
@@ -520,16 +526,31 @@ class _ProductDialogState extends State<_ProductDialog> {
                   },
                 ),
                 const SizedBox(height: 10),
-                DropdownButtonFormField<String>(
-                  value: _categoryId,
-                  decoration: const InputDecoration(labelText: 'Category'),
-                  items: [
-                    const DropdownMenuItem(value: null, child: Text('None')),
-                    ..._categories.map((c) =>
-                        DropdownMenuItem(value: c.id, child: Text(c.name))),
-                  ],
-                  onChanged: (v) => setState(() => _categoryId = v),
-                ),
+                if (_categoriesLoaded)
+                  DropdownButtonFormField<String>(
+                    value: _categoryId,
+                    decoration: const InputDecoration(labelText: 'Category'),
+                    items: [
+                      const DropdownMenuItem(value: null, child: Text('None')),
+                      ..._categories.map((c) =>
+                          DropdownMenuItem(value: c.id, child: Text(c.name))),
+                    ],
+                    onChanged: (v) => setState(() => _categoryId = v),
+                  )
+                else
+                  const InputDecorator(
+                    decoration: InputDecoration(labelText: 'Category'),
+                    child: SizedBox(
+                      height: 20,
+                      child: Center(
+                        child: SizedBox(
+                          height: 14,
+                          width: 14,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                      ),
+                    ),
+                  ),
                 const SizedBox(height: 14),
                 OutlinedButton.icon(
                   onPressed: _pickImage,

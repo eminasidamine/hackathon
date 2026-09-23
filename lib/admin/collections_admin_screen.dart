@@ -122,79 +122,143 @@ class _CollectionsAdminScreenState extends State<CollectionsAdminScreen> {
                 padding: EdgeInsets.fromLTRB(pad, 0, pad, pad),
                 itemCount: collections.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemBuilder: (context, i) {
-                  final c = collections[i];
-                  return AdminCard(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.network(c.imageUrl,
-                              width: 56, height: 56, fit: BoxFit.cover),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(c.title,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontSize: 14.5,
-                                      fontWeight: FontWeight.w600,
-                                      color: AdminTheme.ink)),
-                              const SizedBox(height: 2),
-                              Text(
-                                '${c.categoryName ?? "All mixed together"} · ${c.productLimit} products',
-                                style: const TextStyle(
-                                    fontSize: 12, color: AdminTheme.muted),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (!c.isVisible)
-                          const Padding(
-                            padding: EdgeInsets.only(right: 8),
-                            child: AdminStatusPill(
-                                label: 'Hidden', color: AdminTheme.muted),
-                          ),
-                        IconButton(
-                            tooltip: 'Move up',
-                            icon: const Icon(Icons.arrow_upward, size: 18),
-                            onPressed: i == 0
-                                ? null
-                                : () => _move(collections, i, -1)),
-                        IconButton(
-                            tooltip: 'Move down',
-                            icon: const Icon(Icons.arrow_downward, size: 18),
-                            onPressed: i == collections.length - 1
-                                ? null
-                                : () => _move(collections, i, 1)),
-                        Switch(
-                            value: c.isVisible,
-                            activeColor: AdminTheme.red,
-                            onChanged: (_) => _toggleVisible(c)),
-                        IconButton(
-                            tooltip: 'Edit',
-                            icon: const Icon(Icons.edit_outlined, size: 18),
-                            onPressed: () => _openEdit(c)),
-                        IconButton(
-                            tooltip: 'Delete',
-                            icon: const Icon(Icons.delete_outline,
-                                size: 18, color: AdminTheme.red),
-                            onPressed: () => _delete(c)),
-                      ],
-                    ),
-                  );
-                },
+                itemBuilder: (context, i) => _CollectionRow(
+                  collection: collections[i],
+                  canMoveUp: i > 0,
+                  canMoveDown: i < collections.length - 1,
+                  onMoveUp: () => _move(collections, i, -1),
+                  onMoveDown: () => _move(collections, i, 1),
+                  onToggleVisible: () => _toggleVisible(collections[i]),
+                  onEdit: () => _openEdit(collections[i]),
+                  onDelete: () => _delete(collections[i]),
+                ),
               );
             },
           ),
         ),
       ],
+    );
+  }
+}
+
+const double _collectionRowBreakpoint = 640;
+
+class _CollectionRow extends StatelessWidget {
+  final HomeCollection collection;
+  final bool canMoveUp;
+  final bool canMoveDown;
+  final VoidCallback onMoveUp;
+  final VoidCallback onMoveDown;
+  final VoidCallback onToggleVisible;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+
+  const _CollectionRow({
+    required this.collection,
+    required this.canMoveUp,
+    required this.canMoveDown,
+    required this.onMoveUp,
+    required this.onMoveDown,
+    required this.onToggleVisible,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final c = collection;
+    final thumb = ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child:
+          Image.network(c.imageUrl, width: 56, height: 56, fit: BoxFit.cover),
+    );
+    final titleBlock = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            Flexible(
+              child: Text(c.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontSize: 14.5,
+                      fontWeight: FontWeight.w600,
+                      color: AdminTheme.ink)),
+            ),
+            if (!c.isVisible) ...[
+              const SizedBox(width: 8),
+              const AdminStatusPill(label: 'Hidden', color: AdminTheme.muted),
+            ],
+          ],
+        ),
+        const SizedBox(height: 2),
+        Text(
+          '${c.categoryName ?? "All mixed together"} · ${c.productLimit} products',
+          style: const TextStyle(fontSize: 12, color: AdminTheme.muted),
+        ),
+      ],
+    );
+    final actions = [
+      IconButton(
+          tooltip: 'Move up',
+          icon: const Icon(Icons.arrow_upward, size: 18),
+          onPressed: canMoveUp ? onMoveUp : null),
+      IconButton(
+          tooltip: 'Move down',
+          icon: const Icon(Icons.arrow_downward, size: 18),
+          onPressed: canMoveDown ? onMoveDown : null),
+      Switch(
+          value: c.isVisible,
+          activeColor: AdminTheme.red,
+          onChanged: (_) => onToggleVisible()),
+      IconButton(
+          tooltip: 'Edit',
+          icon: const Icon(Icons.edit_outlined, size: 18),
+          onPressed: onEdit),
+      IconButton(
+          tooltip: 'Delete',
+          icon:
+              const Icon(Icons.delete_outline, size: 18, color: AdminTheme.red),
+          onPressed: onDelete),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < _collectionRowBreakpoint) {
+          return AdminCard(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  thumb,
+                  const SizedBox(width: 12),
+                  Expanded(child: titleBlock),
+                ]),
+                const Divider(height: 20, color: AdminTheme.hair),
+                Wrap(
+                  alignment: WrapAlignment.end,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: actions,
+                ),
+              ],
+            ),
+          );
+        }
+        return AdminCard(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              thumb,
+              const SizedBox(width: 12),
+              Expanded(child: titleBlock),
+              ...actions,
+            ],
+          ),
+        );
+      },
     );
   }
 }
