@@ -126,10 +126,22 @@ Future<bool> confirmDialog(BuildContext context,
 
 void showAdminError(BuildContext context, Object error) {
   debugPrint('Erreur admin : $error');
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text(
-          "Something went wrong. Try again, and if it keeps happening, check your internet connection."),
+  // A SnackBar renders behind a dialog's own modal barrier when called from
+  // inside one (e.g. a create/edit dialog's error handler) — invisible to
+  // the user, who just sees nothing happen. A dialog stacks reliably on top
+  // of another dialog (or a plain screen), so it's always actually seen.
+  showDialog<void>(
+    context: context,
+    builder: (_) => AlertDialog(
+      title: const Text('Something went wrong'),
+      content: const Text(
+          "Try again, and if it keeps happening, check your internet connection."),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('OK'),
+        ),
+      ],
     ),
   );
 }
