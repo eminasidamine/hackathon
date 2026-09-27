@@ -144,14 +144,6 @@ class Strings {
       'ar': 'عبر سائق أو استلام من المتجر',
       'en': 'By rider or store pickup',
     },
-    'one_order_per_store': {
-      'fr':
-          "Une commande est créée par boutique. Un livreur se verra proposer chaque livraison une fois la commande passée, ou la boutique peut l'organiser directement avec toi sur WhatsApp.",
-      'ar':
-          'يتم إنشاء طلب لكل متجر. سيُعرض كل توصيل على سائق بمجرد إتمام الطلب، أو قد يتولى المتجر تنظيمه مباشرة معك عبر واتساب.',
-      'en':
-          'One order is created per store. A rider will be offered each delivery once the order is placed, or the store may arrange it directly with you on WhatsApp.',
-    },
     'need_account_hint': {
       'fr': "Tu auras besoin d'un compte pour commander",
       'ar': 'ستحتاج إلى حساب لإتمام الطلب',

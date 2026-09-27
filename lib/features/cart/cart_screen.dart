@@ -101,7 +101,6 @@ class _CartScreenState extends State<CartScreen> {
                   : ListView(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                       children: [
-                        _Notice(text: t('one_order_per_store')),
                         ...cart.linesByShop.entries.map((entry) => _ShopGroup(
                               shopId: entry.key,
                               lines: entry.value,
@@ -161,41 +160,6 @@ class _CartScreenState extends State<CartScreen> {
               ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _Notice extends StatelessWidget {
-  final String text;
-
-  const _Notice({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFFF8E8),
-        border: Border.all(color: const Color(0xFFF3E2BE)),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 1),
-            child:
-                Icon(Icons.info_outline, size: 17, color: AppTheme.stockWarn),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(text,
-                style: const TextStyle(
-                    fontSize: 12, height: 1.5, color: Color(0xFF6B5222))),
-          ),
-        ],
       ),
     );
   }
