@@ -140,17 +140,17 @@ class Strings {
     },
     'delivery': {'fr': 'Livraison', 'ar': 'التوصيل', 'en': 'Delivery'},
     'delivery_agreed': {
-      'fr': 'À convenir avec chaque boutique',
-      'ar': 'يتم الاتفاق عليها مع كل متجر',
-      'en': 'Agreed with each store',
+      'fr': 'Par livreur ou retrait en boutique',
+      'ar': 'عبر سائق أو استلام من المتجر',
+      'en': 'By rider or store pickup',
     },
     'one_order_per_store': {
       'fr':
-          'Chaque boutique gère sa propre livraison. Tu passeras une commande par boutique et tu conviendras de la livraison avec elle sur WhatsApp.',
+          "Une commande est créée par boutique. Un livreur se verra proposer chaque livraison une fois la commande passée, ou la boutique peut l'organiser directement avec toi sur WhatsApp.",
       'ar':
-          'كل متجر يتكفل بتوصيله الخاص. ستقوم بطلب واحد لكل متجر وتتفق على التوصيل معه عبر واتساب.',
+          'يتم إنشاء طلب لكل متجر. سيُعرض كل توصيل على سائق بمجرد إتمام الطلب، أو قد يتولى المتجر تنظيمه مباشرة معك عبر واتساب.',
       'en':
-          "Each store handles its own delivery. You'll place one order per store and agree the delivery with them on WhatsApp.",
+          'One order is created per store. A rider will be offered each delivery once the order is placed, or the store may arrange it directly with you on WhatsApp.',
     },
     'need_account_hint': {
       'fr': "Tu auras besoin d'un compte pour commander",
